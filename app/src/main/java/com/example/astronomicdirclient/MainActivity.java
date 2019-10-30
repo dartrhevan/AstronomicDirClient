@@ -17,7 +17,10 @@ import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.astronomicdirclient.Model.StarLite;
+
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static com.example.astronomicdirclient.XMLHelper.DeserrializeStarList;
@@ -26,19 +29,16 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private ListView list;
     private AppCompatActivity activity = this;
-    private ArrayAdapter<com.example.astronomicdirclient.Model.StarLite> adapter;// = new ArrayAdapter(this, android.R.layout.simple_list_item_1, new StarLite[0]);
+    private ArrayAdapter<com.example.astronomicdirclient.Model.StarLite> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //XMLHelper.Test();
         Download d = new Download();
-        //d.execute();
+        d.execute();
         setContentView(R.layout.activity_main);
         View viewById = findViewById(R.id.list_page);
         list = (ListView) viewById.findViewById(R.id.star_list);
         list.setOnItemClickListener((a, v, i, l) ->{});
-        d.execute();
-        //list.notifyAll();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -52,23 +52,16 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        /*try {
-            adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,
-                    XMLHelper.DeserrializeStarList(Downloader.DownloadStarList()));
-            list.setAdapter(adapter);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }*/
+        currentPage = findViewById(R.id.main_page);
     }
 
-    private class Download extends AsyncTask<Void, Void, String> {
+    private class Download extends AsyncTask<Void, Void, List<StarLite>> {
 
         @Override
-        protected String doInBackground(Void... voids) {
+        protected List<StarLite> doInBackground(Void... voids) {
             try {
                 String xmlLine = Downloader.DownloadStarList();
-                return xmlLine;
+                return DeserrializeStarList(xmlLine);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -80,15 +73,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected void onPostExecute(String xmlLine) {
+        protected void onPostExecute(List<StarLite> stars) {
             adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1,
-                    DeserrializeStarList(xmlLine));
+                    stars);
             list.setAdapter(adapter);
-            /*try {
-                list.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
         }
     }
 
@@ -124,30 +112,27 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private View currentPage;// = findViewById(R.id.main);
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        /*int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }*/
         switch (item.getItemId())
         {
             case R.id.list:
             {
+                currentPage.setVisibility(View.INVISIBLE);
+                View lisr_page = findViewById(R.id.list_page);
+                lisr_page.setVisibility(View.VISIBLE);
+                currentPage = lisr_page;
+                break;
+            }
+            case R.id.main:
+            {
+                currentPage.setVisibility(View.INVISIBLE);
+                View main = findViewById(R.id.main_page);
+                main.setVisibility(View.VISIBLE);
+                currentPage = main;
                 break;
             }
             case R.id.upload:

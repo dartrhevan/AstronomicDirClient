@@ -11,14 +11,15 @@
     <include
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        android:id="@+id/main_page"
+        android:layout_height="match_parent"/>
 
     <include
         layout="@layout/list_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/list_page"/>
+        android:id="@+id/list_page"
+        android:visibility="invisible" />
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
