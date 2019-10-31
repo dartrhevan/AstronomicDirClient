@@ -16,11 +16,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.astronomicdirclient.Model.StarLite;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static com.example.astronomicdirclient.XMLHelper.DeserrializeStarList;
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         Download d = new Download();
         d.execute();
+        initMap();
         setContentView(R.layout.activity_main);
         View viewById = findViewById(R.id.list_page);
         list = (ListView) viewById.findViewById(R.id.star_list);
@@ -55,6 +60,12 @@ public class MainActivity extends AppCompatActivity
         currentPage = findViewById(R.id.main_page);
     }
 
+    private void initMap() {
+        itemToPage.put(R.id.list, R.id.list_page);
+        itemToPage.put(R.id.main, R.id.main_page);
+        itemToPage.put(R.id.add, R.id.fragment);
+    }
+
     private class Download extends AsyncTask<Void, Void, List<StarLite>> {
 
         @Override
@@ -63,8 +74,8 @@ public class MainActivity extends AppCompatActivity
                 String xmlLine = Downloader.DownloadStarList();
                 return DeserrializeStarList(xmlLine);
             } catch (IOException e) {
-                e.printStackTrace();
-                return null;
+                //e.printStackTrace();
+                return new ArrayList<>();
             }
         }
 
@@ -112,19 +123,30 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private final Map<Integer, Integer> itemToPage = new HashMap<>();
     private View currentPage;// = findViewById(R.id.main);
+    private void setCurrentPage(int id) {
+        currentPage.setVisibility(View.INVISIBLE);
+        View new_page = findViewById(itemToPage.get(id));
+        new_page.setVisibility(View.VISIBLE);
+        currentPage = new_page;
+    }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        switch (item.getItemId())
+        int id = item.getItemId();
+        setCurrentPage(id);
+        if(id == R.id.list && adapter.getCount() == 0)
+            Toast.makeText(activity, "Failed to load stars!", Toast.LENGTH_SHORT).show();
+
+        /*switch (item.getItemId())
         {
             case R.id.list:
             {
-                currentPage.setVisibility(View.INVISIBLE);
-                View lisr_page = findViewById(R.id.list_page);
-                lisr_page.setVisibility(View.VISIBLE);
-                currentPage = lisr_page;
+                setCurrentPage(R.id.list_page);
+                if(adapter.getCount() == 0)
+                    Toast.makeText(activity, "Failed to load stars!", Toast.LENGTH_SHORT).show();
                 break;
             }
             case R.id.main:
@@ -141,11 +163,15 @@ public class MainActivity extends AppCompatActivity
             }
             case R.id.add:
             {
+                currentPage.setVisibility(View.INVISIBLE);
+                View main = findViewById(R.id.fragment);
+                main.setVisibility(View.VISIBLE);
+                currentPage = main;
                 break;
             }
             /*default:
-                throw new Exception("Bad choice!");*/
-        }
+                throw new Exception("Bad choice!");*
+        }*/
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
