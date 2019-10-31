@@ -139,39 +139,6 @@ public class MainActivity extends AppCompatActivity
         setCurrentPage(id);
         if(id == R.id.list && adapter.getCount() == 0)
             Toast.makeText(activity, "Failed to load stars!", Toast.LENGTH_SHORT).show();
-
-        /*switch (item.getItemId())
-        {
-            case R.id.list:
-            {
-                setCurrentPage(R.id.list_page);
-                if(adapter.getCount() == 0)
-                    Toast.makeText(activity, "Failed to load stars!", Toast.LENGTH_SHORT).show();
-                break;
-            }
-            case R.id.main:
-            {
-                currentPage.setVisibility(View.INVISIBLE);
-                View main = findViewById(R.id.main_page);
-                main.setVisibility(View.VISIBLE);
-                currentPage = main;
-                break;
-            }
-            case R.id.upload:
-            {
-                break;
-            }
-            case R.id.add:
-            {
-                currentPage.setVisibility(View.INVISIBLE);
-                View main = findViewById(R.id.fragment);
-                main.setVisibility(View.VISIBLE);
-                currentPage = main;
-                break;
-            }
-            /*default:
-                throw new Exception("Bad choice!");*
-        }*/
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
