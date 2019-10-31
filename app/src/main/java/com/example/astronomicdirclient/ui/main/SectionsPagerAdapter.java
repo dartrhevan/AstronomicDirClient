@@ -31,7 +31,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a StarTabFragment (defined as a static inner class below).
-        return new StarTabFragment();
+        return position == 0 ? new StarTabFragment() : new PlanetTabFragment();
     }
 
     @Nullable

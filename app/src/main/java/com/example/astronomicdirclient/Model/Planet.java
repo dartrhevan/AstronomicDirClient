@@ -2,6 +2,7 @@ package com.example.astronomicdirclient.Model;
 
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.DefaultType;
+import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 import java.util.Arrays;
@@ -62,24 +63,33 @@ public class Planet implements ISpaceObject
         Moons = new HashSet<>();
     }
 
+    @Element(name = "Name")
     @XmlElement(name = "Name")
     protected String name;
+    @Element(name = "MiddleDistance")
     @XmlElement(name = "MiddleDistance")
     protected Distance middleDistance;
+    @Element(name = "Radius")
     @XmlElement(name = "Radius")
     protected int radius;
+    @Element(name = "Temperature")
     @XmlElement(name = "Temperature")
     protected int temperature;
+    @Element(name = "InventingDate")
     @XmlElement(name = "InventingDate")
     protected Date inventingDate; //= DateTime.Now;
 
+    @Element(name = "Photo")
     @XmlElement(name = "Photo")
     protected byte[] photo;
+    @Element(name = "Star")
     @XmlElement(name = "Star")
     protected String star;
+    @Element(name = "HasAtmosphere")
     @XmlElement(name = "HasAtmosphere")
     protected boolean hasAtmosphere;
 
+    @Element(name = "Type")
     @XmlElement(name = "Type")
     protected PlanetType type;
     public final HashSet<Moon> Moons;//= new HashSet<>();

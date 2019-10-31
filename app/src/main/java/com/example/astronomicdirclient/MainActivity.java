@@ -126,8 +126,10 @@ public class MainActivity extends AppCompatActivity
     private final Map<Integer, Integer> itemToPage = new HashMap<>();
     private View currentPage;// = findViewById(R.id.main);
     private void setCurrentPage(int id) {
-        currentPage.setVisibility(View.INVISIBLE);
+        if(!itemToPage.containsKey(id)) return;
         View new_page = findViewById(itemToPage.get(id));
+        if(new_page.equals(currentPage)) return;
+        currentPage.setVisibility(View.INVISIBLE);
         new_page.setVisibility(View.VISIBLE);
         currentPage = new_page;
     }

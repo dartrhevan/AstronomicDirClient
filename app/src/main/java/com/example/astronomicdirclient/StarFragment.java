@@ -38,10 +38,13 @@ public class StarFragment extends Fragment {
         View v = inflater.inflate(R.layout.activity_star, container, false);
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(ct, ((AppCompatActivity)ct).getSupportFragmentManager());
+
         ViewPager viewPager = v.findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = v.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
+
+
         FloatingActionButton fab = v.findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
