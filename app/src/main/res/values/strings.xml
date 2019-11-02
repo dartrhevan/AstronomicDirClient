@@ -17,7 +17,9 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="tab_text_3">Tab 3</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <array name="unit_types">
+        <item>Kilometres</item>
+        <item>Astronomic units</item>
+        <item>Light years</item>
+    </array>
 </resources>

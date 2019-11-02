@@ -1,12 +1,14 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.astronomicdirclient.StarFragment" android:layout_height="match_parent"
+    android:layout_width="match_parent"  >
+<LinearLayout
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.astronomicdirclient.StarFragment"
     android:orientation="vertical">
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,6 +58,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="number"
             android:id="@+id/radius_field"/>
     </LinearLayout>
 
@@ -70,6 +73,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="number"
             android:id="@+id/temp_field"/>
     </LinearLayout>
 
@@ -81,12 +85,22 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Middle distance:"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/dist_field"/>
-    </LinearLayout>
 
+        <EditText
+            android:id="@+id/dist_field"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:inputType="number" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:entries="@array/unit_types" />
+    </LinearLayout>
+<!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -95,12 +109,28 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Inventing date:"/>
-
+<
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/date_field"
             android:inputType="date" />
-    </LinearLayout>
 
+    </LinearLayout>-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Inventing date:"/>
+
+    <DatePicker
+        android:id="@+id/date_field"
+        android:layout_width="match_parent"
+        android:layout_height="392dp" />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
 </LinearLayout>
+</ScrollView>

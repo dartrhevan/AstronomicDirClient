@@ -1,24 +1,50 @@
 package com.example.astronomicdirclient.Model;
 
+import org.simpleframework.xml.Default;
+import org.simpleframework.xml.DefaultType;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
+
 import java.util.Objects;
 
+
+@Root(name = "Distance")
+@Default(DefaultType.FIELD)
 public class Distance {
-    public Distance(int value, UnitType unit) {
-        Value = value;
-        Unit = unit;
+    public Distance() {
     }
 
-    public final int Value;
-    /// <summary>
-    /// Единица Измерения
-    /// </summary>
-    public final UnitType Unit;
+    public Distance(int value, UnitType unit) {
+        this.value = value;
+        this.unit = unit;
+    }
+    @Element(name = "value")
+    private int value;
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public UnitType getUnit() {
+        return unit;
+    }
+
+    public void setUnit(UnitType unit) {
+        this.unit = unit;
+    }
+
+    @Element(name = "unit")
+    private UnitType unit;
 
     @Override
     public String toString() {
         return "Distance{" +
-                "Value=" + Value +
-                ", Unit=" + Unit +
+                "value=" + value +
+                ", unit=" + unit +
                 '}';
     }
 
@@ -27,12 +53,12 @@ public class Distance {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Distance distance = (Distance) o;
-        return Value == distance.Value &&
-                Unit == distance.Unit;
+        return value == distance.value &&
+                unit == distance.unit;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Value, Unit);
+        return Objects.hash(value, unit);
     }
 }

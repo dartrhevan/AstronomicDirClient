@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity
     private ArrayAdapter<com.example.astronomicdirclient.Model.StarLite> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         Download d = new Download();
         d.execute();
+        super.onCreate(savedInstanceState);
         initMap();
         setContentView(R.layout.activity_main);
         View viewById = findViewById(R.id.list_page);

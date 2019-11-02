@@ -6,6 +6,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -17,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Root(name = "Star")
 @Default(DefaultType.FIELD)
 @XmlRootElement
-public class Star implements ISpaceObject {
+public class Star implements ISpaceObject, Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

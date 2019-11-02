@@ -1,9 +1,19 @@
 package com.example.astronomicdirclient.Model;
 
+import org.simpleframework.xml.Default;
+import org.simpleframework.xml.DefaultType;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+@Root(name = "Moon")
+@Default(DefaultType.FIELD)
 @XmlRootElement
 public class Moon extends Planet {
+
+    @Element(name = "PlanetOwner")
     @XmlElement(name = "PlanetOwner")
     private String planetOwner;
     public Moon(){

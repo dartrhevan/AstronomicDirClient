@@ -1,6 +1,6 @@
 package com.example.astronomicdirclient.Model;
 
-enum UnitType {
+public enum UnitType {
     Kilometers,
     LightYears,
     AstronomicUnits

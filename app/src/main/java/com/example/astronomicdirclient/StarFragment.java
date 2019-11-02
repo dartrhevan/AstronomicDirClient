@@ -15,8 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.astronomicdirclient.Model.Distance;
+import com.example.astronomicdirclient.Model.Star;
+import com.example.astronomicdirclient.Model.UnitType;
 import com.example.astronomicdirclient.R;
 import com.example.astronomicdirclient.ui.main.SectionsPagerAdapter;
+
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,10 +39,10 @@ public class StarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_star);
         View v = inflater.inflate(R.layout.activity_star, container, false);
 
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(ct, ((AppCompatActivity)ct).getSupportFragmentManager());
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(ct, ((AppCompatActivity)ct).getSupportFragmentManager(),
+                new Star("Milky way", null, "Sun",new Distance(1, UnitType.AstronomicUnits), 500000, 5000, new Date(2015, 7, 3)) );
 
         ViewPager viewPager = v.findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -47,20 +52,14 @@ public class StarFragment extends Fragment {
 
         FloatingActionButton fab = v.findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
         return v;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-            //fm = ((AppCompatActivity)context).getSupportFragmentManager();
         ct = context;
     }
 }
