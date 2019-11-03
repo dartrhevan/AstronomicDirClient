@@ -1,7 +1,10 @@
 package com.example.astronomicdirclient;
 
+import android.app.DatePickerDialog;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -15,6 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,6 +27,7 @@ import com.example.astronomicdirclient.Model.StarLite;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,20 +73,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private class Download extends AsyncTask<Void, Void, List<StarLite>> {
-
         @Override
         protected List<StarLite> doInBackground(Void... voids) {
             try {
                 String xmlLine = Downloader.DownloadStarList();
                 return DeserrializeStarList(xmlLine);
             } catch (IOException e) {
-                //e.printStackTrace();
                 return new ArrayList<>();
             }
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... items) {
         }
 
         @Override
@@ -101,6 +101,35 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void chooseDate(View v) {
+        Date d = new Date();
+        EditText df = findViewById(R.id.date_field);
+        DatePickerDialog tpd = new DatePickerDialog(this,(view, year, month, dayOfMonth) -> {
+        }, d.getYear(), d.getMonth(), d.getDay());
+        tpd.show();
+        tpd.setOnDateSetListener((view, year, month, dayOfMonth) -> {
+            DatePicker dp = tpd.getDatePicker();
+            Date date = new Date(dp.getYear(), dp.getMonth(), dp.getDayOfMonth());
+            df.setText(date.toString());
+        });
+        //tpd.getDatePicker().
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void choosePlanetDate(View v) {
+        Date d = new Date();
+        EditText df = findViewById(R.id.date_pl_field);
+        DatePickerDialog tpd = new DatePickerDialog(this,(view, year, month, dayOfMonth) -> {
+        }, d.getYear(), d.getMonth(), d.getDay());
+        tpd.show();
+        tpd.setOnDateSetListener((view, year, month, dayOfMonth) -> {
+            DatePicker dp = tpd.getDatePicker();
+            Date date = new Date(dp.getYear(), dp.getMonth(), dp.getDayOfMonth());
+            df.setText(date.toString());
+        });
+        //tpd.getDatePicker().
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

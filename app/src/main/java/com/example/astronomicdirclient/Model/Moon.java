@@ -20,9 +20,9 @@ public class Moon extends Planet {
         type = PlanetType.Moon;
     }
 
-    public Moon(Planet planetOwner) //: base(planetOwner.star, planetOwner.galaxy)
+    public Moon(String name, Planet planetOwner) //: base(planetOwner.star, planetOwner.galaxy)
     {
-        super(planetOwner.star, planetOwner.galaxy);
+        super(name, planetOwner.star, planetOwner.galaxy);
         this.planetOwner = planetOwner.name;
         middleDistance = planetOwner.middleDistance;
         //this.Moons = null;

@@ -2,17 +2,23 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.astronomicdirclient.StarFragment" android:layout_height="match_parent"
+    tools:context="com.example.astronomicdirclient.ui.main.StarTabFragment"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"  >
 <LinearLayout
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#00000000" android:text="View star"/>
+        android:text="View star"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        android:textStyle="bold" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +26,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="View star">
+            android:text="Name">
             Name:
         </TextView>
         <EditText
@@ -100,7 +106,7 @@
 
             android:entries="@array/unit_types" />
     </LinearLayout>
-<!--
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,27 +115,25 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Inventing date:"/>
-<
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Choose"
+            android:onClick="chooseDate"
+            android:id="@+id/ch_date"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/date_field"
-            android:inputType="date" />
+            android:inputType="date"
+            android:enabled="false"/>
 
-    </LinearLayout>-->
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Inventing date:"/>
-
-    <DatePicker
-        android:id="@+id/date_field"
-        android:layout_width="match_parent"
-        android:layout_height="392dp" />
+    </LinearLayout>
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/planets">
 
     </ListView>
 </LinearLayout>

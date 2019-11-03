@@ -5,6 +5,7 @@ import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Root(name = "Planet")
 @Default(DefaultType.FIELD)
 @XmlRootElement
-public class Planet implements ISpaceObject
+public class Planet implements ISpaceObject, Serializable
 {
 
     @Override
@@ -168,13 +169,14 @@ public class Planet implements ISpaceObject
     public Planet(){Moons = new HashSet<>();}
 
 
-    public Planet(String star, String galaxy){
+    public Planet(String name, String star, String galaxy){
+        this.name = name;
         Moons = new HashSet<>();
         this.star = star;
         this.galaxy = galaxy;
     }
-
-    @XmlElement(name = "galaxy")
+    @Element(name = "Galaxy")
+    @XmlElement(name = "Galaxy")
     protected String galaxy;
 
     public HashSet<Moon> getMoons() {
