@@ -75,7 +75,7 @@ public class StarTabFragment extends Fragment implements Serializable {
     }
 
     private void initPlanetList(View root) {
-        ArrayList<Planet> planetList = new ArrayList<>(star.Planets);
+        ArrayList<Planet> planetList = new ArrayList<>(star.getPlanets());
         adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.planets);
         list.setAdapter(adapter);

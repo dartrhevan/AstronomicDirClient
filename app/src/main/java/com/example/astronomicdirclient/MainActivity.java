@@ -31,9 +31,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
-import static com.example.astronomicdirclient.XMLHelper.DeserrializeStarList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -77,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         protected List<StarLite> doInBackground(Void... voids) {
             try {
                 String xmlLine = Downloader.DownloadStarList();
-                return DeserrializeStarList(xmlLine);
+                return XMLHelper.DeserializeStarList(xmlLine);
             } catch (IOException e) {
                 return new ArrayList<>();
             }

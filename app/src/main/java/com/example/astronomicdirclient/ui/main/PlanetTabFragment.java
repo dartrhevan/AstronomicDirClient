@@ -101,7 +101,7 @@ public class PlanetTabFragment extends Fragment implements Serializable {
     }
 
     private void initMoonsList(View root) {
-        ArrayList<Moon> planetList = new ArrayList<>(planet.Moons);
+        ArrayList<Moon> planetList = new ArrayList<>(planet.getMoons());
         adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.moons);
         list.setAdapter(adapter);

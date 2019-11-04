@@ -1,5 +1,7 @@
 package com.example.astronomicdirclient.Model;
 
+import org.joda.time.DateTime;
+
 import java.util.Date;
 
 interface ISpaceObject {
@@ -23,7 +25,7 @@ interface ISpaceObject {
 
     void setTemperature(int temperature);
 
-    Date getInventingDate();
+    DateTime getInventingDate();
 
-    void setInventingDate(Date inventingDate);
+    void setInventingDate(DateTime inventingDate);
 }

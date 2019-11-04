@@ -18,7 +18,7 @@ public class Distance {
         this.value = value;
         this.unit = unit;
     }
-    @Element(name = "value")
+    @Element(name = "Value", required = false)
     private int value;
 
     public int getValue() {
@@ -37,7 +37,7 @@ public class Distance {
         this.unit = unit;
     }
 
-    @Element(name = "unit")
+    @Element(name = "Unit", required = false)
     private UnitType unit;
 
     @Override

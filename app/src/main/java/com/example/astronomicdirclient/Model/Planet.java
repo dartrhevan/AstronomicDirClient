@@ -1,5 +1,6 @@
 package com.example.astronomicdirclient.Model;
 
+import org.joda.time.DateTime;
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
@@ -36,7 +37,7 @@ public class Planet implements ISpaceObject, Serializable
                 '}';*/
     }
 
-    public Planet(byte[] photo, String name, Distance middleDistance, int radius, int temperature, Date inventingDate, String star, boolean hasAtmosphere, PlanetType type, HashSet<Moon> moons, String galaxy) {
+    public Planet(byte[] photo, String name, Distance middleDistance, int radius, int temperature, DateTime inventingDate, String star, boolean hasAtmosphere, PlanetType type, HashSet<Moon> moons, String galaxy) {
         this.photo = photo;
         this.name = name;
         this.middleDistance = middleDistance;
@@ -50,7 +51,7 @@ public class Planet implements ISpaceObject, Serializable
         this.galaxy = galaxy;
     }
 
-    public Planet(byte[] photo, String name, Distance middleDistance, int radius, int temperature, Date inventingDate, String star, boolean hasAtmosphere, PlanetType type, String galaxy) {
+    public Planet(byte[] photo, String name, Distance middleDistance, int radius, int temperature, DateTime inventingDate, String star, boolean hasAtmosphere, PlanetType type, String galaxy) {
         this.photo = photo;
         this.name = name;
         this.galaxy = galaxy;
@@ -67,7 +68,7 @@ public class Planet implements ISpaceObject, Serializable
     @Element(name = "Name")
     @XmlElement(name = "Name")
     protected String name;
-    @Element(name = "MiddleDistance")
+    @Element(name = "MiddleDistance", required=false)
     @XmlElement(name = "MiddleDistance")
     protected Distance middleDistance;
     @Element(name = "Radius")
@@ -76,14 +77,14 @@ public class Planet implements ISpaceObject, Serializable
     @Element(name = "Temperature")
     @XmlElement(name = "Temperature")
     protected int temperature;
-    @Element(name = "InventingDate")
+    @Element(name = "InventingDate", required=false)
     @XmlElement(name = "InventingDate")
-    protected Date inventingDate; //= DateTime.Now;
+    protected DateTime inventingDate; //= DateTime.Now;
 
-    @Element(name = "Photo")
-    @XmlElement(name = "Photo")
+    @Element(name = "Photo", required=false)
+    @XmlElement(name = "Photo", required=false)
     protected byte[] photo;
-    @Element(name = "Star")
+    @Element(name = "Star", required = false)
     @XmlElement(name = "Star")
     protected String star;
     @Element(name = "HasAtmosphere")
@@ -93,7 +94,7 @@ public class Planet implements ISpaceObject, Serializable
     @Element(name = "Type")
     @XmlElement(name = "Type")
     protected PlanetType type;
-    public final HashSet<Moon> Moons;//= new HashSet<>();
+    private HashSet<Moon> Moons;//= new HashSet<>();
 
     public byte[] getPhoto() {
         return photo;
@@ -135,11 +136,11 @@ public class Planet implements ISpaceObject, Serializable
         this.temperature = temperature;
     }
 
-    public Date getInventingDate() {
+    public DateTime getInventingDate() {
         return inventingDate;
     }
 
-    public void setInventingDate(Date inventingDate) {
+    public void setInventingDate(DateTime inventingDate) {
         this.inventingDate = inventingDate;
     }
 

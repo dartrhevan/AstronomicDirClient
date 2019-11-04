@@ -1,5 +1,6 @@
 package com.example.astronomicdirclient.Model;
 
+import org.joda.time.DateTime;
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
@@ -112,16 +113,16 @@ public class Star implements ISpaceObject, Serializable {
     }
 
     @Override
-    public Date getInventingDate() {
+    public DateTime getInventingDate() {
         return inventingDate;
     }
 
     @Override
-    public void setInventingDate(Date inventingDate) {
+    public void setInventingDate(DateTime inventingDate) {
         this.inventingDate = inventingDate;
     }
 
-    public Star(String galaxy, byte[] photo, String name, Distance middleDistance, int radius, int temperature, Date inventingDate) {
+    public Star(String galaxy, byte[] photo, String name, Distance middleDistance, int radius, int temperature, DateTime inventingDate) {
         this.galaxy = galaxy;
         this.photo = photo;
         this.name = name;
@@ -132,7 +133,7 @@ public class Star implements ISpaceObject, Serializable {
         Planets= new HashSet<>();
     }
 
-    public Star(String galaxy, byte[] photo, String name, Distance middleDistance, int radius, int temperature, Date inventingDate, HashSet<Planet> planets) {
+    public Star(String galaxy, byte[] photo, String name, Distance middleDistance, int radius, int temperature, DateTime inventingDate, HashSet<Planet> planets) {
         this.galaxy = galaxy;
         this.photo = photo;
         this.name = name;
@@ -148,13 +149,13 @@ public class Star implements ISpaceObject, Serializable {
     @XmlElement(name = "Galaxy")
     private String galaxy;
 
-    @Element(name = "Photo")
+    @Element(name = "Photo", required = false)
     @XmlElement(name = "Photo")
     private byte[] photo;
     @Element(name = "Name")
     @XmlElement(name = "Name")
     private String name;
-    @Element(name = "MiddleDistance")
+    @Element(name = "MiddleDistance",required=false)
     @XmlElement(name = "MiddleDistance")
     private Distance middleDistance;
     @Element(name = "Radius")
@@ -165,8 +166,16 @@ public class Star implements ISpaceObject, Serializable {
     private int temperature;
     @Element(name = "InventingDate")
     @XmlElement(name = "InventingDate")
-    private Date inventingDate; //= DateTime.Now;
+    private DateTime inventingDate; //= DateTime.Now;
+
+    public HashSet<Planet> getPlanets() {
+        return Planets;
+    }
+
+    public void setPlanets(HashSet<Planet> planets) {
+        Planets = planets;
+    }
 
     @ElementList
-    public final HashSet<Planet> Planets ;//= new HashSet<>();
+    private HashSet<Planet> Planets ;//= new HashSet<>();
 }
