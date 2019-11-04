@@ -52,7 +52,6 @@ public class StarFragment extends Fragment {
         TabLayout tabs = v.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
-
         FloatingActionButton fab = v.findViewById(R.id.fab);
 
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)

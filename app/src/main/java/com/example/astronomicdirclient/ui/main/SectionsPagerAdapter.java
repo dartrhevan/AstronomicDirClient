@@ -16,13 +16,14 @@ import com.example.astronomicdirclient.Model.Star;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-    /*@StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3 };*/
     private final Context mContext;
     private final Star star;
     private final boolean editable;
-    public static final String STAR = "STAR";
+    public static final String MODEL = "MODEL";
     public static final String EDITEBLE = "EDITEBLE";
+    private StarTabFragment starTabFragment = new StarTabFragment();
+    private PlanetTabFragment planetTabFragment = new PlanetTabFragment();
+
     public SectionsPagerAdapter(Context context, FragmentManager fm, @Nullable Star star, boolean editeble) {
         super(fm);
         this.star = star;
@@ -37,12 +38,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment;
         Bundle bundle = new Bundle();
         if (position == 0) {
-            fragment = new StarTabFragment();
-            bundle.putSerializable(STAR, star);
+            starTabFragment.setPlanetTabFragment(planetTabFragment);
+            fragment = starTabFragment;
+            bundle.putSerializable(MODEL, star);
+
         }
         else {
-            bundle.putSerializable(STAR, (Planet)star.Planets.toArray()[0]);
-            fragment = new PlanetTabFragment();
+            bundle.putSerializable(MODEL, (Planet)star.Planets.toArray()[0]);
+            fragment = planetTabFragment;
         }
         bundle.putBoolean(EDITEBLE, editable);
         fragment.setArguments(bundle);

@@ -12,19 +12,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.astronomicdirclient.Model.Moon;
 import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.R;
 
-import java.util.ArrayList;
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class PlanetTabFragment extends Fragment {
+
+    private View root;
 
     @Override
     public void onAttach(Context context) {
@@ -33,6 +32,14 @@ public class PlanetTabFragment extends Fragment {
     }
     private Context ct;
 
+    public Planet getPlanet() {
+        return planet;
+    }
+
+    public void setPlanet(Planet planet) {
+        this.planet = planet;
+        if(planet != null) initializeView(root);
+    }
 
     private Planet planet;
     private boolean editeble;
@@ -46,9 +53,9 @@ public class PlanetTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_planet, container, false);
-
+        this.root = root;
         Bundle args = getArguments();
-        planet = (Planet)args.getSerializable(SectionsPagerAdapter.STAR);
+        planet = (Planet)args.getSerializable(SectionsPagerAdapter.MODEL);
         editeble = args.getBoolean(SectionsPagerAdapter.EDITEBLE);
         if(planet != null) initializeView(root);
         return root;
@@ -60,17 +67,18 @@ public class PlanetTabFragment extends Fragment {
         ListView list = root.findViewById(R.id.planets);
         list.setAdapter(adapter);*/
         initField(root, R.id.name_field, planet.getName());
+        initField(root, R.id.star_field, planet.getStar());
         initField(root, R.id.gal_field, planet.getGalaxy());
         initField(root, R.id.temp_field, Integer.toString(planet.getTemperature()));
         initField(root, R.id.radius_field, Integer.toString(planet.getRadius()));
-        if(planet.getMiddleDistance() != null)
+        if(planet.getMiddleDistance() != null)//TODO:To make else with default value assigning
             initField(root, R.id.dist_field, Integer.toString(planet.getMiddleDistance().getValue()));
-        if(planet.getInventingDate() != null)
+        if(planet.getInventingDate() != null)//TODO:To make else with default value assigning
             initField(root, R.id.date_field, planet.getInventingDate().toString());
         View but = root.findViewById(R.id.ch_pl_date);
         but.setEnabled(editeble);
         Spinner sp = root.findViewById(R.id.spinner);
-        if(planet.getMiddleDistance() != null)
+        if(planet.getMiddleDistance() != null)//TODO:To make else with default value assigning
         switch (planet.getMiddleDistance().getUnit()){
             case Kilometers:
                 sp.setSelection(0);
@@ -84,7 +92,7 @@ public class PlanetTabFragment extends Fragment {
         }
         sp.setEnabled(editeble);
         byte[] ph = planet.getPhoto();
-        if(ph != null) {
+        if(ph != null) {//TODO:To make else with default value assigning
             ImageView img = root.findViewById(R.id.photo);
             img.setImageBitmap(BitmapFactory.decodeByteArray(ph, 0, ph.length));
         }
