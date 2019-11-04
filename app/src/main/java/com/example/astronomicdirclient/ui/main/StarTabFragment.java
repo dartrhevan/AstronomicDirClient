@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,12 +21,14 @@ import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.Star;
 import com.example.astronomicdirclient.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class StarTabFragment extends Fragment {
+public class StarTabFragment extends Fragment implements Serializable {
 
     private Star star;
     private boolean editeble;
@@ -55,13 +56,32 @@ public class StarTabFragment extends Fragment {
             Bundle savedInstanceState) {
         Bundle args = getArguments();
         star = (Star)args.getSerializable(SectionsPagerAdapter.MODEL);
-        editeble = args.getBoolean(SectionsPagerAdapter.EDITEBLE);
+        editeble = args.getBoolean(SectionsPagerAdapter.EDITABLE);
         View root = inflater.inflate(R.layout.fragment_star, container, false);
         if(star != null) initializeView(root);
         return root;
     }
 
     private void initializeView(View root) {
+        initPlanetList(root);
+        initField(root, R.id.name_field, star.getName());
+        initField(root, R.id.gal_field, star.getGalaxy());
+        initField(root, R.id.temp_field, Integer.toString(star.getTemperature()));
+        initField(root, R.id.radius_field, Integer.toString(star.getRadius()));
+        initField(root, R.id.dist_field, Integer.toString(star.getMiddleDistance() != null ?
+                    star.getMiddleDistance().getValue() : 0));
+        initField(root, R.id.date_field, (star.getInventingDate()!= null ?
+                    star.getInventingDate() : new Date()).toString());
+        View but = root.findViewById(R.id.ch_date);
+        but.setEnabled(editeble);
+        initSpinner(root);
+        byte[] ph = star.getPhoto();
+        if(ph == null) ph = new byte[0];
+        ImageView img = root.findViewById(R.id.photo);
+        img.setImageBitmap(BitmapFactory.decodeByteArray(ph, 0, ph.length));
+    }
+
+    private void initPlanetList(View root) {
         ArrayList<Planet> planetList = new ArrayList<>(star.Planets);
         adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.planets);
@@ -71,16 +91,9 @@ public class StarTabFragment extends Fragment {
             ViewPager viewPager = ((Activity)ct).findViewById(R.id.view_pager);
             viewPager.setCurrentItem(1);
         });
-        initField(root, R.id.name_field, star.getName());
-        initField(root, R.id.gal_field, star.getGalaxy());
-        initField(root, R.id.temp_field, Integer.toString(star.getTemperature()));
-        initField(root, R.id.radius_field, Integer.toString(star.getRadius()));
-        if(star.getMiddleDistance() != null)//TODO:To make else with default value assigning
-            initField(root, R.id.dist_field, Integer.toString(star.getMiddleDistance().getValue()));
-        if(star.getInventingDate() != null)//TODO:To make else with default value assigning
-            initField(root, R.id.date_field, star.getInventingDate().toString());
-        View but = root.findViewById(R.id.ch_date);
-        but.setEnabled(editeble);
+    }
+
+    private void initSpinner(View root) {
         Spinner sp = root.findViewById(R.id.spinner);
         if(star.getMiddleDistance() != null)//TODO:To make else with default value assigning
         switch (star.getMiddleDistance().getUnit()){
@@ -95,11 +108,6 @@ public class StarTabFragment extends Fragment {
                 break;
         }
         sp.setEnabled(editeble);
-        byte[] ph = star.getPhoto();
-        if(ph != null) {//TODO:To make else with default value assigning
-            ImageView img = root.findViewById(R.id.photo);
-            img.setImageBitmap(BitmapFactory.decodeByteArray(ph, 0, ph.length));
-        }
     }
 
     private ArrayAdapter<Planet> adapter;

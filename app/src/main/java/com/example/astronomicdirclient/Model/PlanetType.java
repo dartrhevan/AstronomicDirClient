@@ -1,6 +1,6 @@
 package com.example.astronomicdirclient.Model;
 
-enum PlanetType {
+public enum PlanetType {
     Tought,
     Gas,
     Moon

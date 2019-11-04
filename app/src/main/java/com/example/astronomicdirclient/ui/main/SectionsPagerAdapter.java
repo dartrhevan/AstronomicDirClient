@@ -10,25 +10,28 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.Star;
 
+import java.io.Serializable;
+
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serializable {
 
     private final Context mContext;
     private final Star star;
     private final boolean editable;
     public static final String MODEL = "MODEL";
-    public static final String EDITEBLE = "EDITEBLE";
+    public static final String EDITABLE = "EDITABLE";
+    public static final String FRAGMENT = "FRAGMENT";
     private StarTabFragment starTabFragment = new StarTabFragment();
     private PlanetTabFragment planetTabFragment = new PlanetTabFragment();
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm, @Nullable Star star, boolean editeble) {
+    public SectionsPagerAdapter(Context context, FragmentManager fm, @Nullable Star star, boolean editable) {
         super(fm);
         this.star = star;
         mContext = context;
-        this.editable = editeble;
+        this.editable = editable;
     }
 
     @Override
@@ -41,13 +44,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             starTabFragment.setPlanetTabFragment(planetTabFragment);
             fragment = starTabFragment;
             bundle.putSerializable(MODEL, star);
-
         }
         else {
             bundle.putSerializable(MODEL, (Planet)star.Planets.toArray()[0]);
             fragment = planetTabFragment;
         }
-        bundle.putBoolean(EDITEBLE, editable);
+        bundle.putBoolean(EDITABLE, editable);
         fragment.setArguments(bundle);
         return fragment;
     }

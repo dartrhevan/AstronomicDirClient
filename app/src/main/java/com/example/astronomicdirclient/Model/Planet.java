@@ -22,7 +22,7 @@ public class Planet implements ISpaceObject, Serializable
 
     @Override
     public String toString() {
-        return "Planet{" +
+        return name + '(' + star +')';/*"Planet{" +
                 "photo=" + Arrays.toString(photo) +
                 ", name='" + name + '\'' +
                 ", middleDistance=" + middleDistance +
@@ -33,7 +33,7 @@ public class Planet implements ISpaceObject, Serializable
                 ", hasAtmosphere=" + hasAtmosphere +
                 ", type=" + type +
                 ", Moons=" + Moons +
-                '}';
+                '}';*/
     }
 
     public Planet(byte[] photo, String name, Distance middleDistance, int radius, int temperature, Date inventingDate, String star, boolean hasAtmosphere, PlanetType type, HashSet<Moon> moons, String galaxy) {
