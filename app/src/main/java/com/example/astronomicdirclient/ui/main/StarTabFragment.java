@@ -35,14 +35,6 @@ public class StarTabFragment extends Fragment implements Serializable {
     public StarTabFragment(){}
     private PlanetTabFragment planetTabFragment;
 
-    public PlanetTabFragment getPlanetTabFragment() {
-        return planetTabFragment;
-    }
-
-    public void setPlanetTabFragment(PlanetTabFragment planetTabFragment) {
-        this.planetTabFragment = planetTabFragment;
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -56,6 +48,7 @@ public class StarTabFragment extends Fragment implements Serializable {
             Bundle savedInstanceState) {
         Bundle args = getArguments();
         star = (Star)args.getSerializable(SectionsPagerAdapter.MODEL);
+        planetTabFragment =(PlanetTabFragment)args.getSerializable(SectionsPagerAdapter.FRAGMENT);
         editeble = args.getBoolean(SectionsPagerAdapter.EDITABLE);
         View root = inflater.inflate(R.layout.fragment_star, container, false);
         if(star != null) initializeView(root);

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.astronomicdirclient.Model.Distance;
+import com.example.astronomicdirclient.Model.Moon;
 import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.Star;
 import com.example.astronomicdirclient.Model.UnitType;
@@ -41,7 +42,9 @@ public class StarFragment extends Fragment {
         super.onCreate(savedInstanceState);
         final View v = inflater.inflate(R.layout.activity_star, container, false);
         HashSet<Planet> planets = new HashSet<>();
-        planets.add(new Planet("Earth", "Sun", "Milky Way"));
+        Planet earth = new Planet("Earth", "Sun", "Milky Way");
+        earth.Moons.add(new Moon("Moon", earth));
+        planets.add(earth);
         planets.add(new Planet("Mars", "Sun", "Milky Way"));
         final Star star = new Star("Milky way", null, "Sun", new Distance(1, UnitType.AstronomicUnits), 500000, 5000, new Date(2015, 7, 3), planets);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(ct, ((AppCompatActivity)ct).getSupportFragmentManager(),
