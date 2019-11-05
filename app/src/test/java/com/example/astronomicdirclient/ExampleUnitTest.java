@@ -11,6 +11,7 @@ import com.example.astronomicdirclient.Model.UnitType;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -80,6 +81,16 @@ public class ExampleUnitTest {
 
     static class Example {
         public Date dt = new Date();
+    }
+
+    @Test
+    public void simpleDownloadAndParseTest() throws IOException {
+        String xml = Downloader.DownloadStar(1);
+        Star st = XMLHelper.DeserializeStar(xml);
+        assertNotEquals(null, st);
+        assertNotEquals(new Star(), st);
+        assertEquals("sdsdffdss", st.getName());
+        assertEquals("wqwwq", st.getGalaxy());
     }
 
     @Test
