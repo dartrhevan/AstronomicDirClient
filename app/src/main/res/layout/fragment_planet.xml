@@ -105,12 +105,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Inventing date:"/>
+
         <Button
+            android:id="@+id/ch_pl_date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Choose"
+            android:background="@drawable/inset"
             android:onClick="choosePlanetDate"
-            android:id="@+id/ch_pl_date"/>
+            android:text="Choose" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"

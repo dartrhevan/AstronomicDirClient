@@ -49,7 +49,7 @@ public class StarFragment extends Fragment {
         final Star defStar = new Star("Milky way", null, "Sun", new Distance(1, UnitType.AstronomicUnits), 500000, 5000, new DateTime(2015, 7, 3, 0, 0), planets);
         Star star = getArguments()!= null ? (Star) getArguments().getSerializable(MainActivity.STAR) : defStar;
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(ct, ((AppCompatActivity)ct).getSupportFragmentManager(),
-                star, true);
+                star, star == defStar || star == null);
 
         ViewPager viewPager = v.findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);

@@ -69,7 +69,8 @@ public class PlanetTabFragment extends Fragment {
         planet = (Planet)args.getSerializable(SectionsPagerAdapter.MODEL);
         editable = args.getBoolean(SectionsPagerAdapter.EDITABLE);
         //starTabFragment = (StarTabFragment)args.getSerializable(SectionsPagerAdapter.FRAGMENT);
-        if(planet != null) initializeView(root);
+        if(planet == null) planet = new Planet();
+        initializeView(root);
         return root;
     }
 

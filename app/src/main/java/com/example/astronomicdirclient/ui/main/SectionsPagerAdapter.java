@@ -44,7 +44,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serial
             starTabFragment.setPlanetTabFragment(planetTabFragment);
             fragment = starTabFragment;
             bundle.putSerializable(MODEL, star);
-            //bundle.putSerializable(FRAGMENT, planetTabFragment);
         }
         else {
             if(star.getPlanets().size() > 0)
@@ -53,7 +52,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serial
                 bundle.putSerializable(MODEL, null);
             fragment = planetTabFragment;
             planetTabFragment.setStarTabFragment(starTabFragment);
-            //bundle.putSerializable(FRAGMENT, starTabFragment);
         }
         bundle.putBoolean(EDITABLE, editable);
         fragment.setArguments(bundle);

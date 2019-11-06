@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.astronomicdirclient.Model.Star;
 import com.example.astronomicdirclient.Model.StarLite;
 
 import java.io.IOException;
@@ -48,20 +49,11 @@ public class MainActivity extends AppCompatActivity
         initMap();
         setContentView(R.layout.activity_main);
         View viewById = findViewById(R.id.list_page);
-        list = (ListView) viewById.findViewById(R.id.star_list);
+        list = viewById.findViewById(R.id.star_list);
         list.setOnItemClickListener((a, v, i, l) ->{});
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
-        /*fab.setOnClickListener(view ->{
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new StarFragment())
-                    .commit();
-
-            ViewPager viewPager = findViewById(R.id.view_pager);
-            TabLayout tabs = findViewById(R.id.tabs);
-
-        });*/
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -125,7 +117,6 @@ public class MainActivity extends AppCompatActivity
             Date date = new Date(dp.getYear(), dp.getMonth(), dp.getDayOfMonth());
             df.setText(date.toString());
         });
-        //tpd.getDatePicker().
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -140,7 +131,6 @@ public class MainActivity extends AppCompatActivity
             Date date = new Date(dp.getYear(), dp.getMonth(), dp.getDayOfMonth());
             df.setText(date.toString());
         });
-        //tpd.getDatePicker().
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
