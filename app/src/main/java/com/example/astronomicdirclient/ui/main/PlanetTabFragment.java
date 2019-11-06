@@ -30,7 +30,7 @@ import java.util.Date;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PlanetTabFragment extends Fragment implements Serializable {
+public class PlanetTabFragment extends Fragment {
 
     private View root;
 
@@ -68,7 +68,7 @@ public class PlanetTabFragment extends Fragment implements Serializable {
         Bundle args = getArguments();
         planet = (Planet)args.getSerializable(SectionsPagerAdapter.MODEL);
         editable = args.getBoolean(SectionsPagerAdapter.EDITABLE);
-        starTabFragment = (StarTabFragment)args.getSerializable(SectionsPagerAdapter.FRAGMENT);
+        //starTabFragment = (StarTabFragment)args.getSerializable(SectionsPagerAdapter.FRAGMENT);
         if(planet != null) initializeView(root);
         return root;
     }
@@ -102,7 +102,7 @@ public class PlanetTabFragment extends Fragment implements Serializable {
 
     private void initMoonsList(View root) {
         ArrayList<Moon> planetList = new ArrayList<>(planet.getMoons());
-        adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
+        ArrayAdapter<Moon> adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.moons);
         list.setAdapter(adapter);
         list.setOnItemClickListener((parent, view, position, id) -> {
@@ -126,7 +126,7 @@ public class PlanetTabFragment extends Fragment implements Serializable {
         sp.setEnabled(editable);
     }
 
-    private ArrayAdapter<Moon> adapter;
+    //private ArrayAdapter<Moon> adapter;
     private void initField(View root, @IdRes int id, String value) {
         EditText field = root.findViewById(id);
         if(value != null)
@@ -135,4 +135,11 @@ public class PlanetTabFragment extends Fragment implements Serializable {
     }
 
 
+    public StarTabFragment getStarTabFragment() {
+        return starTabFragment;
+    }
+
+    public void setStarTabFragment(StarTabFragment starTabFragment) {
+        this.starTabFragment = starTabFragment;
+    }
 }

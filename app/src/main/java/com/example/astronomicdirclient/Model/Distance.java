@@ -5,12 +5,13 @@ import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 
 @Root(name = "Distance")
 @Default(DefaultType.FIELD)
-public class Distance {
+public class Distance implements Serializable {
     public Distance() {
     }
 

@@ -5,6 +5,7 @@ import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -14,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Root(name = "StarLite")
 @Default(DefaultType.FIELD)
 @XmlRootElement(name = "StarLite")
-public class StarLite {
+public class StarLite implements Serializable {
     @Element(name = "Id")
     @XmlElement(name = "Id")
     private int id;

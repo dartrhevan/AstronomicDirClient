@@ -22,9 +22,7 @@ import com.example.astronomicdirclient.ui.main.SectionsPagerAdapter;
 
 import org.joda.time.DateTime;
 
-import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,13 +40,14 @@ public class StarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState);
-        final View v = inflater.inflate(R.layout.activity_star, container, false);
+        final View v = inflater.inflate(R.layout.content_star, container, false);
         HashSet<Planet> planets = new HashSet<>();
         Planet earth = new Planet("Earth", "Sun", "Milky Way");
         earth.getMoons().add(new Moon("Moon", earth));
         planets.add(earth);
         planets.add(new Planet("Mars", "Sun", "Milky Way"));
-        final Star star = new Star("Milky way", null, "Sun", new Distance(1, UnitType.AstronomicUnits), 500000, 5000, new DateTime(2015, 7, 3, 0, 0), planets);
+        final Star defStar = new Star("Milky way", null, "Sun", new Distance(1, UnitType.AstronomicUnits), 500000, 5000, new DateTime(2015, 7, 3, 0, 0), planets);
+        Star star = getArguments()!= null ? (Star) getArguments().getSerializable(MainActivity.STAR) : defStar;
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(ct, ((AppCompatActivity)ct).getSupportFragmentManager(),
                 star, true);
 

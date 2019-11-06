@@ -1,12 +1,12 @@
 package com.example.astronomicdirclient;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.astronomicdirclient.Model.StarLite;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,12 +35,14 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    public static final String STAR_LITE = "STAR_LITE";
+    public static final String STAR = "STAR";
     private ListView list;
     private AppCompatActivity activity = this;
     private ArrayAdapter<com.example.astronomicdirclient.Model.StarLite> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Download d = new Download();
+        DownloadAsync d = new DownloadAsync();
         d.execute();
         super.onCreate(savedInstanceState);
         initMap();
@@ -50,9 +53,15 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view ->
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show());
+        /*fab.setOnClickListener(view ->{
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new StarFragment())
+                    .commit();
+
+            ViewPager viewPager = findViewById(R.id.view_pager);
+            TabLayout tabs = findViewById(R.id.tabs);
+
+        });*/
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -61,6 +70,11 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         currentPage = findViewById(R.id.main_page);
+        list.setOnItemClickListener((parent, view, position, id) -> {
+            Intent it= new Intent(activity, StarActivity.class);
+            it.putExtra(STAR_LITE, adapter.getItem(position));
+            startActivity(it);
+        });
     }
 
     private void initMap() {
@@ -69,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         itemToPage.put(R.id.add, R.id.fragment);
     }
 
-    private class Download extends AsyncTask<Void, Void, List<StarLite>> {
+    private class DownloadAsync extends AsyncTask<Void, Void, List<StarLite>> {
         @Override
         protected List<StarLite> doInBackground(Void... voids) {
             try {
@@ -82,6 +96,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(List<StarLite> stars) {
+            stars.add(new StarLite(1, "No stars", ""));
             adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1,
                     stars);
             list.setAdapter(adapter);

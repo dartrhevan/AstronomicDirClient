@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.Star;
@@ -28,7 +29,7 @@ import java.util.Date;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class StarTabFragment extends Fragment implements Serializable {
+public class StarTabFragment extends Fragment {
 
     private Star star;
     private boolean editeble;
@@ -48,10 +49,11 @@ public class StarTabFragment extends Fragment implements Serializable {
             Bundle savedInstanceState) {
         Bundle args = getArguments();
         star = (Star)args.getSerializable(SectionsPagerAdapter.MODEL);
-        planetTabFragment =(PlanetTabFragment)args.getSerializable(SectionsPagerAdapter.FRAGMENT);
+        //planetTabFragment =(PlanetTabFragment)args.getSerializable(SectionsPagerAdapter.FRAGMENT);
         editeble = args.getBoolean(SectionsPagerAdapter.EDITABLE);
         View root = inflater.inflate(R.layout.fragment_star, container, false);
         if(star != null) initializeView(root);
+        Toast.makeText(ct, "StarTabFragment created", Toast.LENGTH_LONG);
         return root;
     }
 
@@ -76,7 +78,7 @@ public class StarTabFragment extends Fragment implements Serializable {
 
     private void initPlanetList(View root) {
         ArrayList<Planet> planetList = new ArrayList<>(star.getPlanets());
-        adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
+        ArrayAdapter<Planet> adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.planets);
         list.setAdapter(adapter);
         list.setOnItemClickListener((parent, view, position, id) -> {
@@ -103,11 +105,15 @@ public class StarTabFragment extends Fragment implements Serializable {
         sp.setEnabled(editeble);
     }
 
-    private ArrayAdapter<Planet> adapter;
+    //private ArrayAdapter<Planet> adapter;
     private void initField(View root, @IdRes int id, String value) {
         EditText field = root.findViewById(id);
         if(value != null)
             field.setText(value);
         field.setEnabled(editeble);
+    }
+
+    public void setPlanetTabFragment(PlanetTabFragment planetTabFragment) {
+        this.planetTabFragment = planetTabFragment;
     }
 }
