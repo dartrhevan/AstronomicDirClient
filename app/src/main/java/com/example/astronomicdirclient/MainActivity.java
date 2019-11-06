@@ -23,11 +23,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.astronomicdirclient.Model.Star;
 import com.example.astronomicdirclient.Model.StarLite;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -43,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     private ArrayAdapter<com.example.astronomicdirclient.Model.StarLite> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DownloadAsync d = new DownloadAsync();
+        DownloadStarListAsync d = new DownloadStarListAsync();
         d.execute();
         super.onCreate(savedInstanceState);
         initMap();
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity
         itemToPage.put(R.id.add, R.id.fragment);
     }
 
-    private class DownloadAsync extends AsyncTask<Void, Void, List<StarLite>> {
+    private class DownloadStarListAsync extends AsyncTask<Void, Void, List<StarLite>> {
         @Override
         protected List<StarLite> doInBackground(Void... voids) {
             try {
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(List<StarLite> stars) {
-            stars.add(new StarLite(1, "No stars", ""));
+            //stars.add(new StarLite(1, "No stars", ""));
             adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1,
                     stars);
             list.setAdapter(adapter);

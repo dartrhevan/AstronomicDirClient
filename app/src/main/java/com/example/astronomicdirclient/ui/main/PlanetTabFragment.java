@@ -112,7 +112,7 @@ public class PlanetTabFragment extends Fragment {
 
     private void initSpinner(View root) {
         Spinner sp = root.findViewById(R.id.spinner);
-        if(planet.getMiddleDistance() != null)//TODO:To make else with default value assigning
+        if(planet.getMiddleDistance() != null && planet.getMiddleDistance().getUnit() != null)//TODO:To make else with default value assigning
         switch (planet.getMiddleDistance().getUnit()){
             case Kilometers:
                 sp.setSelection(0);

@@ -90,7 +90,7 @@ public class StarTabFragment extends Fragment {
 
     private void initSpinner(View root) {
         Spinner sp = root.findViewById(R.id.spinner);
-        if(star.getMiddleDistance() != null)//TODO:To make else with default value assigning
+        if(star.getMiddleDistance() != null && star.getMiddleDistance().getUnit() != null)//TODO:To make else with default value assigning
         switch (star.getMiddleDistance().getUnit()){
             case Kilometers:
                 sp.setSelection(0);
