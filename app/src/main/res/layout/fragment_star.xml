@@ -1,16 +1,20 @@
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.astronomicdirclient.ui.main.StarTabFragment"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"  >
-<LinearLayout
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="300dp" >
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:id="@+id/constraintLayout"
+            android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -130,12 +134,20 @@
 
 
     </LinearLayout>
-
+        </LinearLayout>
+</ScrollView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:text="Planets"/>
     <ListView
         android:id="@+id/planets"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="match_parent">
 
     </ListView>
 </LinearLayout>
-</ScrollView>
