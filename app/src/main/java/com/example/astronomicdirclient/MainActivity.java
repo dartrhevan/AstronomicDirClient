@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.astronomicdirclient.Model.StarLite;
+import com.example.astronomicdirclient.XMLService.XMLHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;

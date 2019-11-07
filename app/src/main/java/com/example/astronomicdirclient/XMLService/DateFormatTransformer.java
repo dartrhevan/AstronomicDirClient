@@ -1,4 +1,4 @@
-package com.example.astronomicdirclient.Model;
+package com.example.astronomicdirclient.XMLService;
 
 import org.joda.time.DateTime;
 import org.simpleframework.xml.transform.Transform;

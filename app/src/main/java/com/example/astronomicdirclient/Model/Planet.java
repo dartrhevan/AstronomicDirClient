@@ -12,12 +12,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @Root(name = "Planet")
 @Default(DefaultType.FIELD)
-@XmlRootElement
 public class Planet implements ISpaceObject, Serializable
 {
 
@@ -66,33 +63,24 @@ public class Planet implements ISpaceObject, Serializable
     }
 
     @Element(name = "Name")
-    @XmlElement(name = "Name")
     protected String name;
     @Element(name = "MiddleDistance", required=false)
-    @XmlElement(name = "MiddleDistance")
     protected Distance middleDistance;
     @Element(name = "Radius")
-    @XmlElement(name = "Radius")
     protected int radius;
     @Element(name = "Temperature")
-    @XmlElement(name = "Temperature")
     protected int temperature;
     @Element(name = "InventingDate", required=false)
-    @XmlElement(name = "InventingDate")
     protected DateTime inventingDate; //= DateTime.Now;
 
     @Element(name = "Photo", required=false)
-    @XmlElement(name = "Photo", required=false)
     protected byte[] photo;
     @Element(name = "Star", required = false)
-    @XmlElement(name = "Star")
     protected String star;
     @Element(name = "HasAtmosphere")
-    @XmlElement(name = "HasAtmosphere")
     protected boolean hasAtmosphere;
 
     @Element(name = "Type")
-    @XmlElement(name = "Type")
     protected PlanetType type;
     private HashSet<Moon> Moons;//= new HashSet<>();
 
@@ -176,8 +164,7 @@ public class Planet implements ISpaceObject, Serializable
         this.star = star;
         this.galaxy = galaxy;
     }
-    @Element(name = "Galaxy")
-    @XmlElement(name = "Galaxy")
+    @Element(name = "Galaxy", required = false)
     protected String galaxy;
 
     public HashSet<Moon> getMoons() {

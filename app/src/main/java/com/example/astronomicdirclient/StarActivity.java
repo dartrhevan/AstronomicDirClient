@@ -7,29 +7,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 
-import com.example.astronomicdirclient.Model.Distance;
 import com.example.astronomicdirclient.Model.Star;
 import com.example.astronomicdirclient.Model.StarLite;
-import com.example.astronomicdirclient.Model.UnitType;
-import com.example.astronomicdirclient.ui.main.SectionsPagerAdapter;
-
-import org.joda.time.DateTime;
+import com.example.astronomicdirclient.XMLService.XMLHelper;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 

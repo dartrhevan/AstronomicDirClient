@@ -13,12 +13,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @Root(name = "Star")
 @Default(DefaultType.FIELD)
-@XmlRootElement
 public class Star implements ISpaceObject, Serializable {
     @Override
     public boolean equals(Object o) {
@@ -146,26 +143,19 @@ public class Star implements ISpaceObject, Serializable {
 
     public Star(){Planets= new HashSet<>();}
     @Element(name = "Galaxy")
-    @XmlElement(name = "Galaxy")
     private String galaxy;
 
     @Element(name = "Photo", required = false)
-    @XmlElement(name = "Photo")
     private byte[] photo;
     @Element(name = "Name")
-    @XmlElement(name = "Name")
     private String name;
     @Element(name = "MiddleDistance",required=false)
-    @XmlElement(name = "MiddleDistance")
     private Distance middleDistance;
     @Element(name = "Radius")
-    @XmlElement(name = "Radius")
     private int radius;
     @Element(name = "Temperature")
-    @XmlElement(name = "Temperature")
     private int temperature;
     @Element(name = "InventingDate")
-    @XmlElement(name = "InventingDate")
     private DateTime inventingDate; //= DateTime.Now;
 
     public HashSet<Planet> getPlanets() {

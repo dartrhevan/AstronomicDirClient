@@ -7,15 +7,28 @@ import com.example.astronomicdirclient.Model.PlanetType;
 import com.example.astronomicdirclient.Model.Star;
 import com.example.astronomicdirclient.Model.StarLite;
 import com.example.astronomicdirclient.Model.UnitType;
+import com.example.astronomicdirclient.XMLService.XMLHelper;
 
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.StringDecoder;
+import org.apache.commons.codec.binary.Hex;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+
+import javax.xml.bind.DatatypeConverter;
 
 import static org.junit.Assert.*;
 
@@ -81,6 +94,41 @@ public class ExampleUnitTest {
 
     static class Example {
         public Date dt = new Date();
+    }
+
+    @Test
+    public void serializeBytesTest() {
+        String source = "4A4A4A";
+        byte[] b = DatatypeConverter.parseHexBinary(source);
+        String s = DatatypeConverter.printHexBinary(b);
+        assertEquals(source, s);
+    }
+
+    @Test
+    public void serializeBytes2Test() throws DecoderException {
+        String s = "4A4A4A";
+        byte[] b = Hex.decodeHex(s.toCharArray());
+        String st = String.valueOf(Hex.encodeHex(b)).toUpperCase();
+        assertEquals(s, st);
+    }
+
+    @Test
+    public void serializeRealBytesTest() throws UnsupportedEncodingException {
+        String source = "/9j/4AAQSkZJRgABAQEAAAAAAAD";
+        byte[] b = source.getBytes("UTF8");
+
+        String act = new String(b);
+        assertEquals(source, act);
+    }
+
+    @Test
+    public void serializeRealBytes2Test() throws UnsupportedEncodingException {
+        String source = "/9j/4AAQSkZJRgABAQEAAAAAAAD";
+        Base64.Encoder enc = Base64.getEncoder();
+        byte[] b =  enc.encode(source.getBytes());
+        Base64.Decoder dec = Base64.getDecoder();
+        String act = new String(dec.decode(b));
+        assertEquals(source, act);
     }
 
     @Test

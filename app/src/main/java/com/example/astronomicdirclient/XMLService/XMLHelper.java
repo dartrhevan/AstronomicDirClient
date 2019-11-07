@@ -1,35 +1,27 @@
-package com.example.astronomicdirclient;
+package com.example.astronomicdirclient.XMLService;
 
-import com.example.astronomicdirclient.Model.DateFormatTransformer;
 import com.example.astronomicdirclient.Model.Star;
 import com.example.astronomicdirclient.Model.StarLite;
 
 import org.joda.time.DateTime;
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.DefaultType;
-import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.transform.RegistryMatcher;
 
-import java.io.StringReader;
 import java.io.StringWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public final class XMLHelper {
-
-    //public static final String DATE_FORMAT = "YYYY-MM-dd'T'kk:mm:ss.SSSSSSSXXX";//"EE MMM dd HH:mm:ss z YYYY";2019-11-04T15:47:55.4669753+05:00
 
     public static Star DeserializeStar(String star) {
         RegistryMatcher m = new RegistryMatcher();
         m.bind(DateTime.class, new DateFormatTransformer());
+        m.bind(byte[].class, new BytesFormatTransformer());
         Serializer serializer = new Persister(m);
         try {
             Star star1 = serializer.read(Star.class, star);
@@ -56,6 +48,7 @@ public final class XMLHelper {
     {
         RegistryMatcher m = new RegistryMatcher();
         m.bind(DateTime.class, new DateFormatTransformer());
+        m.bind(byte[].class, new BytesFormatTransformer());
         Serializer serializer = new Persister(m);
         StringWriter sw = new StringWriter();
         try {
@@ -84,7 +77,6 @@ public final class XMLHelper {
         public List<StarLite> getStarLite() {
             return StarLite;
         }
-
         public void setStarLite(List<StarLite> starList) {
             this.StarLite = starList;
         }

@@ -3,6 +3,7 @@ package com.example.astronomicdirclient.ui.main;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -23,6 +24,8 @@ import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.PlanetType;
 import com.example.astronomicdirclient.R;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,7 +95,9 @@ public class PlanetTabFragment extends Fragment {
         byte[] ph = planet.getPhoto();
         if(ph == null) ph = new byte[0];
         ImageView img = root.findViewById(R.id.photo);
-        img.setImageBitmap(BitmapFactory.decodeByteArray(ph, 0, ph.length));
+        Bitmap bm = BitmapFactory.decodeByteArray(ph, 0, ph.length);
+
+        img.setImageBitmap(bm);
         CheckBox acb = root.findViewById(R.id.has_atm);
         acb.setChecked(planet.isHasAtmosphere());
         CheckBox tcb = root.findViewById(R.id.has_surface);
