@@ -1,27 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.main.MoonFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent" android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.astronomicdirclient.ui.main.PlanetTabFragment">
-    <FrameLayout
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/lay"/>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="300dp">
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent" android:orientation="vertical">
+        android:orientation="horizontal">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="?attr/homeAsUpIndicator" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View planet"
+        android:text="View moon"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="22sp"
         android:textStyle="bold" />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -116,16 +126,16 @@
             android:text="Inventing date:"/>
 
         <Button
-            android:id="@+id/ch_pl_date"
+            android:id="@+id/ch_mn_date"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/inset"
-            android:onClick="choosePlanetDate"
+            android:onClick="chooseMoonDate"
             android:text="Choose" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/date_pl_field"
+            android:id="@+id/date_mn_field"
             android:enabled="false"/>
     </LinearLayout>
 
@@ -136,12 +146,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Star"/>
+            android:text="Planet"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/star_field"/>
+            android:id="@+id/pl_field"/>
     </LinearLayout>
 
     <LinearLayout
@@ -158,34 +168,5 @@
             android:layout_height="match_parent"
             android:id="@+id/has_atm"/>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Has surface"/>
-
-        <CheckBox
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/has_surface"/>
-    </LinearLayout>
 </LinearLayout>
 </ScrollView>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:text="Moons"/>
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/moons"/>
-</LinearLayout>

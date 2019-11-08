@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +20,19 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.example.astronomicdirclient.MainActivity;
 import com.example.astronomicdirclient.Model.Moon;
 import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.PlanetType;
 import com.example.astronomicdirclient.R;
+import com.example.astronomicdirclient.StarFragment;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -112,6 +116,14 @@ public class PlanetTabFragment extends Fragment {
         ListView list = root.findViewById(R.id.moons);
         list.setAdapter(adapter);
         list.setOnItemClickListener((parent, view, position, id) -> {
+            AppCompatActivity a = (AppCompatActivity)ct;
+            MoonFragment fragment = new MoonFragment();
+            Bundle args = new Bundle();
+            args.putSerializable(SectionsPagerAdapter.MOON, planetList.get(position));
+            fragment.setArguments(args);
+            a.getSupportFragmentManager().beginTransaction()
+                    .add(R.id.lay, fragment)
+                    .commit();
         });
     }
 

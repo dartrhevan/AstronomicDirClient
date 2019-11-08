@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
@@ -106,8 +107,13 @@ public class MainActivity extends AppCompatActivity
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void chooseDate(View v) {
+        chooseDate(R.id.date_field);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void chooseDate(@IdRes int id) {
         Date d = new Date();
-        EditText df = findViewById(R.id.date_field);
+        EditText df = findViewById(id);
         DatePickerDialog tpd = new DatePickerDialog(this,(view, year, month, dayOfMonth) -> {
         }, d.getYear(), d.getMonth(), d.getDay());
         tpd.show();
@@ -120,17 +126,14 @@ public class MainActivity extends AppCompatActivity
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void choosePlanetDate(View v) {
-        Date d = new Date();
-        EditText df = findViewById(R.id.date_pl_field);
-        DatePickerDialog tpd = new DatePickerDialog(this,(view, year, month, dayOfMonth) -> {
-        }, d.getYear(), d.getMonth(), d.getDay());
-        tpd.show();
-        tpd.setOnDateSetListener((view, year, month, dayOfMonth) -> {
-            DatePicker dp = tpd.getDatePicker();
-            Date date = new Date(dp.getYear(), dp.getMonth(), dp.getDayOfMonth());
-            df.setText(date.toString());
-        });
+        chooseDate(R.id.date_pl_field);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void chooseMoonDate(View v) {
+        chooseDate(R.id.date_mn_field);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

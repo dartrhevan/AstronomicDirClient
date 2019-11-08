@@ -18,6 +18,7 @@ import java.io.Serializable;
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serializable {
 
+    public static final String MOON = "MOON";
     private final Context mContext;
     private final Star star;
     private final boolean editable;
