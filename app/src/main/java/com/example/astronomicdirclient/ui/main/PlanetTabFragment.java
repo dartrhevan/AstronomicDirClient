@@ -1,6 +1,7 @@
 package com.example.astronomicdirclient.ui.main;
 
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,6 +11,8 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,12 +124,26 @@ public class PlanetTabFragment extends Fragment {
             Bundle args = new Bundle();
             args.putSerializable(SectionsPagerAdapter.MOON, planetList.get(position));
             fragment.setArguments(args);
+            int w = getDisplayWidth(a);
+            View lay = a.findViewById(R.id.lay);
+            lay.setY(w);
             a.getSupportFragmentManager().beginTransaction()
                     .add(R.id.lay, fragment)
                     .commit();
+
+            ObjectAnimator animationY = ObjectAnimator.ofFloat(lay, "Y", lay.getY(), 0);
+            animationY.setDuration(425);
+            animationY.start();
         });
     }
-
+    private int getDisplayWidth(AppCompatActivity act) {
+        //DisplayMetrics displaymetrics = act.getResources().getDisplayMetrics();
+// узнаем размеры экрана из класса Display
+        Display display = act.getWindowManager().getDefaultDisplay();
+        DisplayMetrics metricsB = new DisplayMetrics();
+        display.getMetrics(metricsB);
+        return metricsB.widthPixels;//displaymetrics.widthPixels;
+    }
     private void initSpinner(View root) {
         Spinner sp = root.findViewById(R.id.spinner);
         if(planet.getMiddleDistance() != null && planet.getMiddleDistance().getUnit() != null)//TODO:To make else with default value assigning

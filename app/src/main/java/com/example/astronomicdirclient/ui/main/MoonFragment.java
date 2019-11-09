@@ -1,5 +1,7 @@
 package com.example.astronomicdirclient.ui.main;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,6 +11,8 @@ import android.support.annotation.IdRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +53,14 @@ public class MoonFragment extends Fragment {
     }
     private Context ct;
 
+    private int getDisplayWidth(AppCompatActivity act) {
+        /**DisplayMetrics displaymetrics = act.getResources().getDisplayMetrics();**/
+// узнаем размеры экрана из класса Display
+        Display display = act.getWindowManager().getDefaultDisplay();
+        DisplayMetrics metricsB = new DisplayMetrics();
+        display.getMetrics(metricsB);
+        return metricsB.widthPixels;//displaymetrics.widthPixels;
+    }
     private Moon moon;
     private boolean editable;
     @Override
@@ -60,10 +72,36 @@ public class MoonFragment extends Fragment {
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(view ->
         {
+            Fragment fr = this;
             AppCompatActivity a = (AppCompatActivity)ct;
-            a.getSupportFragmentManager().beginTransaction()
-                    .remove(this)
-                    .commit();
+            int w = getDisplayWidth(a);
+            View lay = a.findViewById(R.id.lay);
+            ObjectAnimator animationY = ObjectAnimator.ofFloat(lay, "Y", lay.getY(), w * 1.4f);
+            animationY.setDuration(425);
+            animationY.start();
+            animationY.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    a.getSupportFragmentManager().beginTransaction()
+                            .remove(fr)
+                            .commit();
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
         });
         Bundle args = getArguments();
         moon = (Moon) args.getSerializable(SectionsPagerAdapter.MOON);
