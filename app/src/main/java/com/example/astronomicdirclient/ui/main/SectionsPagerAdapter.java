@@ -49,11 +49,20 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serial
         if (position == 0) {
             starTabFragment.setPlanetTabFragment(planetTabFragment);
             fragment = starTabFragment;
-            bundle.putSerializable(MODEL, star);
+            try {
+                bundle.putSerializable(MODEL, (Serializable) star.clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
         }
         else {
-            if(star.getPlanets().size() > 0)
-                bundle.putSerializable(MODEL, (Planet)star.getPlanets().toArray()[0]);
+            if(star.getPlanets().size() > 0) {
+                try {
+                    bundle.putSerializable(MODEL, (Serializable) ((Planet)star.getPlanets().toArray()[0]).clone());
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            }
             else
                 bundle.putSerializable(MODEL, null);
             fragment = planetTabFragment;

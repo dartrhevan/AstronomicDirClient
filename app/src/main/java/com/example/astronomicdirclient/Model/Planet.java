@@ -15,8 +15,17 @@ import java.util.Objects;
 
 @Root(name = "Planet")
 @Default(DefaultType.FIELD)
-public class Planet implements ISpaceObject, Serializable
+public class Planet implements ISpaceObject, Serializable, Cloneable
 {
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Planet clone = (Planet)super.clone();
+        clone.inventingDate = new DateTime(inventingDate);
+        clone.middleDistance = (Distance) middleDistance.clone();
+        clone.Moons = (HashSet<Moon>) Moons.clone();
+        return clone;
+    }
 
     @Override
     public String toString() {
@@ -65,7 +74,7 @@ public class Planet implements ISpaceObject, Serializable
     @Element(name = "Name")
     protected String name;
     @Element(name = "MiddleDistance", required=false)
-    protected Distance middleDistance;
+    protected Distance middleDistance = new Distance();
     @Element(name = "Radius")
     protected int radius;
     @Element(name = "Temperature")

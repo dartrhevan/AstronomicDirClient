@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Root(name = "Distance")
 @Default(DefaultType.FIELD)
-public class Distance implements Serializable {
+public class Distance implements Serializable, Cloneable {
     public Distance() {
     }
 
@@ -19,6 +19,12 @@ public class Distance implements Serializable {
         this.value = value;
         this.unit = unit;
     }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
     @Element(name = "Value", required = false)
     private int value;
 

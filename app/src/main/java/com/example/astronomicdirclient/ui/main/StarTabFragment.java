@@ -111,7 +111,6 @@ public class StarTabFragment extends Fragment {
     }
     public void addPlanet()
     {
-
         adapter.add(planetTabFragment.initPlanet());
     }
     private View root;

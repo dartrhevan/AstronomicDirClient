@@ -16,7 +16,7 @@ import java.util.Objects;
 
 @Root(name = "Star")
 @Default(DefaultType.FIELD)
-public class Star implements ISpaceObject, Serializable {
+public class Star implements ISpaceObject, Serializable, Cloneable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -29,6 +29,16 @@ public class Star implements ISpaceObject, Serializable {
                 Objects.equals(name, star.name) &&
                 Objects.equals(middleDistance, star.middleDistance) &&
                 Objects.equals(inventingDate, star.inventingDate);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Star clone = (Star) super.clone();
+        clone.inventingDate = new DateTime(inventingDate);
+
+        clone.middleDistance = (Distance) middleDistance.clone();
+        clone.Planets = (HashSet<Planet>) Planets.clone();
+        return clone;
     }
 
     @Override
