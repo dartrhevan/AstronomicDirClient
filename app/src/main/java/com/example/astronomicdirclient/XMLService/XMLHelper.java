@@ -17,12 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class XMLHelper {
-
-    public static Star DeserializeStar(String star) {
-        RegistryMatcher m = new RegistryMatcher();
+    private static RegistryMatcher m = new RegistryMatcher();
+    static {
         m.bind(DateTime.class, new DateFormatTransformer());
         m.bind(byte[].class, new BytesFormatTransformer());
-        Serializer serializer = new Persister(m);
+    }
+    private static Serializer serializer = new Persister(m);
+    public static Star DeserializeStar(String star) {
         try {
             Star star1 = serializer.read(Star.class, star);
             return star1;
@@ -34,7 +35,6 @@ public final class XMLHelper {
 
     public static List<StarLite> DeserializeStarList(String xmlList)
     {
-        Serializer serializer = new Persister();
         try {
             StarList list = serializer.read(StarList.class, xmlList);
             return list.getStarLite();
@@ -46,10 +46,6 @@ public final class XMLHelper {
 
     public static String SerializeStar(Star star) ///throws JAXBException
     {
-        RegistryMatcher m = new RegistryMatcher();
-        m.bind(DateTime.class, new DateFormatTransformer());
-        m.bind(byte[].class, new BytesFormatTransformer());
-        Serializer serializer = new Persister(m);
         StringWriter sw = new StringWriter();
         try {
             serializer.write(star, sw);
@@ -61,7 +57,6 @@ public final class XMLHelper {
 
     public static String SerializeStarList(List<StarLite> list) ///throws JAXBException
     {
-        Serializer serializer = new Persister();
         StringWriter sw = new StringWriter();
         try {
             serializer.write(new StarList(list), sw);

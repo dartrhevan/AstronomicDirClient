@@ -10,17 +10,11 @@ import com.example.astronomicdirclient.Model.UnitType;
 import com.example.astronomicdirclient.XMLService.XMLHelper;
 
 import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.StringDecoder;
 import org.apache.commons.codec.binary.Hex;
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -133,7 +127,7 @@ public class ExampleUnitTest {
 
     @Test
     public void simpleDownloadAndParseTest() throws IOException {
-        String xml = Downloader.DownloadStar(1);
+        String xml = NetHelper.DownloadStar(1);
         Star st = XMLHelper.DeserializeStar(xml);
         assertNotEquals(null, st);
         assertNotEquals(new Star(), st);

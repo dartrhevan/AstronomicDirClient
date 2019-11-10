@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -129,10 +130,14 @@ public class MoonFragment extends Fragment {
         initSpinner(root);
         byte[] ph = moon.getPhoto();
         if(ph == null) ph = new byte[0];
-        ImageView img = root.findViewById(R.id.photo);
+        ImageButton img = root.findViewById(R.id.photo);
         Bitmap bm = BitmapFactory.decodeByteArray(ph, 0, ph.length);
-
         img.setImageBitmap(bm);
+        img.setOnClickListener(v -> {
+            OpenFileDialog fileDialog = new OpenFileDialog(ct);
+            fileDialog.setOpenDialogListener(s -> img.setImageBitmap(BitmapFactory.decodeFile(s)));
+            fileDialog.show();
+        });
         CheckBox acb = root.findViewById(R.id.has_atm);
         acb.setChecked(moon.isHasAtmosphere());
         acb.setEnabled(editable);

@@ -61,7 +61,7 @@ public class StarActivity extends AppCompatActivity {
         @Override
         protected Star doInBackground(Integer... id) {
             try {
-                String xmlLine = Downloader.DownloadStar(id[0]);
+                String xmlLine = NetHelper.DownloadStar(id[0]);
                 return XMLHelper.DeserializeStar(xmlLine);
             } catch (IOException e) {
                 return null;

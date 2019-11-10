@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected List<StarLite> doInBackground(Void... voids) {
             try {
-                String xmlLine = Downloader.DownloadStarList();
+                String xmlLine = NetHelper.DownloadStarList();
                 return XMLHelper.DeserializeStarList(xmlLine);
             } catch (IOException e) {
                 return new ArrayList<>();

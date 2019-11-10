@@ -58,8 +58,14 @@ public class StarFragment extends Fragment {
 
         FloatingActionButton fab = v.findViewById(R.id.fab);
 
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
+        fab.setOnClickListener(view -> {
+            if(viewPager.getCurrentItem() == 0){
+
+            }
+            else {
+
+            }
+        });
         return v;
     }
 

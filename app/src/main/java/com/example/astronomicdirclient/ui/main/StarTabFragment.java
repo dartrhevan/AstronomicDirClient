@@ -1,10 +1,12 @@
 package com.example.astronomicdirclient.ui.main;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -22,7 +25,8 @@ import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.Star;
 import com.example.astronomicdirclient.R;
 
-import java.io.Serializable;
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -30,6 +34,7 @@ import java.util.Date;
  * A placeholder fragment containing a simple view.
  */
 public class StarTabFragment extends Fragment {
+
 
     private Star star;
     private boolean editeble;
@@ -49,14 +54,27 @@ public class StarTabFragment extends Fragment {
             Bundle savedInstanceState) {
         Bundle args = getArguments();
         star = (Star)args.getSerializable(SectionsPagerAdapter.MODEL);
-        //planetTabFragment =(PlanetTabFragment)args.getSerializable(SectionsPagerAdapter.FRAGMENT);
         editeble = args.getBoolean(SectionsPagerAdapter.EDITABLE);
         View root = inflater.inflate(R.layout.fragment_star, container, false);
+        this.root = root;
         if(star != null) initializeView(root);
         Toast.makeText(ct, "StarTabFragment created", Toast.LENGTH_LONG);
         return root;
     }
 
+
+    public Star initStar() {
+        star.setName(((EditText)root.findViewById(R.id.name_field)).getText().toString());
+        star.setGalaxy(((EditText)root.findViewById(R.id.gal_field)).getText().toString());
+        star.setRadius(Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString()));
+        star.setTemperature(Integer.parseInt(((EditText)root.findViewById(R.id.temp_field)).getText().toString()));
+        star.setInventingDate(DateTime.parse(((EditText)root.findViewById(R.id.date_field)).getText().toString()));
+        ImageButton img = root.findViewById(R.id.photo);
+        /*img.getBackground()
+        star.setPhoto();*/
+        return star;
+    }
+    private View root;
     private void initializeView(View root) {
         initPlanetList(root);
         initField(root, R.id.name_field, star.getName());
@@ -72,7 +90,12 @@ public class StarTabFragment extends Fragment {
         initSpinner(root);
         byte[] ph = star.getPhoto();
         if(ph == null) ph = new byte[0];
-        ImageView img = root.findViewById(R.id.photo);
+        ImageButton img = root.findViewById(R.id.photo);
+        img.setOnClickListener(v -> {
+            OpenFileDialog fileDialog = new OpenFileDialog(ct);
+            fileDialog.setOpenDialogListener(s -> img.setImageBitmap(BitmapFactory.decodeFile(s)));
+            fileDialog.show();
+        });
         img.setImageBitmap(BitmapFactory.decodeByteArray(ph, 0, ph.length));
     }
 
@@ -112,6 +135,7 @@ public class StarTabFragment extends Fragment {
             field.setText(value);
         field.setEnabled(editeble);
     }
+
 
     public void setPlanetTabFragment(PlanetTabFragment planetTabFragment) {
         this.planetTabFragment = planetTabFragment;

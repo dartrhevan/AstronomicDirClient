@@ -24,7 +24,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serial
     private final boolean editable;
     public static final String MODEL = "MODEL";
     public static final String EDITABLE = "EDITABLE";
-    public static final String FRAGMENT = "FRAGMENT";
+    //public static final String FRAGMENT = "FRAGMENT";
+
+    public StarTabFragment getStarTabFragment() {
+        return starTabFragment;
+    }
+
     private StarTabFragment starTabFragment = new StarTabFragment();
     private PlanetTabFragment planetTabFragment = new PlanetTabFragment();
 
