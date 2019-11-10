@@ -109,8 +109,7 @@ public class StarTabFragment extends Fragment {
     {
         adapter.add(pl);
     }
-    public void addPlanet()
-    {
+    public void addPlanet() throws CloneNotSupportedException {
         adapter.add(planetTabFragment.initPlanet());
     }
     private View root;

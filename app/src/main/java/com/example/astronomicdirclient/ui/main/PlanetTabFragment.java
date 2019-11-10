@@ -66,9 +66,8 @@ public class PlanetTabFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public Planet initPlanet()
-    {
-
+    public Planet initPlanet() throws CloneNotSupportedException {
+        Planet planet = (Planet) this.planet.clone();
         planet.setType(((CheckBox)root.findViewById(R.id.has_surface)).isChecked() ? PlanetType.Tought : PlanetType.Gas);
         planet.setHasAtmosphere(((CheckBox)root.findViewById(R.id.has_atm)).isChecked());
         planet.setName(((EditText)root.findViewById(R.id.name_field)).getText().toString());
@@ -84,12 +83,12 @@ public class PlanetTabFragment extends Fragment {
             byte[] byteArray = byteArrayOutputStream.toByteArray();
             planet.setPhoto(byteArray);
         }
-        initDist();
+        initDist(planet);
         planet.setStar(starTabFragment.getName());
         return planet;
     }
 
-    private void initDist() {
+    private void initDist(Planet planet) {
         Spinner sp = root.findViewById(R.id.spinner);
         UnitType t = UnitType.Kilometers;
         switch (sp.getSelectedItemPosition()){

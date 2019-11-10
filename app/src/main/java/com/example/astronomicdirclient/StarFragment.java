@@ -62,17 +62,18 @@ public class StarFragment extends Fragment {
 
         fab.setOnClickListener(view -> {
             StarTabFragment starTabFragment = sectionsPagerAdapter.getStarTabFragment();
+            try {
             if(viewPager.getCurrentItem() == 0){
                 Star st = starTabFragment.initStar();
-                try {
                     NetHelper.UploadStar(st);
-                } catch (IOException e) {
-                    Snackbar.make(v, e.getMessage(), Snackbar.LENGTH_SHORT);
-                }
+
             }
             else {
                 starTabFragment.addPlanet();
                 viewPager.setCurrentItem(0);
+            }
+            } catch (Exception e) {
+                Snackbar.make(v, e.getMessage(), Snackbar.LENGTH_SHORT);
             }
         });
         return v;
