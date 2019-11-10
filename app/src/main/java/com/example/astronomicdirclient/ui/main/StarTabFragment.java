@@ -3,7 +3,9 @@ package com.example.astronomicdirclient.ui.main;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.Snackbar;
@@ -21,12 +23,15 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.astronomicdirclient.Model.Distance;
 import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.Star;
+import com.example.astronomicdirclient.Model.UnitType;
 import com.example.astronomicdirclient.R;
 
 import org.joda.time.DateTime;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -38,6 +43,8 @@ public class StarTabFragment extends Fragment {
 
     private Star star;
     private boolean editeble;
+    private ArrayAdapter<Planet> adapter;
+
     public StarTabFragment(){}
     private PlanetTabFragment planetTabFragment;
 
@@ -64,15 +71,48 @@ public class StarTabFragment extends Fragment {
 
 
     public Star initStar() {
-        star.setName(((EditText)root.findViewById(R.id.name_field)).getText().toString());
+        star.setName(getName());
         star.setGalaxy(((EditText)root.findViewById(R.id.gal_field)).getText().toString());
         star.setRadius(Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString()));
         star.setTemperature(Integer.parseInt(((EditText)root.findViewById(R.id.temp_field)).getText().toString()));
         star.setInventingDate(DateTime.parse(((EditText)root.findViewById(R.id.date_field)).getText().toString()));
         ImageButton img = root.findViewById(R.id.photo);
-        /*img.getBackground()
-        star.setPhoto();*/
+        Bitmap bitmap = ((BitmapDrawable)img.getDrawable()).getBitmap();
+        if(bitmap != null) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            star.setPhoto(byteArray);
+        }
+        initDist();
         return star;
+    }
+
+    private void initDist() {
+        Spinner sp = root.findViewById(R.id.spinner);
+        UnitType t = UnitType.Kilometers;
+        switch (sp.getSelectedItemPosition()){
+            case 0:
+                t = UnitType.Kilometers;
+                break;
+            case 2:
+                t = UnitType.LightYears;
+                break;
+            case 1:
+                t = UnitType.AstronomicUnits;
+                break;
+        }
+        int value = Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString());
+        star.setMiddleDistance(new Distance(value, t));
+    }
+    public void addPlanet(Planet pl)
+    {
+        adapter.add(pl);
+    }
+    public void addPlanet()
+    {
+
+        adapter.add(planetTabFragment.initPlanet());
     }
     private View root;
     private void initializeView(View root) {
@@ -101,7 +141,7 @@ public class StarTabFragment extends Fragment {
 
     private void initPlanetList(View root) {
         ArrayList<Planet> planetList = new ArrayList<>(star.getPlanets());
-        ArrayAdapter<Planet> adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
+        adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.planets);
         list.setAdapter(adapter);
         list.setOnItemClickListener((parent, view, position, id) -> {
@@ -139,5 +179,9 @@ public class StarTabFragment extends Fragment {
 
     public void setPlanetTabFragment(PlanetTabFragment planetTabFragment) {
         this.planetTabFragment = planetTabFragment;
+    }
+
+    public String getName() {
+        return ((EditText)root.findViewById(R.id.name_field)).getText().toString();
     }
 }

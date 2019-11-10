@@ -27,6 +27,8 @@ import android.widget.Toast;
 import com.example.astronomicdirclient.Model.StarLite;
 import com.example.astronomicdirclient.XMLService.XMLHelper;
 
+import org.joda.time.DateTime;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         tpd.show();
         tpd.setOnDateSetListener((view, year, month, dayOfMonth) -> {
             DatePicker dp = tpd.getDatePicker();
-            Date date = new Date(dp.getYear(), dp.getMonth(), dp.getDayOfMonth());
+            DateTime date = new DateTime(dp.getYear(), dp.getMonth() + 1, dp.getDayOfMonth(), 0,0);
             df.setText(date.toString());
         });
     }

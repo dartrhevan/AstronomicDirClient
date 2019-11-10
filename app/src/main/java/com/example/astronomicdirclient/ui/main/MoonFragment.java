@@ -29,6 +29,8 @@ import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.PlanetType;
 import com.example.astronomicdirclient.R;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -124,7 +126,7 @@ public class MoonFragment extends Fragment {
         initField(root, R.id.dist_field, Integer.toString(moon.getMiddleDistance() != null ?
                 moon.getMiddleDistance().getValue() : 0));
         initField(root, R.id.date_mn_field, (moon.getInventingDate()!= null ?
-                moon.getInventingDate() : new Date()).toString());
+                moon.getInventingDate() : new DateTime()).toString());
         View but = root.findViewById(R.id.ch_mn_date);
         but.setEnabled(editable);
         initSpinner(root);

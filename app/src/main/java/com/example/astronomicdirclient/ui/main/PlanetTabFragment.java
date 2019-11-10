@@ -2,14 +2,13 @@ package com.example.astronomicdirclient.ui.main;
 
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -20,23 +19,21 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.example.astronomicdirclient.MainActivity;
+import com.example.astronomicdirclient.Model.Distance;
 import com.example.astronomicdirclient.Model.Moon;
 import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.PlanetType;
+import com.example.astronomicdirclient.Model.UnitType;
 import com.example.astronomicdirclient.R;
-import com.example.astronomicdirclient.StarFragment;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.Serializable;
+import org.joda.time.DateTime;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,9 +49,9 @@ public class PlanetTabFragment extends Fragment {
     }
     private Context ct;
 
-    public Planet getPlanet() {
+    /*public Planet getPlanet() {
         return planet;
-    }
+    }*/
 
     public void setPlanet(Planet planet) {
         this.planet = planet;
@@ -69,7 +66,46 @@ public class PlanetTabFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public Planet initPlanet()
+    {
 
+        planet.setType(((CheckBox)root.findViewById(R.id.has_surface)).isChecked() ? PlanetType.Tought : PlanetType.Gas);
+        planet.setHasAtmosphere(((CheckBox)root.findViewById(R.id.has_atm)).isChecked());
+        planet.setName(((EditText)root.findViewById(R.id.name_field)).getText().toString());
+        planet.setGalaxy(((EditText)root.findViewById(R.id.gal_field)).getText().toString());
+        planet.setRadius(Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString()));
+        planet.setTemperature(Integer.parseInt(((EditText)root.findViewById(R.id.temp_field)).getText().toString()));
+        planet.setInventingDate(DateTime.parse(((EditText)root.findViewById(R.id.date_pl_field)).getText().toString()));
+        ImageButton img = root.findViewById(R.id.photo);
+        Bitmap bitmap = ((BitmapDrawable)img.getDrawable()).getBitmap();
+        if(bitmap != null) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            planet.setPhoto(byteArray);
+        }
+        initDist();
+        planet.setStar(starTabFragment.getName());
+        return planet;
+    }
+
+    private void initDist() {
+        Spinner sp = root.findViewById(R.id.spinner);
+        UnitType t = UnitType.Kilometers;
+        switch (sp.getSelectedItemPosition()){
+            case 0:
+                t = UnitType.Kilometers;
+                break;
+            case 2:
+                t = UnitType.LightYears;
+                break;
+            case 1:
+                t = UnitType.AstronomicUnits;
+                break;
+        }
+        int value = Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString());
+        planet.setMiddleDistance(new Distance(value, t));
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,7 +132,7 @@ public class PlanetTabFragment extends Fragment {
         initField(root, R.id.dist_field, Integer.toString(planet.getMiddleDistance() != null ?
                 planet.getMiddleDistance().getValue() : 0));
         initField(root, R.id.date_pl_field, (planet.getInventingDate()!= null ?
-                planet.getInventingDate() : new Date()).toString());
+                planet.getInventingDate() : new DateTime()).toString());
         View but = root.findViewById(R.id.ch_pl_date);
         but.setEnabled(editable);
         initSpinner(root);

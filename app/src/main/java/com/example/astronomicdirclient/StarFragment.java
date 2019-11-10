@@ -19,9 +19,11 @@ import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.Star;
 import com.example.astronomicdirclient.Model.UnitType;
 import com.example.astronomicdirclient.ui.main.SectionsPagerAdapter;
+import com.example.astronomicdirclient.ui.main.StarTabFragment;
 
 import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.util.HashSet;
 
 /**
@@ -59,11 +61,18 @@ public class StarFragment extends Fragment {
         FloatingActionButton fab = v.findViewById(R.id.fab);
 
         fab.setOnClickListener(view -> {
+            StarTabFragment starTabFragment = sectionsPagerAdapter.getStarTabFragment();
             if(viewPager.getCurrentItem() == 0){
-
+                Star st = starTabFragment.initStar();
+                try {
+                    NetHelper.UploadStar(st);
+                } catch (IOException e) {
+                    Snackbar.make(v, e.getMessage(), Snackbar.LENGTH_SHORT);
+                }
             }
             else {
-
+                starTabFragment.addPlanet();
+                viewPager.setCurrentItem(0);
             }
         });
         return v;
