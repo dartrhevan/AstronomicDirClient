@@ -3,6 +3,7 @@ package com.example.astronomicdirclient.ui.main;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -155,6 +156,20 @@ public class StarTabFragment extends Fragment {
             planetTabFragment.setPlanet(adapter.getItem(position));
             ViewPager viewPager = ((Activity)ct).findViewById(R.id.view_pager);
             viewPager.setCurrentItem(1);
+        });
+        list.setOnItemLongClickListener((parent, view, position, id) -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ct);
+            builder.setTitle("Deleting of planet")
+                    .setMessage("Are you sure you want to delete?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        adapter.remove(adapter.getItem(position));
+                    })
+                    .setNegativeButton("No",
+                            (dialog, id1) -> dialog.cancel());
+            AlertDialog alert = builder.create();
+            alert.show();
+            return true;
         });
     }
 

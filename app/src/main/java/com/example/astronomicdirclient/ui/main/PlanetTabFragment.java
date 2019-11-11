@@ -2,6 +2,7 @@ package com.example.astronomicdirclient.ui.main;
 
 
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -185,6 +186,21 @@ public class PlanetTabFragment extends Fragment {
             animationY.setDuration(425);
             animationY.start();
 
+        });
+
+        list.setOnItemLongClickListener((parent, view, position, id) -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ct);
+            builder.setTitle("Deleting of moon")
+                    .setMessage("Are you sure you want to delete?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        adapter.remove(adapter.getItem(position));
+                    })
+                    .setNegativeButton("No",
+                            (dialog, id1) -> dialog.cancel());
+            AlertDialog alert = builder.create();
+            alert.show();
+            return true;
         });
     }
 
