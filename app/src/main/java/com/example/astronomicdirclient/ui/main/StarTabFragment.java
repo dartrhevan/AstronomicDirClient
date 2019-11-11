@@ -104,12 +104,12 @@ public class StarTabFragment extends Fragment {
         int value = Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString());
         star.setMiddleDistance(new Distance(value, t));
     }
-    public void addPlanet(Planet pl)
+    public void updatePlanet(Planet pl)
     {
         adapter.add(pl);
     }
-    public void addPlanet() throws CloneNotSupportedException {
-        adapter.add(planetTabFragment.initPlanet());
+    public void updatePlanet() {
+        planetTabFragment.initPlanet();
     }
 
 

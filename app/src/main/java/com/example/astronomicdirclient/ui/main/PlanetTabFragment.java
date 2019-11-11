@@ -68,8 +68,8 @@ public class PlanetTabFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public Planet initPlanet() throws CloneNotSupportedException {
-        Planet planet = (Planet) this.planet.clone();
+    public void initPlanet() {
+        //Planet planet = (Planet) this.planet.clone();
         planet.setType(((CheckBox)root.findViewById(R.id.has_surface)).isChecked() ? PlanetType.Tought : PlanetType.Gas);
         planet.setHasAtmosphere(((CheckBox)root.findViewById(R.id.has_atm)).isChecked());
         planet.setName(((EditText)root.findViewById(R.id.name_field)).getText().toString());
@@ -87,7 +87,7 @@ public class PlanetTabFragment extends Fragment {
         }
         initDist(planet);
         planet.setStar(starTabFragment.getName());
-        return planet;
+        //return planet;
     }
 
     private void initDist(Planet planet) {
@@ -192,8 +192,9 @@ public class PlanetTabFragment extends Fragment {
         moonFragment = null;
     }
 
-    public void addMoon() throws CloneNotSupportedException {
-        adapter.add(moonFragment.initMoon());
+    public void updateMoon() {
+        moonFragment.initMoon();
+        //adapter.add(moonFragment.initMoon());
         ((AppCompatActivity)ct).getSupportFragmentManager().beginTransaction()
                 .remove(moonFragment)
                 .commit();

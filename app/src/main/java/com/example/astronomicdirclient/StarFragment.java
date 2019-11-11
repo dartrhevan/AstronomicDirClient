@@ -23,7 +23,6 @@ import com.example.astronomicdirclient.ui.main.StarTabFragment;
 
 import org.joda.time.DateTime;
 
-import java.io.IOException;
 import java.util.HashSet;
 
 /**
@@ -78,11 +77,11 @@ public class StarFragment extends Fragment {
             }
             else {
                 if(!isIsMoonFragment()) {
-                    starTabFragment.addPlanet();
+                    starTabFragment.updatePlanet();
                     viewPager.setCurrentItem(0);
                 }
                 else {
-                    sectionsPagerAdapter.getPlanetTabFragment().addMoon();
+                    sectionsPagerAdapter.getPlanetTabFragment().updateMoon();
                 }
             }
             } catch (Exception e) {

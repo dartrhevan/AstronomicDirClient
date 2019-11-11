@@ -125,8 +125,8 @@ public class MoonFragment extends Fragment {
 
     private Planet planet;
 
-    public Moon initMoon() throws CloneNotSupportedException {
-        Moon moon = (Moon) this.moon.clone();
+    public void initMoon() {
+        //Moon moon = (Moon) this.moon.clone();
         //moon.setType(((CheckBox)root.findViewById(R.id.has_surface)).isChecked() ? PlanetType.Tought : PlanetType.Gas);
         moon.setHasAtmosphere(((CheckBox)root.findViewById(R.id.has_atm)).isChecked());
         moon.setName(((EditText)root.findViewById(R.id.name_field)).getText().toString());
@@ -144,7 +144,7 @@ public class MoonFragment extends Fragment {
         initDist(moon);
         moon.setPlanetOwner(planet.getName());
         moon.setGalaxy(planet.getGalaxy());
-        return moon;
+        //return moon;
     }
 
     private void initDist(Planet planet) {
