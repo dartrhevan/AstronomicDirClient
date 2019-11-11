@@ -136,14 +136,26 @@
     </LinearLayout>
         </LinearLayout>
 </ScrollView>
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="22sp"
         android:textStyle="bold"
         android:text="Planets"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:background="@drawable/inset"
+            android:id="@+id/addPlanetBut"/>
+    </LinearLayout>
     <ListView
         android:id="@+id/planets"
         android:layout_width="match_parent"

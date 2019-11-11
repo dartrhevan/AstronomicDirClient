@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -105,10 +106,10 @@ public class StarTabFragment extends Fragment {
         int value = Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString());
         star.setMiddleDistance(new Distance(value, t));
     }
-    public void updatePlanet(Planet pl)
+    /*public void updatePlanet(Planet pl)
     {
         adapter.add(pl);
-    }
+    }*/
     public void updatePlanet() {
         planetTabFragment.initPlanet();
     }
@@ -145,6 +146,13 @@ public class StarTabFragment extends Fragment {
             fileDialog.show();
         });
         img.setImageBitmap(BitmapFactory.decodeByteArray(ph, 0, ph.length));
+        Button add = root.findViewById(R.id.addPlanetBut);
+        add.setOnClickListener(v -> {
+            Planet pl = new Planet();
+            pl.setName("New Planet");
+            star.getPlanets().add(pl);
+            adapter.add(pl);
+        });
     }
 
     private void initPlanetList(View root) {
@@ -163,7 +171,9 @@ public class StarTabFragment extends Fragment {
                     .setMessage("Are you sure you want to delete?")
                     .setCancelable(false)
                     .setPositiveButton("Yes", (dialog, which) -> {
-                        adapter.remove(adapter.getItem(position));
+                        Planet pl = adapter.getItem(position);
+                        adapter.remove(pl);
+                        star.getPlanets().remove(pl);
                     })
                     .setNegativeButton("No",
                             (dialog, id1) -> dialog.cancel());

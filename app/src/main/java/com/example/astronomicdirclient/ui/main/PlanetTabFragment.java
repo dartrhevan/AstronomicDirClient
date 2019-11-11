@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -153,6 +154,14 @@ public class PlanetTabFragment extends Fragment {
         tcb.setChecked(planet.getType() == PlanetType.Tought);
         acb.setEnabled(editable);
         tcb.setEnabled(editable);
+        Button add = root.findViewById(R.id.addMoonBut);
+        add.setOnClickListener(v -> {
+            Moon pl = new Moon();
+            pl.setName("New Moon");
+            planet.getMoons().add(pl);
+            //pl.getPlanets().add(pl);
+            adapter.add(pl);
+        });
     }
 
 
@@ -185,16 +194,16 @@ public class PlanetTabFragment extends Fragment {
             ObjectAnimator animationY = ObjectAnimator.ofFloat(lay, "Y", lay.getY(), 0);
             animationY.setDuration(425);
             animationY.start();
-
         });
-
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(ct);
             builder.setTitle("Deleting of moon")
                     .setMessage("Are you sure you want to delete?")
                     .setCancelable(false)
                     .setPositiveButton("Yes", (dialog, which) -> {
-                        adapter.remove(adapter.getItem(position));
+                        Moon moon = adapter.getItem(position);
+                        adapter.remove(moon);
+                        planet.getMoons().remove(moon);
                     })
                     .setNegativeButton("No",
                             (dialog, id1) -> dialog.cancel());
