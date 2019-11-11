@@ -90,7 +90,7 @@ public class Planet implements ISpaceObject, Serializable, Cloneable
     protected boolean hasAtmosphere;
 
     @Element(name = "Type")
-    protected PlanetType type;
+    protected PlanetType type = PlanetType.Gas;
     private HashSet<Moon> Moons;//= new HashSet<>();
 
     public byte[] getPhoto() {

@@ -46,7 +46,10 @@ public final class NetHelper {
         return xmlResult.toString();
     }
 
-    public static void UploadStar(Star st) throws IOException {
+    public static void UploadStar(Star st) {
+        try {
+
+
         String xml = XMLHelper.SerializeStar(st);
         URL url = new URL(starUploadUrlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -59,5 +62,12 @@ public final class NetHelper {
         {
             wr.write(xml);
         }
+        String resp = connection.getResponseMessage();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 }

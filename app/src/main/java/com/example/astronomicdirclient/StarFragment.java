@@ -2,6 +2,7 @@ package com.example.astronomicdirclient;
 
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,18 +13,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import com.example.astronomicdirclient.Model.Distance;
 import com.example.astronomicdirclient.Model.Moon;
 import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.Star;
+import com.example.astronomicdirclient.Model.StarLite;
 import com.example.astronomicdirclient.Model.UnitType;
+import com.example.astronomicdirclient.XMLService.XMLHelper;
 import com.example.astronomicdirclient.ui.main.SectionsPagerAdapter;
 import com.example.astronomicdirclient.ui.main.StarTabFragment;
 
 import org.joda.time.DateTime;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,24 +80,28 @@ public class StarFragment extends Fragment {
             try {
             if(viewPager.getCurrentItem() == 0){
                 Star st = starTabFragment.initStar();
-                    NetHelper.UploadStar(st);
+                UploadStarListAsync up = new UploadStarListAsync();
+                up.execute(st);
             }
-            else {
-                if(!isIsMoonFragment()) {
+            else if(!isIsMoonFragment()) {
                     starTabFragment.updatePlanet();
                     viewPager.setCurrentItem(0);
                 }
-                else {
+                else
                     sectionsPagerAdapter.getPlanetTabFragment().updateMoon();
-                }
-            }
             } catch (Exception e) {
                 Snackbar.make(v, e.getMessage(), Snackbar.LENGTH_SHORT);
             }
         });
         return v;
     }
-
+    private class UploadStarListAsync extends AsyncTask<Star, Void, Void> {
+        @Override
+        protected Void doInBackground(Star... star) {
+            NetHelper.UploadStar(star[0]);
+            return null;
+        }
+    }
     private static boolean isMoonFragment = false;
 
     @Override
