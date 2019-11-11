@@ -28,12 +28,12 @@ import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.PlanetType;
 import com.example.astronomicdirclient.Model.UnitType;
 import com.example.astronomicdirclient.R;
+import com.example.astronomicdirclient.StarFragment;
 
 import org.joda.time.DateTime;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +41,8 @@ import java.util.Date;
 public class PlanetTabFragment extends Fragment {
 
     private View root;
+    private ArrayAdapter<Moon> adapter;
+    private MoonFragment moonFragment;
 
     @Override
     public void onAttach(Context context) {
@@ -152,28 +154,51 @@ public class PlanetTabFragment extends Fragment {
         tcb.setEnabled(editable);
     }
 
+
+
+    public static PlanetTabFragment makePlanetTabFragment(Planet planet, boolean editable) {
+        PlanetTabFragment fragment = new PlanetTabFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(SectionsPagerAdapter.MODEL, planet);
+        args.putBoolean(SectionsPagerAdapter.EDITABLE, editable);
+        fragment.setArguments(args);
+        return  fragment;
+    }
+
     private void initMoonsList(View root) {
         ArrayList<Moon> planetList = new ArrayList<>(planet.getMoons());
-        ArrayAdapter<Moon> adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
+        adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.moons);
         list.setAdapter(adapter);
         list.setOnItemClickListener((parent, view, position, id) -> {
             AppCompatActivity a = (AppCompatActivity)ct;
-            MoonFragment fragment = new MoonFragment();
-            Bundle args = new Bundle();
-            args.putSerializable(SectionsPagerAdapter.MOON, planetList.get(position));
-            fragment.setArguments(args);
+            moonFragment = MoonFragment.makeMoonFragment( planetList.get(position), editable, planet);
             int w = getDisplayWidth(a);
             View lay = a.findViewById(R.id.lay);
             lay.setY(w);
             a.getSupportFragmentManager().beginTransaction()
-                    .add(R.id.lay, fragment)
+                    .add(R.id.lay, moonFragment)
                     .commit();
-
+            moonFragment.setPlanet(planet);
+            StarFragment.setIsMoonFragment(true);
             ObjectAnimator animationY = ObjectAnimator.ofFloat(lay, "Y", lay.getY(), 0);
             animationY.setDuration(425);
             animationY.start();
+
         });
+    }
+
+    public void dropMoonFragment() {
+        moonFragment = null;
+    }
+
+    public void addMoon() throws CloneNotSupportedException {
+        adapter.add(moonFragment.initMoon());
+        ((AppCompatActivity)ct).getSupportFragmentManager().beginTransaction()
+                .remove(moonFragment)
+                .commit();
+        StarFragment.setIsMoonFragment(false);
+        dropMoonFragment();
     }
     private int getDisplayWidth(AppCompatActivity act) {
         //DisplayMetrics displaymetrics = act.getResources().getDisplayMetrics();

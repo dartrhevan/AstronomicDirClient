@@ -30,14 +30,22 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serial
         return starTabFragment;
     }
 
-    private StarTabFragment starTabFragment = new StarTabFragment();
-    private PlanetTabFragment planetTabFragment = new PlanetTabFragment();
+    private StarTabFragment starTabFragment;
+
+    public PlanetTabFragment getPlanetTabFragment() {
+        return planetTabFragment;
+    }
+
+    private PlanetTabFragment planetTabFragment;// = new PlanetTabFragment();
 
     public SectionsPagerAdapter(Context context, FragmentManager fm, @Nullable Star star, boolean editable) {
         super(fm);
         this.star = star;
         mContext = context;
         this.editable = editable;
+        starTabFragment = StarTabFragment.makeStarTabFragment(star, editable);
+        planetTabFragment = PlanetTabFragment.makePlanetTabFragment((star.getPlanets().size() > 0 ?
+                (Planet)star.getPlanets().toArray()[0] : null), editable);
     }
 
     @Override
@@ -45,23 +53,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serial
         // getItem is called to instantiate the fragment for the given page.
         // Return a StarTabFragment (defined as a static inner class below).
         Fragment fragment;
-        Bundle bundle = new Bundle();
         if (position == 0) {
-            starTabFragment.setPlanetTabFragment(planetTabFragment);
             fragment = starTabFragment;
-            bundle.putSerializable(MODEL, star);
+            starTabFragment.setPlanetTabFragment(planetTabFragment);
         }
         else {
-            if(star.getPlanets().size() > 0) {
-                    bundle.putSerializable(MODEL, (Planet)star.getPlanets().toArray()[0]);
-            }
-            else
-                bundle.putSerializable(MODEL, null);
             fragment = planetTabFragment;
             planetTabFragment.setStarTabFragment(starTabFragment);
         }
-        bundle.putBoolean(EDITABLE, editable);
-        fragment.setArguments(bundle);
         return fragment;
     }
 

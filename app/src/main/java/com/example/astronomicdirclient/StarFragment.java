@@ -37,6 +37,15 @@ public class StarFragment extends Fragment {
     }
 
     private Context ct;
+
+    public static boolean isIsMoonFragment() {
+        return isMoonFragment;
+    }
+
+    public static void setIsMoonFragment(boolean isMoonFragment) {
+        StarFragment.isMoonFragment = isMoonFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,11 +75,15 @@ public class StarFragment extends Fragment {
             if(viewPager.getCurrentItem() == 0){
                 Star st = starTabFragment.initStar();
                     NetHelper.UploadStar(st);
-
             }
             else {
-                starTabFragment.addPlanet();
-                viewPager.setCurrentItem(0);
+                if(!isIsMoonFragment()) {
+                    starTabFragment.addPlanet();
+                    viewPager.setCurrentItem(0);
+                }
+                else {
+                    sectionsPagerAdapter.getPlanetTabFragment().addMoon();
+                }
             }
             } catch (Exception e) {
                 Snackbar.make(v, e.getMessage(), Snackbar.LENGTH_SHORT);
@@ -78,6 +91,8 @@ public class StarFragment extends Fragment {
         });
         return v;
     }
+
+    private static boolean isMoonFragment = false;
 
     @Override
     public void onAttach(Context context) {

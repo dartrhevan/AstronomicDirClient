@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.FloatingActionButton;
@@ -24,13 +25,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.example.astronomicdirclient.Model.Distance;
 import com.example.astronomicdirclient.Model.Moon;
 import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.PlanetType;
+import com.example.astronomicdirclient.Model.UnitType;
 import com.example.astronomicdirclient.R;
+import com.example.astronomicdirclient.StarFragment;
 
 import org.joda.time.DateTime;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -80,29 +85,24 @@ public class MoonFragment extends Fragment {
             int w = getDisplayWidth(a);
             View lay = a.findViewById(R.id.lay);
             ObjectAnimator animationY = ObjectAnimator.ofFloat(lay, "Y", lay.getY(), w * 1.4f);
-            animationY.setDuration(425);
+            animationY.setDuration(375);
             animationY.start();
             animationY.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
-
                 }
-
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     a.getSupportFragmentManager().beginTransaction()
                             .remove(fr)
                             .commit();
+                    StarFragment.setIsMoonFragment(false);
                 }
-
                 @Override
                 public void onAnimationCancel(Animator animation) {
-
                 }
-
                 @Override
                 public void onAnimationRepeat(Animator animation) {
-
                 }
             });
         });
@@ -115,7 +115,55 @@ public class MoonFragment extends Fragment {
         return root;
     }
 
+    public Planet getPlanet() {
+        return planet;
+    }
 
+    public void setPlanet(Planet planet) {
+        this.planet = planet;
+    }
+
+    private Planet planet;
+
+    public Moon initMoon() throws CloneNotSupportedException {
+        Moon moon = (Moon) this.moon.clone();
+        //moon.setType(((CheckBox)root.findViewById(R.id.has_surface)).isChecked() ? PlanetType.Tought : PlanetType.Gas);
+        moon.setHasAtmosphere(((CheckBox)root.findViewById(R.id.has_atm)).isChecked());
+        moon.setName(((EditText)root.findViewById(R.id.name_field)).getText().toString());
+        moon.setRadius(Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString()));
+        moon.setTemperature(Integer.parseInt(((EditText)root.findViewById(R.id.temp_field)).getText().toString()));
+        moon.setInventingDate(DateTime.parse(((EditText)root.findViewById(R.id.date_mn_field)).getText().toString()));
+        ImageButton img = root.findViewById(R.id.photo);
+        Bitmap bitmap = ((BitmapDrawable)img.getDrawable()).getBitmap();
+        if(bitmap != null) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            moon.setPhoto(byteArray);
+        }
+        initDist(moon);
+        moon.setPlanetOwner(planet.getName());
+        moon.setGalaxy(planet.getGalaxy());
+        return moon;
+    }
+
+    private void initDist(Planet planet) {
+        Spinner sp = root.findViewById(R.id.spinner);
+        UnitType t = UnitType.Kilometers;
+        switch (sp.getSelectedItemPosition()){
+            case 0:
+                t = UnitType.Kilometers;
+                break;
+            case 2:
+                t = UnitType.LightYears;
+                break;
+            case 1:
+                t = UnitType.AstronomicUnits;
+                break;
+        }
+        int value = Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString());
+        planet.setMiddleDistance(new Distance(value, t));
+    }
 
     private void initializeView(View root) {
         initField(root, R.id.name_field, moon.getName());
@@ -143,6 +191,16 @@ public class MoonFragment extends Fragment {
         CheckBox acb = root.findViewById(R.id.has_atm);
         acb.setChecked(moon.isHasAtmosphere());
         acb.setEnabled(editable);
+    }
+    private final static String PLANET = "PLANET";
+    public static MoonFragment makeMoonFragment(Moon moon, boolean editable, Planet planet) {
+        MoonFragment fragment = new MoonFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(SectionsPagerAdapter.MOON, moon);
+        args.putBoolean(SectionsPagerAdapter.EDITABLE, editable);
+        args.putSerializable(PLANET, planet);
+        fragment.setArguments(args);
+        return  fragment;
     }
 
     private void initSpinner(View root) {

@@ -65,7 +65,6 @@ public class StarTabFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_star, container, false);
         this.root = root;
         if(star != null) initializeView(root);
-        Toast.makeText(ct, "StarTabFragment created", Toast.LENGTH_LONG);
         return root;
     }
 
@@ -111,6 +110,16 @@ public class StarTabFragment extends Fragment {
     }
     public void addPlanet() throws CloneNotSupportedException {
         adapter.add(planetTabFragment.initPlanet());
+    }
+
+
+    public static StarTabFragment makeStarTabFragment(Star star, boolean editable) {
+        StarTabFragment fragment = new StarTabFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(SectionsPagerAdapter.MODEL, star);
+        args.putBoolean(SectionsPagerAdapter.EDITABLE, editable);
+        fragment.setArguments(args);
+        return  fragment;
     }
     private View root;
     private void initializeView(View root) {

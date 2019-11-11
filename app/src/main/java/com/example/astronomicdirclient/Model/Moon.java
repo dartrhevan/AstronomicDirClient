@@ -9,6 +9,14 @@ import org.simpleframework.xml.Root;
 @Default(DefaultType.FIELD)
 public class Moon extends Planet {
 
+    public String getPlanetOwner() {
+        return planetOwner;
+    }
+
+    public void setPlanetOwner(String planetOwner) {
+        this.planetOwner = planetOwner;
+    }
+
     @Element(name = "PlanetOwner", required = false)
     private String planetOwner;
     public Moon(){
