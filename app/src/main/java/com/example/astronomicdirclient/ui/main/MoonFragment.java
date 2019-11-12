@@ -34,6 +34,7 @@ import com.example.astronomicdirclient.R;
 import com.example.astronomicdirclient.StarFragment;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -174,7 +175,7 @@ public class MoonFragment extends Fragment {
         initField(root, R.id.dist_field, Integer.toString(moon.getMiddleDistance() != null ?
                 moon.getMiddleDistance().getValue() : 0));
         initField(root, R.id.date_mn_field, (moon.getInventingDate()!= null ?
-                moon.getInventingDate() : new DateTime()).toString());
+                moon.getInventingDate() : new DateTime(DateTimeZone.forOffsetHours(5))).toString());
         View but = root.findViewById(R.id.ch_mn_date);
         but.setEnabled(editable);
         initSpinner(root);

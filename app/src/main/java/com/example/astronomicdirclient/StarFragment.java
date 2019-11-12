@@ -13,11 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import com.example.astronomicdirclient.Model.Distance;
 import com.example.astronomicdirclient.Model.Moon;
 import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.Star;
+import com.example.astronomicdirclient.Model.StarLite;
 import com.example.astronomicdirclient.Model.UnitType;
 import com.example.astronomicdirclient.ui.main.SectionsPagerAdapter;
 import com.example.astronomicdirclient.ui.main.StarTabFragment;
@@ -25,6 +27,7 @@ import com.example.astronomicdirclient.ui.main.StarTabFragment;
 import org.joda.time.DateTime;
 
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -107,20 +110,28 @@ public class StarFragment extends Fragment {
         return v;
     }
 
-    private class EditStarAsync extends AsyncTask<Object, Void, Void>
+    private class EditStarAsync extends AsyncTask<Object, Void, String>
     {
         @Override
-        protected Void doInBackground(Object... star) {
-            NetHelper.EditStar((int)star[0], (Star)star[1]);
-            return null;
+        protected String doInBackground(Object... star) {
+            return NetHelper.EditStar((int)star[0], (Star)star[1]);
+        }
+
+        @Override
+        protected void onPostExecute(String resp) {
+            Snackbar.make(getView(), resp, Snackbar.LENGTH_LONG).show();
         }
     }
 
-    private class UploadStarAsync extends AsyncTask<Star, Void, Void> {
+    private class UploadStarAsync extends AsyncTask<Star, Void, String> {
         @Override
-        protected Void doInBackground(Star... star) {
-            NetHelper.UploadStar(star[0]);
-            return null;
+        protected String doInBackground(Star... star) {
+            return NetHelper.UploadStar(star[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String resp) {
+            Snackbar.make(getView(), resp, Snackbar.LENGTH_LONG).show();
         }
     }
     private static boolean isMoonFragment = false;

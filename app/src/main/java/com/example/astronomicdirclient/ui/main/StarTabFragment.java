@@ -32,10 +32,12 @@ import com.example.astronomicdirclient.Model.UnitType;
 import com.example.astronomicdirclient.R;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -133,7 +135,7 @@ public class StarTabFragment extends Fragment {
         initField(root, R.id.dist_field, Integer.toString(star.getMiddleDistance() != null ?
                     star.getMiddleDistance().getValue() : 0));
         initField(root, R.id.date_field, (star.getInventingDate()!= null ?
-                    star.getInventingDate() : new Date()).toString());
+                    star.getInventingDate() : new DateTime().toDateTime(DateTimeZone.forOffsetHours(5))).toString());
         View but = root.findViewById(R.id.ch_date);
         but.setEnabled(editeble);
         initSpinner(root);

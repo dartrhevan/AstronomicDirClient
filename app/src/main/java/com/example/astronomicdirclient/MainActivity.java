@@ -1,5 +1,6 @@
 package com.example.astronomicdirclient;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -71,6 +73,42 @@ public class MainActivity extends AppCompatActivity
             it.putExtra(STAR_LITE, adapter.getItem(position));
             startActivity(it);
         });
+        list.setOnItemLongClickListener((parent, view, position, id) -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Deleting of star")
+                    .setMessage("Are you sure you want to delete?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        StarLite st = adapter.getItem(position);
+                        DeleteStarAsync del = new DeleteStarAsync();
+                        del.execute(st.getId());
+                        adapter.remove(st);
+
+                    })
+                    .setNegativeButton("No",
+                            (dialog, id1) -> dialog.cancel());
+            AlertDialog alert = builder.create();
+            alert.show();
+            return true;
+        });
+    }
+
+    private class DeleteStarAsync extends AsyncTask<Integer, Void, String> {
+
+        @Override
+        protected String doInBackground(Integer... id) {
+            try {
+                return NetHelper.DeleteStar(id[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "Error!";
+        }
+
+        @Override
+        protected void onPostExecute(String resp) {
+            Snackbar.make(MainActivity.this.findViewById(R.id.list_page), resp, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private void initMap() {

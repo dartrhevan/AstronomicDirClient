@@ -1,5 +1,7 @@
 package com.example.astronomicdirclient;
 
+import android.support.design.widget.Snackbar;
+
 import com.example.astronomicdirclient.Model.Star;
 import com.example.astronomicdirclient.XMLService.XMLHelper;
 
@@ -46,7 +48,7 @@ public final class NetHelper {
         return xmlResult.toString();
     }
 
-    public static void UploadStar(Star st) {
+    public static String UploadStar(Star st) {
         try {
         String xml = XMLHelper.SerializeStar(st);
         URL url = new URL(starUploadUrlPath);
@@ -60,16 +62,16 @@ public final class NetHelper {
         {
             wr.write(xml);
         }
-        String resp = connection.getResponseMessage();
+        return connection.getResponseMessage();
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-
+        return "Error!";
     }
 
-    public static void deleteStar(int id) throws IOException {
+    public static String DeleteStar(int id) throws IOException {
 
         URL url = new URL(deleteUrlPath+id);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -78,10 +80,10 @@ public final class NetHelper {
         connection.setReadTimeout(3000); // установка таймаута перед выполнением - 10 000 миллисекунд
         connection.connect(); // подключаемся к ресурсу
 
-        String resp = connection.getResponseMessage();
+        return connection.getResponseMessage();
     }
 
-    public static void EditStar(int id, Star star)
+    public static String EditStar(int id, Star star)
     {
         try {
             String xml = XMLHelper.SerializeStarPair(id, star);
@@ -96,12 +98,12 @@ public final class NetHelper {
             {
                 wr.write(xml);
             }
-            String resp = connection.getResponseMessage();
+            return connection.getResponseMessage();
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-
+        return "Error!";
     }
 }

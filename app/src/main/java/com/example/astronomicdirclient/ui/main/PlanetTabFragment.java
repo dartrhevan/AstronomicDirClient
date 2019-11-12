@@ -33,6 +33,7 @@ import com.example.astronomicdirclient.R;
 import com.example.astronomicdirclient.StarFragment;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -135,7 +136,7 @@ public class PlanetTabFragment extends Fragment {
         initField(root, R.id.dist_field, Integer.toString(planet.getMiddleDistance() != null ?
                 planet.getMiddleDistance().getValue() : 0));
         initField(root, R.id.date_pl_field, (planet.getInventingDate()!= null ?
-                planet.getInventingDate() : new DateTime()).toString());
+                planet.getInventingDate() : new DateTime(DateTimeZone.forOffsetHours(5))).toString());
         View but = root.findViewById(R.id.ch_pl_date);
         but.setEnabled(editable);
         initSpinner(root);

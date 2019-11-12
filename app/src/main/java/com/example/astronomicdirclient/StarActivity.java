@@ -90,22 +90,6 @@ public class StarActivity extends AppCompatActivity ///implements View.OnClickLi
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
     }
-/*
-    @Override
-    public void onClick(View view) {
-        StarTabFragment starTabFragment = fragment.sectionsPagerAdapter.getStarTabFragment();
-        try {
-            if (viewPager.getCurrentItem() == 0) {
-            } else if (!isIsMoonFragment()) {
-                starTabFragment.updatePlanet();
-                viewPager.setCurrentItem(0);
-            } else
-                sectionsPagerAdapter.getPlanetTabFragment().updateMoon();
-        } catch (Exception e) {
-            Snackbar.make(v, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-        }
-        //Snackbar.make(StarActivity.this.findViewById(R.id.cont), "Ok!", Snackbar.LENGTH_SHORT).show();
-    }*/
 
 
     /**######################################################################**/
