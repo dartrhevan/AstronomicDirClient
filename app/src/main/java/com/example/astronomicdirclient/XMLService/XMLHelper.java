@@ -22,7 +22,7 @@ public final class XMLHelper {
         m.bind(DateTime.class, new DateFormatTransformer());
         m.bind(byte[].class, new BytesFormatTransformer());
     }
-    private static Serializer serializer = new Persister(m);
+    public static Serializer serializer = new Persister(m);
     public static Star DeserializeStar(String star) {
         try {
             Star star1 = serializer.read(Star.class, star);
@@ -31,6 +31,26 @@ public final class XMLHelper {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String SerrializeStarPair(int id, Star star)
+    {
+        StarPair sp = new StarPair();
+        sp.Id = id;
+        sp.Star = star;
+        StringWriter sw = new StringWriter();
+        try {
+            serializer.write(star, sw);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sw.toString();
+    }
+
+    public static class StarPair
+    {
+        public int Id;
+        public Star Star;
     }
 
     public static List<StarLite> DeserializeStarList(String xmlList)

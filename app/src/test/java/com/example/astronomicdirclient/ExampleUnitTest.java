@@ -126,6 +126,24 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void deserializeStarPair() throws Exception {
+        String source = "<?xml version=\"1.0\" encoding=\"utf-16\"?>\n" +
+                "<StarPair xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n" +
+                "  <Id>2</Id>\n" +
+                "  <Star>\n" +
+                "    <Planets />\n" +
+                "    <Name>st</Name>\n" +
+                "    <MiddleDistance />\n" +
+                "    <Radius>0</Radius>\n" +
+                "    <Temperature>0</Temperature>\n" +
+                "    <InventingDate>2019-11-12T13:08:00.7127997+05:00</InventingDate>\n" +
+                "  </Star>\n" +
+                "</StarPair>";
+        XMLHelper.StarPair sp = XMLHelper.serializer.read(XMLHelper.StarPair.class, source);
+        assertEquals(2, sp.Id);
+        assertEquals("st", sp.Star.getName());
+    }
+    @Test
     public void simpleDownloadAndParseTest() throws IOException {
         String xml = NetHelper.DownloadStar(1);
         Star st = XMLHelper.DeserializeStar(xml);

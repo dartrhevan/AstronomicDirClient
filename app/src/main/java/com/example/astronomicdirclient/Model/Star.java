@@ -152,7 +152,7 @@ public class Star implements ISpaceObject, Serializable, Cloneable {
     }
 
     public Star(){Planets= new HashSet<>();}
-    @Element(name = "Galaxy")
+    @Element(name = "Galaxy",required=false)
     private String galaxy;
 
     @Element(name = "Photo", required = false)
