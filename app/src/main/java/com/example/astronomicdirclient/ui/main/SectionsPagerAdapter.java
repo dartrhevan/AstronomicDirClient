@@ -67,7 +67,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serial
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Tab " + position;
+        return position == 0 ? "Star" : "Planet";
     }
     @Override
     public int getCount() {

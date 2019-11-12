@@ -15,6 +15,7 @@ import java.net.URL;
 
 public final class NetHelper {
 
+    private static String deleteUrlPath = "http://192.168.0.103:3000/Home/Delete?id=";
     private static String listUrlPath = "http://192.168.0.103:3000/Views/StarListXml";
     private static String starUrlPath = "http://192.168.0.103:3000/Views/StarXml?id=";
     private static String starUploadUrlPath = "http://192.168.0.103:3000/Views/StarViews";
@@ -48,8 +49,6 @@ public final class NetHelper {
 
     public static void UploadStar(Star st) {
         try {
-
-
         String xml = XMLHelper.SerializeStar(st);
         URL url = new URL(starUploadUrlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -69,5 +68,17 @@ public final class NetHelper {
             e.printStackTrace();
         }
 
+    }
+
+    public static void deleteStar(int id) throws IOException {
+
+        URL url = new URL(deleteUrlPath+id);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET"); // установка метода получения данных -GET
+        connection.setConnectTimeout(3000);
+        connection.setReadTimeout(3000); // установка таймаута перед выполнением - 10 000 миллисекунд
+        connection.connect(); // подключаемся к ресурсу
+
+        String resp = connection.getResponseMessage();
     }
 }

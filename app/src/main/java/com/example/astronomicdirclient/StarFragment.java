@@ -13,24 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import com.example.astronomicdirclient.Model.Distance;
 import com.example.astronomicdirclient.Model.Moon;
 import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.Star;
-import com.example.astronomicdirclient.Model.StarLite;
 import com.example.astronomicdirclient.Model.UnitType;
-import com.example.astronomicdirclient.XMLService.XMLHelper;
 import com.example.astronomicdirclient.ui.main.SectionsPagerAdapter;
 import com.example.astronomicdirclient.ui.main.StarTabFragment;
 
 import org.joda.time.DateTime;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,7 +60,7 @@ public class StarFragment extends Fragment {
         final Star defStar = new Star("Milky way", null, "Sun", new Distance(1, UnitType.AstronomicUnits), 500000, 5000, new DateTime(2015, 7, 3, 0, 0), planets);
         Star star = getArguments()!= null ? (Star) getArguments().getSerializable(MainActivity.STAR) : defStar;
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(ct, ((AppCompatActivity)ct).getSupportFragmentManager(),
-                star, star == defStar || star == null);
+                star, true);//star == defStar || star == null);
 
         ViewPager viewPager = v.findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -90,9 +84,13 @@ public class StarFragment extends Fragment {
                 else
                     sectionsPagerAdapter.getPlanetTabFragment().updateMoon();
             } catch (Exception e) {
-                Snackbar.make(v, e.getMessage(), Snackbar.LENGTH_SHORT);
+                Snackbar.make(v, e.getMessage(), Snackbar.LENGTH_SHORT).show();
             }
         });
+        try {
+            FloatingActionButton fab2 = v.findViewById(R.id.fab);
+            fab2.setOnClickListener((View.OnClickListener) ct);
+        } catch (Exception e) {}
         return v;
     }
     private class UploadStarListAsync extends AsyncTask<Star, Void, Void> {
