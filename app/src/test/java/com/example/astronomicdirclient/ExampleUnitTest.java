@@ -143,6 +143,13 @@ public class ExampleUnitTest {
         assertEquals(2, sp.Id);
         assertEquals("st", sp.Star.getName());
     }
+
+    @Test
+    public void editStar()
+    {
+        String str = XMLHelper.SerializeStarPair(2, new Star("Gal", null, "Name", null, 5, 5, null));
+        int i = 0;
+    }
     @Test
     public void simpleDownloadAndParseTest() throws IOException {
         String xml = NetHelper.DownloadStar(1);

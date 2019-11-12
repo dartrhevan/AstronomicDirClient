@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 public final class NetHelper {
@@ -83,11 +81,11 @@ public final class NetHelper {
         String resp = connection.getResponseMessage();
     }
 
-    public static void editStar(int id, Star star)
+    public static void EditStar(int id, Star star)
     {
         try {
-            String xml = XMLHelper.SerrializeStarPair(id, star);
-            URL url = new URL(starUploadUrlPath);
+            String xml = XMLHelper.SerializeStarPair(id, star);
+            URL url = new URL(editUrlPath);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST"); // установка метода получения данных -GET
             connection.setConnectTimeout(3000);

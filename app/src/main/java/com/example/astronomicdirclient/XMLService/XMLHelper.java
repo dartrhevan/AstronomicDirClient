@@ -33,20 +33,22 @@ public final class XMLHelper {
         return null;
     }
 
-    public static String SerrializeStarPair(int id, Star star)
+    public static String SerializeStarPair(int id, Star star)
     {
         StarPair sp = new StarPair();
         sp.Id = id;
         sp.Star = star;
         StringWriter sw = new StringWriter();
         try {
-            serializer.write(star, sw);
+            serializer.write(sp, sw);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return sw.toString();
     }
 
+    @Default(DefaultType.FIELD)
+    @Root(name = "StarPair")
     public static class StarPair
     {
         public int Id;

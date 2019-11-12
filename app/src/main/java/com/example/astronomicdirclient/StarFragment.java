@@ -68,32 +68,55 @@ public class StarFragment extends Fragment {
         tabs.setupWithViewPager(viewPager);
 
         FloatingActionButton fab = v.findViewById(R.id.fab);
-
-        fab.setOnClickListener(view -> {
+        View.OnClickListener uploadListener = view -> {
             StarTabFragment starTabFragment = sectionsPagerAdapter.getStarTabFragment();
             try {
-            if(viewPager.getCurrentItem() == 0){
-                Star st = starTabFragment.initStar();
-                UploadStarListAsync up = new UploadStarListAsync();
-                up.execute(st);
-            }
-            else if(!isIsMoonFragment()) {
+                if (viewPager.getCurrentItem() == 0) {
+                    Star st = starTabFragment.initStar();
+                    UploadStarAsync up = new UploadStarAsync();
+                    up.execute(st);
+                } else if (!isIsMoonFragment()) {
                     starTabFragment.updatePlanet();
                     viewPager.setCurrentItem(0);
-                }
-                else
+                } else
                     sectionsPagerAdapter.getPlanetTabFragment().updateMoon();
             } catch (Exception e) {
                 Snackbar.make(v, e.getMessage(), Snackbar.LENGTH_SHORT).show();
             }
-        });
-        try {
-            FloatingActionButton fab2 = v.findViewById(R.id.fab);
-            fab2.setOnClickListener((View.OnClickListener) ct);
-        } catch (Exception e) {}
+        };
+
+        View.OnClickListener editListener= view -> {
+            StarTabFragment starTabFragment = sectionsPagerAdapter.getStarTabFragment();
+            try {
+                if (viewPager.getCurrentItem() == 0) {
+                    Star st = starTabFragment.initStar();
+                    EditStarAsync up = new EditStarAsync();
+                    StarActivity act = (StarActivity)ct;
+                    up.execute(act.getStarLite().getId(), st);
+                } else if (!isIsMoonFragment()) {
+                    starTabFragment.updatePlanet();
+                    viewPager.setCurrentItem(0);
+                } else
+                    sectionsPagerAdapter.getPlanetTabFragment().updateMoon();
+            } catch (Exception e) {
+                Snackbar.make(v, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+            }
+        };
+
+        fab.setOnClickListener(ct instanceof StarActivity ? editListener : uploadListener);
         return v;
     }
-    private class UploadStarListAsync extends AsyncTask<Star, Void, Void> {
+
+    private class EditStarAsync extends AsyncTask<Object, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Object... star) {
+            NetHelper.EditStar((int)star[0], (Star)star[1]);
+            return null;
+        }
+    }
+
+    private class UploadStarAsync extends AsyncTask<Star, Void, Void> {
         @Override
         protected Void doInBackground(Star... star) {
             NetHelper.UploadStar(star[0]);

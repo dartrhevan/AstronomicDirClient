@@ -28,6 +28,7 @@ import com.example.astronomicdirclient.Model.StarLite;
 import com.example.astronomicdirclient.XMLService.XMLHelper;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -122,7 +123,8 @@ public class MainActivity extends AppCompatActivity
         tpd.show();
         tpd.setOnDateSetListener((view, year, month, dayOfMonth) -> {
             DatePicker dp = tpd.getDatePicker();
-            DateTime date = new DateTime(dp.getYear(), dp.getMonth() + 1, dp.getDayOfMonth(), 0,0);
+            DateTime date = new DateTime(dp.getYear(), dp.getMonth() + 1,
+                    dp.getDayOfMonth(), 0,0, 0, 0).toDateTime(DateTimeZone.forOffsetHours(5));
             df.setText(date.toString());
         });
     }
