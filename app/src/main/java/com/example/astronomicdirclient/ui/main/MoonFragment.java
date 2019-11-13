@@ -53,6 +53,7 @@ public class MoonFragment extends Fragment {
         super.onAttach(context);
         ct = context;
     }
+
     private Context ct;
 
     private int getDisplayHeight(AppCompatActivity act) {
@@ -63,28 +64,31 @@ public class MoonFragment extends Fragment {
         display.getMetrics(metricsB);
         return metricsB.heightPixels;//displaymetrics.widthPixels;
     }
+
     private Moon moon;
     private boolean editable;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater , ViewGroup container ,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_moon, container, false);
+        View root = inflater.inflate(R.layout.fragment_moon , container , false);
         this.root = root;
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(view ->
         {
             Fragment fr = this;
-            AppCompatActivity a = (AppCompatActivity)ct;
+            AppCompatActivity a = ( AppCompatActivity ) ct;
             int w = getDisplayHeight(a);
             View lay = a.findViewById(R.id.lay);
-            ObjectAnimator animationY = ObjectAnimator.ofFloat(lay, "Y", lay.getY(), w);
+            ObjectAnimator animationY = ObjectAnimator.ofFloat(lay , "Y" , lay.getY() , w);
             animationY.setDuration(230);
             animationY.start();
             animationY.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
                 }
+
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     a.getSupportFragmentManager().beginTransaction()
@@ -92,19 +96,21 @@ public class MoonFragment extends Fragment {
                             .commit();
                     StarFragment.setIsMoonFragment(false);
                 }
+
                 @Override
                 public void onAnimationCancel(Animator animation) {
                 }
+
                 @Override
                 public void onAnimationRepeat(Animator animation) {
                 }
             });
         });
         Bundle args = getArguments();
-        moon = (Moon) args.getSerializable(SectionsPagerAdapter.MOON);
+        moon = ( Moon ) args.getSerializable(SectionsPagerAdapter.MOON);
         editable = args.getBoolean(SectionsPagerAdapter.EDITABLE);
         //starTabFragment = (StarTabFragment)args.getSerializable(SectionsPagerAdapter.FRAGMENT);
-        if(moon == null) moon = new Moon();
+        if ( moon == null ) moon = new Moon();
         initializeView(root);
         return root;
     }
@@ -122,16 +128,16 @@ public class MoonFragment extends Fragment {
     public void initMoon() {
         //Moon moon = (Moon) this.moon.clone();
         //moon.setType(((CheckBox)root.findViewById(R.id.has_surface)).isChecked() ? PlanetType.Tought : PlanetType.Gas);
-        moon.setHasAtmosphere(((CheckBox)root.findViewById(R.id.has_atm)).isChecked());
-        moon.setName(((EditText)root.findViewById(R.id.name_field)).getText().toString());
-        moon.setRadius(Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString()));
-        moon.setTemperature(Integer.parseInt(((EditText)root.findViewById(R.id.temp_field)).getText().toString()));
-        moon.setInventingDate(DateTime.parse(((EditText)root.findViewById(R.id.date_mn_field)).getText().toString()));
+        moon.setHasAtmosphere((( CheckBox ) root.findViewById(R.id.has_atm)).isChecked());
+        moon.setName((( EditText ) root.findViewById(R.id.name_field)).getText().toString());
+        moon.setRadius(Integer.parseInt((( EditText ) root.findViewById(R.id.radius_field)).getText().toString()));
+        moon.setTemperature(Integer.parseInt((( EditText ) root.findViewById(R.id.temp_field)).getText().toString()));
+        moon.setInventingDate(DateTime.parse((( EditText ) root.findViewById(R.id.date_mn_field)).getText().toString()));
         ImageButton img = root.findViewById(R.id.photo);
-        Bitmap bitmap = ((BitmapDrawable)img.getDrawable()).getBitmap();
-        if(bitmap != null) {
+        Bitmap bitmap = (( BitmapDrawable ) img.getDrawable()).getBitmap();
+        if ( bitmap != null ) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG , 100 , byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
             moon.setPhoto(byteArray);
         }
@@ -144,7 +150,7 @@ public class MoonFragment extends Fragment {
     private void initDist(Planet planet) {
         Spinner sp = root.findViewById(R.id.spinner);
         UnitType t = UnitType.Kilometers;
-        switch (sp.getSelectedItemPosition()){
+        switch (sp.getSelectedItemPosition()) {
             case 0:
                 t = UnitType.Kilometers;
                 break;
@@ -155,27 +161,27 @@ public class MoonFragment extends Fragment {
                 t = UnitType.AstronomicUnits;
                 break;
         }
-        int value = Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString());
-        planet.setMiddleDistance(new Distance(value, t));
+        int value = Integer.parseInt((( EditText ) root.findViewById(R.id.radius_field)).getText().toString());
+        planet.setMiddleDistance(new Distance(value , t));
     }
 
     private void initializeView(View root) {
-        initField(root, R.id.name_field, moon.getName());
-        initField(root, R.id.gal_field, moon.getGalaxy());
-        initField(root, R.id.pl_field, moon.getGalaxy());
-        initField(root, R.id.temp_field, Integer.toString(moon.getTemperature()));
-        initField(root, R.id.radius_field, Integer.toString(moon.getRadius()));
-        initField(root, R.id.dist_field, Integer.toString(moon.getMiddleDistance() != null ?
+        initField(root , R.id.name_field , moon.getName());
+        initField(root , R.id.gal_field , moon.getGalaxy());
+        initField(root , R.id.pl_field , moon.getGalaxy());
+        initField(root , R.id.temp_field , Integer.toString(moon.getTemperature()));
+        initField(root , R.id.radius_field , Integer.toString(moon.getRadius()));
+        initField(root , R.id.dist_field , Integer.toString(moon.getMiddleDistance() != null ?
                 moon.getMiddleDistance().getValue() : 0));
-        initField(root, R.id.date_mn_field, (moon.getInventingDate()!= null ?
+        initField(root , R.id.date_mn_field , (moon.getInventingDate() != null ?
                 moon.getInventingDate() : new DateTime(DateTimeZone.forOffsetHours(5))).toString());
         View but = root.findViewById(R.id.ch_mn_date);
         but.setEnabled(editable);
         initSpinner(root);
         byte[] ph = moon.getPhoto();
-        if(ph == null) ph = new byte[0];
+        if ( ph == null ) ph = new byte[0];
         ImageButton img = root.findViewById(R.id.photo);
-        Bitmap bm = BitmapFactory.decodeByteArray(ph, 0, ph.length);
+        Bitmap bm = BitmapFactory.decodeByteArray(ph , 0 , ph.length);
         img.setImageBitmap(bm);
         img.setOnClickListener(v -> {
             OpenFileDialog fileDialog = new OpenFileDialog(ct);
@@ -186,21 +192,23 @@ public class MoonFragment extends Fragment {
         acb.setChecked(moon.isHasAtmosphere());
         acb.setEnabled(editable);
     }
+
     private final static String PLANET = "PLANET";
-    public static MoonFragment makeMoonFragment(Moon moon, boolean editable, Planet planet) {
+
+    public static MoonFragment makeMoonFragment(Moon moon , boolean editable , Planet planet) {
         MoonFragment fragment = new MoonFragment();
         Bundle args = new Bundle();
-        args.putSerializable(SectionsPagerAdapter.MOON, moon);
-        args.putBoolean(SectionsPagerAdapter.EDITABLE, editable);
-        args.putSerializable(PLANET, planet);
+        args.putSerializable(SectionsPagerAdapter.MOON , moon);
+        args.putBoolean(SectionsPagerAdapter.EDITABLE , editable);
+        args.putSerializable(PLANET , planet);
         fragment.setArguments(args);
-        return  fragment;
+        return fragment;
     }
 
     private void initSpinner(View root) {
         Spinner sp = root.findViewById(R.id.spinner);
-        if(moon.getMiddleDistance() != null && moon.getMiddleDistance().getUnit() != null)//TODO:To make else with default value assigning
-            switch (moon.getMiddleDistance().getUnit()){
+        if ( moon.getMiddleDistance() != null && moon.getMiddleDistance().getUnit() != null )//TODO:To make else with default value assigning
+            switch (moon.getMiddleDistance().getUnit()) {
                 case Kilometers:
                     sp.setSelection(0);
                     break;
@@ -215,13 +223,12 @@ public class MoonFragment extends Fragment {
     }
 
     //private ArrayAdapter<Moon> adapter;
-    private void initField(View root, @IdRes int id, String value) {
+    private void initField(View root , @IdRes int id , String value) {
         EditText field = root.findViewById(id);
-        if(value != null)
+        if ( value != null )
             field.setText(value);
         field.setEnabled(editable);
     }
-
 
 
 }

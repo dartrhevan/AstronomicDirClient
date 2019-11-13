@@ -2,18 +2,23 @@ package com.example.astronomicdirclient.ui.main;
 
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -44,23 +49,26 @@ import java.util.ArrayList;
 public class PlanetTabFragment extends Fragment {
 
     private View root;
-    private ArrayAdapter<Moon> adapter;
+    private ArrayAdapter <Moon> adapter;
     private MoonFragment moonFragment;
+    private int shift;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         ct = context;
     }
+
     private Context ct;
 
     /*public Planet getPlanet() {
         return planet;
     }*/
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void setPlanet(Planet planet) {
         this.planet = planet;
-        if(planet != null) initializeView(root);
+        if (planet != null) initializeView(root);
     }
 
     private Planet planet;
@@ -73,16 +81,16 @@ public class PlanetTabFragment extends Fragment {
 
     public void initPlanet() {
         //Planet planet = (Planet) this.planet.clone();
-        planet.setType(((CheckBox)root.findViewById(R.id.has_surface)).isChecked() ? PlanetType.Tought : PlanetType.Gas);
-        planet.setHasAtmosphere(((CheckBox)root.findViewById(R.id.has_atm)).isChecked());
-        planet.setName(((EditText)root.findViewById(R.id.name_field)).getText().toString());
-        planet.setGalaxy(((EditText)root.findViewById(R.id.gal_field)).getText().toString());
-        planet.setRadius(Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString()));
-        planet.setTemperature(Integer.parseInt(((EditText)root.findViewById(R.id.temp_field)).getText().toString()));
-        planet.setInventingDate(DateTime.parse(((EditText)root.findViewById(R.id.date_pl_field)).getText().toString()));
+        planet.setType(((CheckBox) root.findViewById(R.id.has_surface)).isChecked() ? PlanetType.Tought : PlanetType.Gas);
+        planet.setHasAtmosphere(((CheckBox) root.findViewById(R.id.has_atm)).isChecked());
+        planet.setName(((EditText) root.findViewById(R.id.name_field)).getText().toString());
+        planet.setGalaxy(((EditText) root.findViewById(R.id.gal_field)).getText().toString());
+        planet.setRadius(Integer.parseInt(((EditText) root.findViewById(R.id.radius_field)).getText().toString()));
+        planet.setTemperature(Integer.parseInt(((EditText) root.findViewById(R.id.temp_field)).getText().toString()));
+        planet.setInventingDate(DateTime.parse(((EditText) root.findViewById(R.id.date_pl_field)).getText().toString()));
         ImageButton img = root.findViewById(R.id.photo);
-        Bitmap bitmap = ((BitmapDrawable)img.getDrawable()).getBitmap();
-        if(bitmap != null) {
+        Bitmap bitmap = ((BitmapDrawable) img.getDrawable()).getBitmap();
+        if (bitmap != null) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
@@ -96,7 +104,7 @@ public class PlanetTabFragment extends Fragment {
     private void initDist(Planet planet) {
         Spinner sp = root.findViewById(R.id.spinner);
         UnitType t = UnitType.Kilometers;
-        switch (sp.getSelectedItemPosition()){
+        switch (sp.getSelectedItemPosition()) {
             case 0:
                 t = UnitType.Kilometers;
                 break;
@@ -107,24 +115,26 @@ public class PlanetTabFragment extends Fragment {
                 t = UnitType.AstronomicUnits;
                 break;
         }
-        int value = Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString());
+        int value = Integer.parseInt(((EditText) root.findViewById(R.id.radius_field)).getText().toString());
         planet.setMiddleDistance(new Distance(value, t));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_planet, container, false);
         this.root = root;
         Bundle args = getArguments();
-        planet = (Planet)args.getSerializable(SectionsPagerAdapter.MODEL);
+        planet = (Planet) args.getSerializable(SectionsPagerAdapter.MODEL);
         editable = args.getBoolean(SectionsPagerAdapter.EDITABLE);
         //starTabFragment = (StarTabFragment)args.getSerializable(SectionsPagerAdapter.FRAGMENT);
-        if(planet == null) planet = new Planet();
+        if (planet == null) planet = new Planet();
         initializeView(root);
         return root;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initializeView(View root) {
 
         initMoonsList(root);
@@ -135,13 +145,13 @@ public class PlanetTabFragment extends Fragment {
         initField(root, R.id.radius_field, Integer.toString(planet.getRadius()));
         initField(root, R.id.dist_field, Integer.toString(planet.getMiddleDistance() != null ?
                 planet.getMiddleDistance().getValue() : 0));
-        initField(root, R.id.date_pl_field, (planet.getInventingDate()!= null ?
+        initField(root, R.id.date_pl_field, (planet.getInventingDate() != null ?
                 planet.getInventingDate() : new DateTime(DateTimeZone.forOffsetHours(5))).toString());
         View but = root.findViewById(R.id.ch_pl_date);
         but.setEnabled(editable);
         initSpinner(root);
         byte[] ph = planet.getPhoto();
-        if(ph == null) ph = new byte[0];
+        if (ph == null) ph = new byte[0];
         ImageButton img = root.findViewById(R.id.photo);
         img.setOnClickListener(v -> {
             OpenFileDialog fileDialog = new OpenFileDialog(ct);
@@ -166,24 +176,25 @@ public class PlanetTabFragment extends Fragment {
     }
 
 
-
     public static PlanetTabFragment makePlanetTabFragment(Planet planet, boolean editable) {
         PlanetTabFragment fragment = new PlanetTabFragment();
         Bundle args = new Bundle();
         args.putSerializable(SectionsPagerAdapter.MODEL, planet);
         args.putBoolean(SectionsPagerAdapter.EDITABLE, editable);
         fragment.setArguments(args);
-        return  fragment;
+        return fragment;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initMoonsList(View root) {
-        ArrayList<Moon> planetList = new ArrayList<>(planet.getMoons());
-        adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
+        ArrayList <Moon> planetList = new ArrayList <>(planet.getMoons());
+        adapter = new ArrayAdapter <>(ct, android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.moons);
         list.setAdapter(adapter);
         list.setOnItemClickListener((parent, view, position, id) -> {
-            AppCompatActivity a = (AppCompatActivity)ct;
-            moonFragment = MoonFragment.makeMoonFragment( planetList.get(position), editable, planet);
+            AppCompatActivity a = (AppCompatActivity) ct;
+            moonFragment = MoonFragment.makeMoonFragment(planetList.get(position), editable, planet);
             int w = getDisplayHeight(a);
             View lay = a.findViewById(R.id.lay);
             lay.setY(w);
@@ -212,6 +223,51 @@ public class PlanetTabFragment extends Fragment {
             alert.show();
             return true;
         });
+        View l = root.findViewById(R.id.moons_list);
+        final GestureDetector gdt = new GestureDetector(new PlanetTabFragment.GestureListener());
+        l.setOnTouchListener((view, event) -> {
+            gdt.onTouchEvent(event);
+            return true;
+        });
+        l.setZ(10f);
+    }
+
+    private void openMoons() {
+        if (shift != 0) return;
+        View l = root.findViewById(R.id.moons_list);
+        shift = (int) Math.round((getView().getHeight() - l.getHeight()) * 0.7);
+        animateHeight(l, shift);
+    }
+
+    private void closeMoons() {
+        View l = root.findViewById(R.id.moons_list);
+        animateHeight(l, -shift);
+        shift = 0;
+    }
+
+
+    private void animateHeight(View v, int newH) {
+        ObjectAnimator animationY = ObjectAnimator.ofInt(v, "minimumHeight", v.getHeight(), v.getHeight() + newH);
+        animationY.setDuration(75);
+        animationY.start();
+    }
+
+    private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                openMoons();
+                return false; // снизу вверх
+            } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                closeMoons();
+                return false; // сверху вниз
+            }
+            return false;
+        }
     }
 
     public void dropMoonFragment() {
@@ -221,12 +277,13 @@ public class PlanetTabFragment extends Fragment {
     public void updateMoon() {
         moonFragment.initMoon();
         //adapter.add(moonFragment.initMoon());
-        ((AppCompatActivity)ct).getSupportFragmentManager().beginTransaction()
+        ((AppCompatActivity) ct).getSupportFragmentManager().beginTransaction()
                 .remove(moonFragment)
                 .commit();
         StarFragment.setIsMoonFragment(false);
         dropMoonFragment();
     }
+
     private int getDisplayHeight(AppCompatActivity act) {
         //DisplayMetrics displaymetrics = act.getResources().getDisplayMetrics();
 // узнаем размеры экрана из класса Display
@@ -235,27 +292,28 @@ public class PlanetTabFragment extends Fragment {
         display.getMetrics(metricsB);
         return metricsB.heightPixels;//displaymetrics.widthPixels;
     }
+
     private void initSpinner(View root) {
         Spinner sp = root.findViewById(R.id.spinner);
-        if(planet.getMiddleDistance() != null && planet.getMiddleDistance().getUnit() != null)//TODO:To make else with default value assigning
-        switch (planet.getMiddleDistance().getUnit()){
-            case Kilometers:
-                sp.setSelection(0);
-                break;
-            case LightYears:
-                sp.setSelection(2);
-                break;
-            case AstronomicUnits:
-                sp.setSelection(1);
-                break;
-        }
+        if (planet.getMiddleDistance() != null && planet.getMiddleDistance().getUnit() != null)//TODO:To make else with default value assigning
+            switch (planet.getMiddleDistance().getUnit()) {
+                case Kilometers:
+                    sp.setSelection(0);
+                    break;
+                case LightYears:
+                    sp.setSelection(2);
+                    break;
+                case AstronomicUnits:
+                    sp.setSelection(1);
+                    break;
+            }
         sp.setEnabled(editable);
     }
 
     //private ArrayAdapter<Moon> adapter;
     private void initField(View root, @IdRes int id, String value) {
         EditText field = root.findViewById(id);
-        if(value != null)
+        if (value != null)
             field.setText(value);
         field.setEnabled(editable);
     }

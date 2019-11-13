@@ -40,12 +40,13 @@ public class StarActivity extends AppCompatActivity ///implements View.OnClickLi
 
     private StarLite starLite;
     private DownloadStarAsync d = new DownloadStarAsync();
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent it = getIntent();
-        starLite = (StarLite)it.getSerializableExtra(MainActivity.STAR_LITE);
+        starLite = (StarLite) it.getSerializableExtra(MainActivity.STAR_LITE);
         d.execute(starLite.getId());
         setContentView(R.layout.activity_star);
         FloatingActionButton fab = findViewById(R.id.exit);
@@ -92,7 +93,9 @@ public class StarActivity extends AppCompatActivity ///implements View.OnClickLi
     }
 
 
-    /**######################################################################**/
+    /**
+     * ######################################################################
+     **/
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void chooseDate(View v) {
         chooseDate(R.id.date_field);
@@ -102,13 +105,13 @@ public class StarActivity extends AppCompatActivity ///implements View.OnClickLi
     private void chooseDate(@IdRes int id) {
         Date d = new Date();
         EditText df = findViewById(id);
-        DatePickerDialog tpd = new DatePickerDialog(this,(view, year, month, dayOfMonth) -> {
+        DatePickerDialog tpd = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
         }, d.getYear(), d.getMonth(), d.getDay());
         tpd.show();
         tpd.setOnDateSetListener((view, year, month, dayOfMonth) -> {
             DatePicker dp = tpd.getDatePicker();
             DateTime date = new DateTime(dp.getYear(), dp.getMonth() + 1,
-                    dp.getDayOfMonth(), 0,0, 0, 0).toDateTime(DateTimeZone.forOffsetHours(5));
+                    dp.getDayOfMonth(), 0, 0, 0, 0).toDateTime(DateTimeZone.forOffsetHours(5));
 
             df.setText(date.toString());
         });
@@ -123,9 +126,12 @@ public class StarActivity extends AppCompatActivity ///implements View.OnClickLi
     public void chooseMoonDate(View v) {
         chooseDate(R.id.date_mn_field);
     }
-    /**######################################################################**/
 
-    private class DownloadStarAsync extends AsyncTask<Integer, Void, Star> {
+    /**
+     * ######################################################################
+     **/
+
+    private class DownloadStarAsync extends AsyncTask <Integer, Void, Star> {
         @Override
         protected Star doInBackground(Integer... id) {
             try {

@@ -63,7 +63,9 @@ public class StarTabFragment extends Fragment {
     private ArrayAdapter<Planet> adapter;
     private int shift;
 
-    public StarTabFragment(){}
+    public StarTabFragment() {
+    }
+
     private PlanetTabFragment planetTabFragment;
 
     @Override
@@ -71,6 +73,7 @@ public class StarTabFragment extends Fragment {
         super.onAttach(context);
         ct = context;
     }
+
     private Context ct;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -79,24 +82,24 @@ public class StarTabFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         Bundle args = getArguments();
-        star = (Star)args.getSerializable(SectionsPagerAdapter.MODEL);
+        star = (Star) args.getSerializable(SectionsPagerAdapter.MODEL);
         editeble = args.getBoolean(SectionsPagerAdapter.EDITABLE);
         View root = inflater.inflate(R.layout.fragment_star, container, false);
         this.root = root;
-        if(star != null) initializeView(root);
+        if (star != null) initializeView(root);
         return root;
     }
 
 
     public Star initStar() {
         star.setName(getName());
-        star.setGalaxy(((EditText)root.findViewById(R.id.gal_field)).getText().toString());
-        star.setRadius(Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString()));
-        star.setTemperature(Integer.parseInt(((EditText)root.findViewById(R.id.temp_field)).getText().toString()));
-        star.setInventingDate(DateTime.parse(((EditText)root.findViewById(R.id.date_field)).getText().toString()));
+        star.setGalaxy(((EditText) root.findViewById(R.id.gal_field)).getText().toString());
+        star.setRadius(Integer.parseInt(((EditText) root.findViewById(R.id.radius_field)).getText().toString()));
+        star.setTemperature(Integer.parseInt(((EditText) root.findViewById(R.id.temp_field)).getText().toString()));
+        star.setInventingDate(DateTime.parse(((EditText) root.findViewById(R.id.date_field)).getText().toString()));
         ImageButton img = root.findViewById(R.id.photo);
-        Bitmap bitmap = ((BitmapDrawable)img.getDrawable()).getBitmap();
-        if(bitmap != null) {
+        Bitmap bitmap = ((BitmapDrawable) img.getDrawable()).getBitmap();
+        if (bitmap != null) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
@@ -109,7 +112,7 @@ public class StarTabFragment extends Fragment {
     private void initDist() {
         Spinner sp = root.findViewById(R.id.spinner);
         UnitType t = UnitType.Kilometers;
-        switch (sp.getSelectedItemPosition()){
+        switch (sp.getSelectedItemPosition()) {
             case 0:
                 t = UnitType.Kilometers;
                 break;
@@ -120,9 +123,10 @@ public class StarTabFragment extends Fragment {
                 t = UnitType.AstronomicUnits;
                 break;
         }
-        int value = Integer.parseInt(((EditText)root.findViewById(R.id.radius_field)).getText().toString());
+        int value = Integer.parseInt(((EditText) root.findViewById(R.id.radius_field)).getText().toString());
         star.setMiddleDistance(new Distance(value, t));
     }
+
     /*public void updatePlanet(Planet pl)
     {
         adapter.add(pl);
@@ -138,9 +142,11 @@ public class StarTabFragment extends Fragment {
         args.putSerializable(SectionsPagerAdapter.MODEL, star);
         args.putBoolean(SectionsPagerAdapter.EDITABLE, editable);
         fragment.setArguments(args);
-        return  fragment;
+        return fragment;
     }
+
     private View root;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initializeView(View root) {
         initPlanetList(root);
@@ -149,14 +155,14 @@ public class StarTabFragment extends Fragment {
         initField(root, R.id.temp_field, Integer.toString(star.getTemperature()));
         initField(root, R.id.radius_field, Integer.toString(star.getRadius()));
         initField(root, R.id.dist_field, Integer.toString(star.getMiddleDistance() != null ?
-                    star.getMiddleDistance().getValue() : 0));
-        initField(root, R.id.date_field, (star.getInventingDate()!= null ?
-                    star.getInventingDate() : new DateTime().toDateTime(DateTimeZone.forOffsetHours(5))).toString());
+                star.getMiddleDistance().getValue() : 0));
+        initField(root, R.id.date_field, (star.getInventingDate() != null ?
+                star.getInventingDate() : new DateTime().toDateTime(DateTimeZone.forOffsetHours(5))).toString());
         View but = root.findViewById(R.id.ch_date);
         but.setEnabled(editeble);
         initSpinner(root);
         byte[] ph = star.getPhoto();
-        if(ph == null) ph = new byte[0];
+        if (ph == null) ph = new byte[0];
         ImageButton img = root.findViewById(R.id.photo);
         img.setOnClickListener(v -> {
             OpenFileDialog fileDialog = new OpenFileDialog(ct);
@@ -182,7 +188,7 @@ public class StarTabFragment extends Fragment {
         list.setAdapter(adapter);
         list.setOnItemClickListener((parent, view, position, id) -> {
             planetTabFragment.setPlanet(adapter.getItem(position));
-            ViewPager viewPager = ((Activity)ct).findViewById(R.id.view_pager);
+            ViewPager viewPager = ((Activity) ct).findViewById(R.id.view_pager);
             viewPager.setCurrentItem(1);
         });
         list.setOnItemLongClickListener((parent, view, position, id) -> {
@@ -202,19 +208,19 @@ public class StarTabFragment extends Fragment {
             return true;
         });
         /**********************************/
+        View l = root.findViewById(R.id.planet_list);
         final GestureDetector gdt = new GestureDetector(new GestureListener());
-        root.findViewById(R.id.planet_list).setOnTouchListener((view, event) -> {
+        l.setOnTouchListener((view, event) -> {
             gdt.onTouchEvent(event);
             return true;
         });
-        View l = root.findViewById(R.id.planet_list);
         l.setZ(10f);
     }
 
     private void openPlanets() {
-        if(shift != 0) return;
+        if (shift != 0) return;
         View l = root.findViewById(R.id.planet_list);
-        shift = (int)Math.round((getView().getHeight() - l.getHeight())* 0.7);
+        shift = (int) Math.round((getView().getHeight() - l.getHeight()) * 0.7);
         animateHeight(l, shift);
     }
 
@@ -233,14 +239,15 @@ public class StarTabFragment extends Fragment {
 
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+            if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
                 openPlanets();
                 return false; // снизу вверх
-            }  else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+            } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
                 closePlanets();
                 return false; // сверху вниз
             }
@@ -250,25 +257,25 @@ public class StarTabFragment extends Fragment {
 
     private void initSpinner(View root) {
         Spinner sp = root.findViewById(R.id.spinner);
-        if(star.getMiddleDistance() != null && star.getMiddleDistance().getUnit() != null)//TODO:To make else with default value assigning
-        switch (star.getMiddleDistance().getUnit()){
-            case Kilometers:
-                sp.setSelection(0);
-                break;
-            case LightYears:
-                sp.setSelection(2);
-                break;
-            case AstronomicUnits:
-                sp.setSelection(1);
-                break;
-        }
+        if (star.getMiddleDistance() != null && star.getMiddleDistance().getUnit() != null)//TODO:To make else with default value assigning
+            switch (star.getMiddleDistance().getUnit()) {
+                case Kilometers:
+                    sp.setSelection(0);
+                    break;
+                case LightYears:
+                    sp.setSelection(2);
+                    break;
+                case AstronomicUnits:
+                    sp.setSelection(1);
+                    break;
+            }
         sp.setEnabled(editeble);
     }
 
     //private ArrayAdapter<Planet> adapter;
     private void initField(View root, @IdRes int id, String value) {
         EditText field = root.findViewById(id);
-        if(value != null)
+        if (value != null)
             field.setText(value);
         field.setEnabled(editeble);
     }
@@ -279,6 +286,6 @@ public class StarTabFragment extends Fragment {
     }
 
     public String getName() {
-        return ((EditText)root.findViewById(R.id.name_field)).getText().toString();
+        return ((EditText) root.findViewById(R.id.name_field)).getText().toString();
     }
 }

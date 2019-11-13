@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     private ListView list;
     private AppCompatActivity activity = this;
     private ArrayAdapter<com.example.astronomicdirclient.Model.StarLite> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         DownloadStarListAsync d = new DownloadStarListAsync();
@@ -58,7 +59,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         View viewById = findViewById(R.id.list_page);
         list = viewById.findViewById(R.id.star_list);
-        list.setOnItemClickListener((a, v, i, l) ->{});
+        list.setOnItemClickListener((a, v, i, l) -> {
+        });
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         currentPage = findViewById(R.id.main_page);
         list.setOnItemClickListener((parent, view, position, id) -> {
-            Intent it= new Intent(activity, StarActivity.class);
+            Intent it = new Intent(activity, StarActivity.class);
             it.putExtra(STAR_LITE, adapter.getItem(position));
             startActivity(it);
         });
@@ -159,13 +161,13 @@ public class MainActivity extends AppCompatActivity
     private void chooseDate(@IdRes int id) {
         Date d = new Date();
         EditText df = findViewById(id);
-        DatePickerDialog tpd = new DatePickerDialog(this,(view, year, month, dayOfMonth) -> {
+        DatePickerDialog tpd = new DatePickerDialog(this, (view, year, month, dayOfMonth) -> {
         }, d.getYear(), d.getMonth(), d.getDay());
         tpd.show();
         tpd.setOnDateSetListener((view, year, month, dayOfMonth) -> {
             DatePicker dp = tpd.getDatePicker();
             DateTime date = new DateTime(dp.getYear(), dp.getMonth() + 1,
-                    dp.getDayOfMonth(), 0,0, 0, 0).toDateTime(DateTimeZone.forOffsetHours(5));
+                    dp.getDayOfMonth(), 0, 0, 0, 0).toDateTime(DateTimeZone.forOffsetHours(5));
             df.setText(date.toString());
         });
     }
@@ -204,21 +206,23 @@ public class MainActivity extends AppCompatActivity
 
     private final Map<Integer, Integer> itemToPage = new HashMap<>();
     private View currentPage;// = findViewById(R.id.main);
+
     private void setCurrentPage(int id) {
-        if(!itemToPage.containsKey(id)) return;
+        if (!itemToPage.containsKey(id)) return;
         View new_page = findViewById(itemToPage.get(id));
-        if(new_page.equals(currentPage)) return;
+        if (new_page.equals(currentPage)) return;
         currentPage.setVisibility(View.INVISIBLE);
         new_page.setVisibility(View.VISIBLE);
         currentPage = new_page;
     }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         setCurrentPage(id);
-        if(id == R.id.list && adapter.getCount() == 0)
+        if (id == R.id.list && adapter.getCount() == 0)
             Toast.makeText(activity, "Failed to load stars!", Toast.LENGTH_SHORT).show();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

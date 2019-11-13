@@ -38,14 +38,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serial
 
     private PlanetTabFragment planetTabFragment;// = new PlanetTabFragment();
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm, @Nullable Star star, boolean editable) {
+    public SectionsPagerAdapter(Context context , FragmentManager fm , @Nullable Star star , boolean editable) {
         super(fm);
         this.star = star;
         mContext = context;
         this.editable = editable;
-        starTabFragment = StarTabFragment.makeStarTabFragment(star, editable);
+        starTabFragment = StarTabFragment.makeStarTabFragment(star , editable);
         planetTabFragment = PlanetTabFragment.makePlanetTabFragment((star.getPlanets().size() > 0 ?
-                (Planet)star.getPlanets().toArray()[0] : null), editable);
+                ( Planet ) star.getPlanets().toArray()[0] : null) , editable);
     }
 
     @Override
@@ -56,8 +56,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serial
         if (position == 0) {
             fragment = starTabFragment;
             starTabFragment.setPlanetTabFragment(planetTabFragment);
-        }
-        else {
+        } else {
             fragment = planetTabFragment;
             planetTabFragment.setStarTabFragment(starTabFragment);
         }
@@ -69,6 +68,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serial
     public CharSequence getPageTitle(int position) {
         return position == 0 ? "Star" : "Planet";
     }
+
     @Override
     public int getCount() {
         // Show 2 total pages.
