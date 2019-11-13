@@ -42,6 +42,7 @@ import org.joda.time.DateTimeZone;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,7 +60,7 @@ public class PlanetTabFragment extends Fragment {
         return planet;
     }*/
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setPlanet(Planet planet) {
         this.planet = planet;
         if (planet != null) initializeView(root);
@@ -113,7 +114,7 @@ public class PlanetTabFragment extends Fragment {
         planet.setMiddleDistance(new Distance(value, t));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -129,7 +130,7 @@ public class PlanetTabFragment extends Fragment {
         return root;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void initializeView(View root) {
 
         initMoonsList(root);
@@ -160,14 +161,6 @@ public class PlanetTabFragment extends Fragment {
         tcb.setChecked(planet.getType() == PlanetType.Tought);
         acb.setEnabled(editable);
         tcb.setEnabled(editable);
-        Button add = root.findViewById(R.id.addMoonBut);
-        add.setOnClickListener(v -> {
-            Moon pl = new Moon();
-            pl.setName("New Moon");
-            planet.getMoons().add(pl);
-            //pl.getPlanets().add(pl);
-            adapter.add(pl);
-        });
         root.findViewById(R.id.lay).setZ(15f);
     }
 
@@ -181,14 +174,14 @@ public class PlanetTabFragment extends Fragment {
         return fragment;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("ClickableViewAccessibility")
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initMoonsList(View root) {
         ArrayList <Moon> planetList = new ArrayList <>(planet.getMoons());
         adapter = new ArrayAdapter <>(activity , android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.moons);
         list.setAdapter(adapter);
-        list.setOnItemClickListener((parent, view, position, id) -> {
+        Consumer <Integer> onItemClick = position -> {
             AppCompatActivity a = (AppCompatActivity) activity;
             moonFragment = MoonFragment.makeMoonFragment(planetList.get(position), editable, planet);
             int w = getDisplayHeight(a);
@@ -202,7 +195,8 @@ public class PlanetTabFragment extends Fragment {
             ObjectAnimator animationY = ObjectAnimator.ofFloat(lay, "Y", lay.getY(), 0);
             animationY.setDuration(325);
             animationY.start();
-        });
+        };
+        list.setOnItemClickListener((parent, view, position, id) -> onItemClick.accept(position));
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle("Deleting of moon")
@@ -219,8 +213,22 @@ public class PlanetTabFragment extends Fragment {
             alert.show();
             return true;
         });
+        Button add = root.findViewById(R.id.addMoonBut);
+        add.setOnClickListener(v -> {
+            Moon pl = new Moon();
+            pl.setName("New Moon");
+            planet.getMoons().add(pl);
+            adapter.add(pl);
+            onItemClick.accept(adapter.getCount() - 1);
+        });
+        setAnimation(root);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void setAnimation(View root) {
         View l = root.findViewById(R.id.moons_list);
-        final GestureDetector gdt = new GestureDetector(new PlanetTabFragment.GestureListener());
+        final GestureDetector gdt = new GestureDetector(new GestureListener());
         l.setOnTouchListener((view, event) -> {
             gdt.onTouchEvent(event);
             return true;
@@ -278,6 +286,7 @@ public class PlanetTabFragment extends Fragment {
                 .commit();
         StarFragment.setIsMoonFragment(false);
         dropMoonFragment();
+        adapter.notifyDataSetInvalidated();
     }
 
     private int getDisplayHeight(AppCompatActivity act) {

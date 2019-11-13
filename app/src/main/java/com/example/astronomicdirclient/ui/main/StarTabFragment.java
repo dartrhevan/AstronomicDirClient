@@ -51,6 +51,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.function.Consumer;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -76,7 +77,8 @@ public class StarTabFragment extends Fragment {
 
     private Context ct;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
@@ -127,12 +129,10 @@ public class StarTabFragment extends Fragment {
         star.setMiddleDistance(new Distance(value, t));
     }
 
-    /*public void updatePlanet(Planet pl)
-    {
-        adapter.add(pl);
-    }*/
     public void updatePlanet() {
         planetTabFragment.initPlanet();
+        adapter.notifyDataSetInvalidated();
+        //Planet planets = adapter.getItem(0);
     }
 
 
@@ -147,7 +147,7 @@ public class StarTabFragment extends Fragment {
 
     private View root;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void initializeView(View root) {
         initPlanetList(root);
         initField(root, R.id.name_field, star.getName());
@@ -170,27 +170,21 @@ public class StarTabFragment extends Fragment {
             fileDialog.show();
         });
         img.setImageBitmap(BitmapFactory.decodeByteArray(ph, 0, ph.length));
-        Button add = root.findViewById(R.id.addPlanetBut);
-        add.setOnClickListener(v -> {
-            Planet pl = new Planet();
-            pl.setName("New Planet");
-            star.getPlanets().add(pl);
-            adapter.add(pl);
-        });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("ClickableViewAccessibility")
     private void initPlanetList(View root) {
         ArrayList<Planet> planetList = new ArrayList<>(star.getPlanets());
         adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.planets);
         list.setAdapter(adapter);
-        list.setOnItemClickListener((parent, view, position, id) -> {
+        Consumer<Integer> onItemClick = position ->{
             planetTabFragment.setPlanet(adapter.getItem(position));
             ViewPager viewPager = ((Activity) ct).findViewById(R.id.view_pager);
             viewPager.setCurrentItem(1);
-        });
+        };
+        list.setOnItemClickListener((parent, view, position, id) -> onItemClick.accept(position));
         list.setOnItemLongClickListener((parent, view, position, id) -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(ct);
             builder.setTitle("Deleting of planet")
@@ -207,7 +201,20 @@ public class StarTabFragment extends Fragment {
             alert.show();
             return true;
         });
-        /**********************************/
+        Button add = root.findViewById(R.id.addPlanetBut);
+        add.setOnClickListener(v -> {
+            Planet pl = new Planet();
+            pl.setName("New Planet");
+            star.getPlanets().add(pl);
+            adapter.add(pl);
+                onItemClick.accept(adapter.getCount() - 1);
+        });
+        setAnimation(root);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void setAnimation(View root) {
         View l = root.findViewById(R.id.planet_list);
         final GestureDetector gdt = new GestureDetector(new GestureListener());
         l.setOnTouchListener((view, event) -> {
