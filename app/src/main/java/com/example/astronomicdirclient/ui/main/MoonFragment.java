@@ -2,7 +2,6 @@ package com.example.astronomicdirclient.ui.main;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,18 +16,14 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.astronomicdirclient.Model.Distance;
 import com.example.astronomicdirclient.Model.Moon;
 import com.example.astronomicdirclient.Model.Planet;
-import com.example.astronomicdirclient.Model.PlanetType;
 import com.example.astronomicdirclient.Model.UnitType;
 import com.example.astronomicdirclient.R;
 import com.example.astronomicdirclient.StarFragment;
@@ -37,8 +32,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Date;
 
 public class MoonFragment extends Fragment {
 
@@ -62,13 +55,13 @@ public class MoonFragment extends Fragment {
     }
     private Context ct;
 
-    private int getDisplayWidth(AppCompatActivity act) {
+    private int getDisplayHeight(AppCompatActivity act) {
         /**DisplayMetrics displaymetrics = act.getResources().getDisplayMetrics();**/
 // узнаем размеры экрана из класса Display
         Display display = act.getWindowManager().getDefaultDisplay();
         DisplayMetrics metricsB = new DisplayMetrics();
         display.getMetrics(metricsB);
-        return metricsB.widthPixels;//displaymetrics.widthPixels;
+        return metricsB.heightPixels;//displaymetrics.widthPixels;
     }
     private Moon moon;
     private boolean editable;
@@ -83,10 +76,10 @@ public class MoonFragment extends Fragment {
         {
             Fragment fr = this;
             AppCompatActivity a = (AppCompatActivity)ct;
-            int w = getDisplayWidth(a);
+            int w = getDisplayHeight(a);
             View lay = a.findViewById(R.id.lay);
-            ObjectAnimator animationY = ObjectAnimator.ofFloat(lay, "Y", lay.getY(), w * 1.4f);
-            animationY.setDuration(375);
+            ObjectAnimator animationY = ObjectAnimator.ofFloat(lay, "Y", lay.getY(), w);
+            animationY.setDuration(275);
             animationY.start();
             animationY.addListener(new Animator.AnimatorListener() {
                 @Override

@@ -184,7 +184,7 @@ public class PlanetTabFragment extends Fragment {
         list.setOnItemClickListener((parent, view, position, id) -> {
             AppCompatActivity a = (AppCompatActivity)ct;
             moonFragment = MoonFragment.makeMoonFragment( planetList.get(position), editable, planet);
-            int w = getDisplayWidth(a);
+            int w = getDisplayHeight(a);
             View lay = a.findViewById(R.id.lay);
             lay.setY(w);
             a.getSupportFragmentManager().beginTransaction()
@@ -193,7 +193,7 @@ public class PlanetTabFragment extends Fragment {
             moonFragment.setPlanet(planet);
             StarFragment.setIsMoonFragment(true);
             ObjectAnimator animationY = ObjectAnimator.ofFloat(lay, "Y", lay.getY(), 0);
-            animationY.setDuration(425);
+            animationY.setDuration(325);
             animationY.start();
         });
         list.setOnItemLongClickListener((parent, view, position, id) -> {
@@ -227,13 +227,13 @@ public class PlanetTabFragment extends Fragment {
         StarFragment.setIsMoonFragment(false);
         dropMoonFragment();
     }
-    private int getDisplayWidth(AppCompatActivity act) {
+    private int getDisplayHeight(AppCompatActivity act) {
         //DisplayMetrics displaymetrics = act.getResources().getDisplayMetrics();
 // узнаем размеры экрана из класса Display
         Display display = act.getWindowManager().getDefaultDisplay();
         DisplayMetrics metricsB = new DisplayMetrics();
         display.getMetrics(metricsB);
-        return metricsB.widthPixels;//displaymetrics.widthPixels;
+        return metricsB.heightPixels;//displaymetrics.widthPixels;
     }
     private void initSpinner(View root) {
         Spinner sp = root.findViewById(R.id.spinner);

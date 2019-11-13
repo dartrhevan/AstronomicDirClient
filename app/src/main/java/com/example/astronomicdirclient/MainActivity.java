@@ -20,6 +20,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity
         DownloadStarListAsync d = new DownloadStarListAsync();
         d.execute();
         super.onCreate(savedInstanceState);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //getSupportActionBar().hide();
         initMap();
         setContentView(R.layout.activity_main);
         View viewById = findViewById(R.id.list_page);

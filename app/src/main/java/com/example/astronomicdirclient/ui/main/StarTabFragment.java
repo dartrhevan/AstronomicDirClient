@@ -1,5 +1,6 @@
 package com.example.astronomicdirclient.ui.main;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -7,11 +8,18 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.annotation.NonNull;
@@ -21,8 +29,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.example.astronomicdirclient.Model.Distance;
@@ -59,6 +69,7 @@ public class StarTabFragment extends Fragment {
     }
     private Context ct;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
@@ -126,6 +137,7 @@ public class StarTabFragment extends Fragment {
         return  fragment;
     }
     private View root;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initializeView(View root) {
         initPlanetList(root);
         initField(root, R.id.name_field, star.getName());
@@ -157,6 +169,8 @@ public class StarTabFragment extends Fragment {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("ClickableViewAccessibility")
     private void initPlanetList(View root) {
         ArrayList<Planet> planetList = new ArrayList<>(star.getPlanets());
         adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
@@ -183,6 +197,73 @@ public class StarTabFragment extends Fragment {
             alert.show();
             return true;
         });
+        /**********************************/
+        final GestureDetector gdt = new GestureDetector(new GestureListener());
+        root.findViewById(R.id.planet_list).setOnTouchListener((view, event) -> {
+            gdt.onTouchEvent(event);
+            return true;
+        });
+
+        View l = root.findViewById(R.id.planet_list);
+        //View l = root.findViewById(R.id.planets_layout);
+        l.setZ(10f);
+    }
+
+    private void openPlanets() {
+        /*View list = root.findViewById(R.id.planet_list);
+        View form = root.findViewById(R.id.star_form);
+        //form.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
+        list.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0f));*/
+
+        View l = root.findViewById(R.id.planet_list);
+        int shift = (int)Math.round((getView().getHeight() - l.getHeight())* 0.5);
+        //View l = root.findViewById(R.id.planets_layout);
+        //l.setY(-500);
+        l.setTranslationY(-shift);
+        l.setMinimumHeight(l.getHeight() + shift);
+    }
+/*
+    private int getDisplayHeight(Activity act) {
+        /**DisplayMetrics displaymetrics = act.getResources().getDisplayMetrics();**
+// узнаем размеры экрана из класса Display
+        Display display = act.getWindowManager().getDefaultDisplay();
+        DisplayMetrics metricsB = new DisplayMetrics();
+        display.getMetrics(metricsB);
+        return metricsB.heightPixels;//displaymetrics.widthPixels;
+    }*/
+
+    private void closePlanets() {
+        /*View list = root.findViewById(R.id.planet_list);
+        View form = root.findViewById(R.id.star_form);
+        //form.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.9f));
+        list.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.1f));
+    */
+        View l = root.findViewById(R.id.planet_list);
+        //View l = root.findViewById(R.id.planets_layout);
+        //View f = root.findViewById(R.id.star_form);
+        //l.setY(f.getY() + f.getHeight());
+
+        int shift = (int)Math.round((getView().getHeight() - l.getHeight()) * 0.5);
+        l.setTranslationY(0);
+        l.setMinimumHeight(l.getHeight() - shift);
+    }
+
+
+    private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                openPlanets();
+                return false; // снизу вверх
+            }  else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+                closePlanets();
+                return false; // сверху вниз
+            }
+            return false;
+        }
     }
 
     private void initSpinner(View root) {
