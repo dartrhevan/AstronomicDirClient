@@ -3,8 +3,8 @@ package com.example.astronomicdirclient.ui.main;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -53,13 +53,7 @@ public class PlanetTabFragment extends Fragment {
     private MoonFragment moonFragment;
     private int shift;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        ct = context;
-    }
-
-    private Context ct;
+    private Activity activity;
 
     /*public Planet getPlanet() {
         return planet;
@@ -124,6 +118,7 @@ public class PlanetTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_planet, container, false);
+        activity = getActivity();
         this.root = root;
         Bundle args = getArguments();
         planet = (Planet) args.getSerializable(SectionsPagerAdapter.MODEL);
@@ -154,7 +149,7 @@ public class PlanetTabFragment extends Fragment {
         if (ph == null) ph = new byte[0];
         ImageButton img = root.findViewById(R.id.photo);
         img.setOnClickListener(v -> {
-            OpenFileDialog fileDialog = new OpenFileDialog(ct);
+            OpenFileDialog fileDialog = new OpenFileDialog(activity);
             fileDialog.setOpenDialogListener(s -> img.setImageBitmap(BitmapFactory.decodeFile(s)));
             fileDialog.show();
         });
@@ -173,6 +168,7 @@ public class PlanetTabFragment extends Fragment {
             //pl.getPlanets().add(pl);
             adapter.add(pl);
         });
+        root.findViewById(R.id.lay).setZ(15f);
     }
 
 
@@ -189,11 +185,11 @@ public class PlanetTabFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initMoonsList(View root) {
         ArrayList <Moon> planetList = new ArrayList <>(planet.getMoons());
-        adapter = new ArrayAdapter <>(ct, android.R.layout.simple_list_item_1, planetList);
+        adapter = new ArrayAdapter <>(activity , android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.moons);
         list.setAdapter(adapter);
         list.setOnItemClickListener((parent, view, position, id) -> {
-            AppCompatActivity a = (AppCompatActivity) ct;
+            AppCompatActivity a = (AppCompatActivity) activity;
             moonFragment = MoonFragment.makeMoonFragment(planetList.get(position), editable, planet);
             int w = getDisplayHeight(a);
             View lay = a.findViewById(R.id.lay);
@@ -208,7 +204,7 @@ public class PlanetTabFragment extends Fragment {
             animationY.start();
         });
         list.setOnItemLongClickListener((parent, view, position, id) -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ct);
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle("Deleting of moon")
                     .setMessage("Are you sure you want to delete?")
                     .setCancelable(false)
@@ -277,7 +273,7 @@ public class PlanetTabFragment extends Fragment {
     public void updateMoon() {
         moonFragment.initMoon();
         //adapter.add(moonFragment.initMoon());
-        ((AppCompatActivity) ct).getSupportFragmentManager().beginTransaction()
+        ((AppCompatActivity) activity).getSupportFragmentManager().beginTransaction()
                 .remove(moonFragment)
                 .commit();
         StarFragment.setIsMoonFragment(false);
