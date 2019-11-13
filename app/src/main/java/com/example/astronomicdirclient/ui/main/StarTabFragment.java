@@ -1,5 +1,7 @@
 package com.example.astronomicdirclient.ui.main;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,6 +42,7 @@ import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.Star;
 import com.example.astronomicdirclient.Model.UnitType;
 import com.example.astronomicdirclient.R;
+import com.example.astronomicdirclient.StarFragment;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -58,6 +61,7 @@ public class StarTabFragment extends Fragment {
     private Star star;
     private boolean editeble;
     private ArrayAdapter<Planet> adapter;
+    private int shift;
 
     public StarTabFragment(){}
     private PlanetTabFragment planetTabFragment;
@@ -203,51 +207,29 @@ public class StarTabFragment extends Fragment {
             gdt.onTouchEvent(event);
             return true;
         });
-
         View l = root.findViewById(R.id.planet_list);
-        //View l = root.findViewById(R.id.planets_layout);
         l.setZ(10f);
     }
 
     private void openPlanets() {
-        /*View list = root.findViewById(R.id.planet_list);
-        View form = root.findViewById(R.id.star_form);
-        //form.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
-        list.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0f));*/
-
+        if(shift != 0) return;
         View l = root.findViewById(R.id.planet_list);
-        int shift = (int)Math.round((getView().getHeight() - l.getHeight())* 0.5);
-        //View l = root.findViewById(R.id.planets_layout);
-        //l.setY(-500);
-        l.setTranslationY(-shift);
-        l.setMinimumHeight(l.getHeight() + shift);
+        shift = (int)Math.round((getView().getHeight() - l.getHeight())* 0.7);
+        animateHeight(l, shift);
     }
-/*
-    private int getDisplayHeight(Activity act) {
-        /**DisplayMetrics displaymetrics = act.getResources().getDisplayMetrics();**
-// узнаем размеры экрана из класса Display
-        Display display = act.getWindowManager().getDefaultDisplay();
-        DisplayMetrics metricsB = new DisplayMetrics();
-        display.getMetrics(metricsB);
-        return metricsB.heightPixels;//displaymetrics.widthPixels;
-    }*/
 
     private void closePlanets() {
-        /*View list = root.findViewById(R.id.planet_list);
-        View form = root.findViewById(R.id.star_form);
-        //form.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.9f));
-        list.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.1f));
-    */
         View l = root.findViewById(R.id.planet_list);
-        //View l = root.findViewById(R.id.planets_layout);
-        //View f = root.findViewById(R.id.star_form);
-        //l.setY(f.getY() + f.getHeight());
-
-        int shift = (int)Math.round((getView().getHeight() - l.getHeight()) * 0.5);
-        l.setTranslationY(0);
-        l.setMinimumHeight(l.getHeight() - shift);
+        animateHeight(l, -shift);
+        shift = 0;
     }
 
+
+    private void animateHeight(View v, int newH) {
+        ObjectAnimator animationY = ObjectAnimator.ofInt(v, "minimumHeight", v.getHeight(), v.getHeight() + newH);
+        animationY.setDuration(75);
+        animationY.start();
+    }
 
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;

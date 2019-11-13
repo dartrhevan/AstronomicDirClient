@@ -79,7 +79,7 @@ public class MoonFragment extends Fragment {
             int w = getDisplayHeight(a);
             View lay = a.findViewById(R.id.lay);
             ObjectAnimator animationY = ObjectAnimator.ofFloat(lay, "Y", lay.getY(), w);
-            animationY.setDuration(275);
+            animationY.setDuration(230);
             animationY.start();
             animationY.addListener(new Animator.AnimatorListener() {
                 @Override
