@@ -12,6 +12,8 @@ import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
 
+import com.example.astronomicdirclient.R;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.*;
@@ -122,10 +124,12 @@ public class OpenFileDialog extends AlertDialog.Builder {
             File tempFile = new File(String.format("%s/%s", file.getPath(), fileName));
             return tempFile.isDirectory();
         };
+
         return this;
     }
 
     public OpenFileDialog setOpenDialogListener(OpenDialogListener listener) {
+
         this.listener = listener;
         return this;
     }
