@@ -1,12 +1,9 @@
 package com.example.astronomicdirclient.ui.main;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,11 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,27 +23,20 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TableRow;
-import android.widget.Toast;
 
 import com.example.astronomicdirclient.Model.Distance;
 import com.example.astronomicdirclient.Model.Planet;
 import com.example.astronomicdirclient.Model.Star;
 import com.example.astronomicdirclient.Model.UnitType;
 import com.example.astronomicdirclient.R;
-import com.example.astronomicdirclient.StarFragment;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.TimeZone;
 import java.util.function.Consumer;
 
 /**
@@ -69,13 +55,7 @@ public class StarTabFragment extends Fragment {
 
     private PlanetTabFragment planetTabFragment;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        ct = context;
-    }
-
-    private Context ct;
+    private Activity activity;
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -84,6 +64,7 @@ public class StarTabFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         Bundle args = getArguments();
+        activity = getActivity();
         star = (Star) args.getSerializable(SectionsPagerAdapter.MODEL);
         editeble = args.getBoolean(SectionsPagerAdapter.EDITABLE);
         View root = inflater.inflate(R.layout.fragment_star, container, false);
@@ -157,7 +138,7 @@ public class StarTabFragment extends Fragment {
         initField(root, R.id.dist_field, Integer.toString(star.getMiddleDistance() != null ?
                 star.getMiddleDistance().getValue() : 0));
         initField(root, R.id.date_field, (star.getInventingDate() != null ?
-                star.getInventingDate() : new DateTime().toDateTime(DateTimeZone.forOffsetHours(5))).toString());
+                star.getInventingDate().toDateTime(DateTimeZone.forOffsetHours(5)) : new DateTime().toDateTime().toDateTime(DateTimeZone.forOffsetHours(5))).toString());
         View but = root.findViewById(R.id.ch_date);
         but.setEnabled(editeble);
         initSpinner(root);
@@ -165,7 +146,7 @@ public class StarTabFragment extends Fragment {
         if (ph == null) ph = new byte[0];
         ImageButton img = root.findViewById(R.id.photo);
         img.setOnClickListener(v -> {
-            OpenFileDialog fileDialog = new OpenFileDialog(ct);
+            OpenFileDialog fileDialog = new OpenFileDialog(activity);
             fileDialog.setOpenDialogListener(s -> img.setImageBitmap(BitmapFactory.decodeFile(s)));
             fileDialog.show();
         });
@@ -176,17 +157,17 @@ public class StarTabFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     private void initPlanetList(View root) {
         ArrayList<Planet> planetList = new ArrayList<>(star.getPlanets());
-        adapter = new ArrayAdapter<>(ct, android.R.layout.simple_list_item_1, planetList);
+        adapter = new ArrayAdapter<>(activity , android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.planets);
         list.setAdapter(adapter);
         Consumer<Integer> onItemClick = position ->{
             planetTabFragment.setPlanet(adapter.getItem(position));
-            ViewPager viewPager = ((Activity) ct).findViewById(R.id.view_pager);
+            ViewPager viewPager = ((Activity) activity).findViewById(R.id.view_pager);
             viewPager.setCurrentItem(1);
         };
         list.setOnItemClickListener((parent, view, position, id) -> onItemClick.accept(position));
         list.setOnItemLongClickListener((parent, view, position, id) -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ct);
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setTitle("Deleting of planet")
                     .setMessage("Are you sure you want to delete?")
                     .setCancelable(false)

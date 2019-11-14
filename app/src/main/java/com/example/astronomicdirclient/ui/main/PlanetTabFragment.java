@@ -142,7 +142,7 @@ public class PlanetTabFragment extends Fragment {
         initField(root, R.id.dist_field, Integer.toString(planet.getMiddleDistance() != null ?
                 planet.getMiddleDistance().getValue() : 0));
         initField(root, R.id.date_pl_field, (planet.getInventingDate() != null ?
-                planet.getInventingDate() : new DateTime(DateTimeZone.forOffsetHours(5))).toString());
+                planet.getInventingDate().toDateTime(DateTimeZone.forOffsetHours(5)) : new DateTime().toDateTime(DateTimeZone.forOffsetHours(5))).toString());
         View but = root.findViewById(R.id.ch_pl_date);
         but.setEnabled(editable);
         initSpinner(root);

@@ -1,5 +1,8 @@
 package com.example.astronomicdirclient;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -50,11 +53,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DownloadStarListAsync d = new DownloadStarListAsync();
-        d.execute();
+        update();
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //getSupportActionBar().hide();
         initMap();
         setContentView(R.layout.activity_main);
         View viewById = findViewById(R.id.list_page);
@@ -96,6 +96,34 @@ public class MainActivity extends AppCompatActivity
             alert.show();
             return true;
         });
+        View upbut = findViewById(R.id.update);
+        anim = ObjectAnimator.ofFloat(upbut , "rotation", 0, 360);
+        anim.setDuration(250);
+        anim.setRepeatMode(ValueAnimator.RESTART);
+        anim.setRepeatCount(4);
+        anim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {}
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                upbut.setRotation(0);
+            }
+            @Override
+            public void onAnimationCancel(Animator animation) {}
+            @Override
+            public void onAnimationRepeat(Animator animation) {}
+        });
+    }
+
+    private void update() {
+        DownloadStarListAsync d = new DownloadStarListAsync();
+        d.execute();
+    }
+
+    private ObjectAnimator anim;// = ObjectAnimator.ofFloat(findViewById(R.id.update), "rotation", 0, 360);
+    public void onUpdate(View view) {
+        anim.start();
+        update();
     }
 
     private class DeleteStarAsync extends AsyncTask<Integer, Void, String> {
@@ -139,6 +167,11 @@ public class MainActivity extends AppCompatActivity
             adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1,
                     stars);
             list.setAdapter(adapter);
+            Snackbar.make(MainActivity.this.findViewById(R.id.list_page),
+            adapter.getCount() == 0 ? "Failed to load stars!" : "Successful loading", Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(activity, "Failed to load stars!", Toast.LENGTH_SHORT).show();
+            if(anim.isRunning())
+                anim.cancel();
         }
     }
 
@@ -221,9 +254,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        setCurrentPage(id);
+        setCurrentPage(id);/*
         if (id == R.id.list && adapter.getCount() == 0)
-            Toast.makeText(activity, "Failed to load stars!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Failed to load stars!", Toast.LENGTH_SHORT).show();*/
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

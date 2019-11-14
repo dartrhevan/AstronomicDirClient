@@ -2,7 +2,7 @@ package com.example.astronomicdirclient.ui.main;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -47,14 +47,14 @@ public class MoonFragment extends Fragment {
     }
 
     private View root;
-
+/*
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        ct = context;
-    }
+        activity = context;
+    }*/
 
-    private Context ct;
+    private Activity activity;
 
     private int getDisplayHeight(AppCompatActivity act) {
         /**DisplayMetrics displaymetrics = act.getResources().getDisplayMetrics();**/
@@ -78,7 +78,8 @@ public class MoonFragment extends Fragment {
         fab.setOnClickListener(view ->
         {
             Fragment fr = this;
-            AppCompatActivity a = ( AppCompatActivity ) ct;
+            activity = getActivity();
+            AppCompatActivity a = ( AppCompatActivity ) activity;
             int w = getDisplayHeight(a);
             View lay = a.findViewById(R.id.lay);
             ObjectAnimator animationY = ObjectAnimator.ofFloat(lay , "Y" , lay.getY() , w);
@@ -174,7 +175,7 @@ public class MoonFragment extends Fragment {
         initField(root , R.id.dist_field , Integer.toString(moon.getMiddleDistance() != null ?
                 moon.getMiddleDistance().getValue() : 0));
         initField(root , R.id.date_mn_field , (moon.getInventingDate() != null ?
-                moon.getInventingDate() : new DateTime(DateTimeZone.forOffsetHours(5))).toString());
+                moon.getInventingDate().toDateTime(DateTimeZone.forOffsetHours(5)) : new DateTime().toDateTime(DateTimeZone.forOffsetHours(5))).toString());
         View but = root.findViewById(R.id.ch_mn_date);
         but.setEnabled(editable);
         initSpinner(root);
@@ -184,7 +185,7 @@ public class MoonFragment extends Fragment {
         Bitmap bm = BitmapFactory.decodeByteArray(ph , 0 , ph.length);
         img.setImageBitmap(bm);
         img.setOnClickListener(v -> {
-            OpenFileDialog fileDialog = new OpenFileDialog(ct);
+            OpenFileDialog fileDialog = new OpenFileDialog(activity);
             fileDialog.setOpenDialogListener(s -> img.setImageBitmap(BitmapFactory.decodeFile(s)));
             fileDialog.show();
         });
