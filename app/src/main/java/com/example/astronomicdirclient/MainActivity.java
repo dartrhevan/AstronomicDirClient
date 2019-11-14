@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.Window;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -63,8 +64,9 @@ public class MainActivity extends AppCompatActivity
         });
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> Toast.makeText(this, "Toast", Toast.LENGTH_LONG));
+        WebView browser=( WebView )findViewById(R.id.dens_anim);
+        browser.getSettings().setJavaScriptEnabled(true);
+        browser.loadUrl("https://nordennavic.github.io/");
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -88,7 +90,6 @@ public class MainActivity extends AppCompatActivity
                         DeleteStarAsync del = new DeleteStarAsync();
                         del.execute(st.getId());
                         adapter.remove(st);
-
                     })
                     .setNegativeButton("No",
                             (dialog, id1) -> dialog.cancel());
@@ -96,9 +97,13 @@ public class MainActivity extends AppCompatActivity
             alert.show();
             return true;
         });
+        initUpButton();
+    }
+
+    private void initUpButton() {
         View upbut = findViewById(R.id.update);
         anim = ObjectAnimator.ofFloat(upbut , "rotation", 0, 360);
-        anim.setDuration(250);
+        anim.setDuration(500);
         anim.setRepeatMode(ValueAnimator.RESTART);
         anim.setRepeatCount(4);
         anim.addListener(new Animator.AnimatorListener() {
@@ -222,15 +227,18 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            View info = findViewById(R.id.info);
+            info.setZ(10);
+            info.setVisibility(info.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
             return true;
         }
 

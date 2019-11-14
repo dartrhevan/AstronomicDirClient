@@ -20,10 +20,10 @@
 
         <Button
             android:id="@+id/update"
-            android:onClick="onUpdate"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@android:drawable/ic_menu_rotate" />
+            android:background="@android:drawable/stat_notify_sync_noanim"
+            android:onClick="onUpdate" />
     </LinearLayout>
     <ListView
         android:id="@+id/star_list"
