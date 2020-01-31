@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:gravity="center">
+        <shape android:shape="oval" >
+            <size android:height="50dp" android:width="50dp" />
+            <solid android:color="#060677" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/ic_star_black_24dp" android:top="10dp" android:left="30dp" android:bottom="30dp"/>
+    <item android:drawable="@drawable/ic_star_black_24dp" android:gravity="center"/>
+
+    <item android:drawable="@drawable/ic_star_black_24dp" android:top="26dp" android:left="26dp" android:width="24dp" android:height="24dp"/>
+</layer-list>
