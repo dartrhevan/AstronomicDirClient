@@ -218,12 +218,16 @@ public class StarTabFragment extends Fragment {
         float a = l.getY();
         l.animate().y(y).setDuration(75).start();
         y = a;
+        height = l.getHeight();
+        Log.println(Log.DEBUG, "", "height" + l.getLayoutParams().height);
+        l.getLayoutParams().height = root.getHeight() - 250;//setMinimumHeight(500);
+        l.requestLayout();
 
-        Log.println(Log.DEBUG, "", "New height" + this.getView().getHeight() * 0.7);
         //animateHeight(l, shift);
     }
 
     private float y = 250;
+    private int height;
 
     private void closePlanets() {
         /**View l = root.findViewById(R.id.planets_layout);
@@ -232,6 +236,8 @@ public class StarTabFragment extends Fragment {
         View l = root.findViewById(R.id.planets_layout);
         l.animate().y(y).setDuration(75).start();
         y = 250;
+        l.getLayoutParams().height = height;//setMinimumHeight(5e00);
+        l.requestLayout();
     }
 
 
