@@ -11,7 +11,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -69,6 +71,7 @@ public class StarTabFragment extends Fragment {
         editeble = args.getBoolean(SectionsPagerAdapter.EDITABLE);
         View root = inflater.inflate(R.layout.fragment_star, container, false);
         this.root = root;
+        Log.println(Log.DEBUG, "", "H: " + root.getHeight());
         if (star != null) initializeView(root);
         return root;
     }
@@ -196,7 +199,7 @@ public class StarTabFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setAnimation(View root) {
-        View l = root.findViewById(R.id.planet_list);
+        View l = root.findViewById(R.id.planets_layout);
         final GestureDetector gdt = new GestureDetector(new GestureListener());
         l.setOnTouchListener((view, event) -> {
             gdt.onTouchEvent(event);
@@ -205,18 +208,35 @@ public class StarTabFragment extends Fragment {
         l.setZ(10f);
     }
 
+
     private void openPlanets() {
-        if (shift != 0) return;
-        View l = root.findViewById(R.id.planet_list);
-        shift = (int) Math.round((getView().getHeight() - l.getHeight()) * 0.7);
-        animateHeight(l, shift);
+        /**if (shift != 0) return;
+         View l = root.findViewById(R.id.planets_layout);
+
+         shift = (int) Math.round((getView().getHeight() - l.getHeight()) * 0.7);
+         animateHeight(l, shift);
+         */
+        View l = root.findViewById(R.id.planets_layout);
+
+        float a = l.getY();
+        l.animate().y(y).setDuration(75).start();
+        y = a;
+
+        Log.println(Log.DEBUG, "", "New height" + this.getView().getHeight() * 0.7);
+        //animateHeight(l, shift);
     }
 
+    private float y = 250;
+
     private void closePlanets() {
-        View l = root.findViewById(R.id.planet_list);
-        animateHeight(l, -shift);
-        shift = 0;
+        /**View l = root.findViewById(R.id.planets_layout);
+         animateHeight(l, -shift);
+         shift = 0;*/
+        View l = root.findViewById(R.id.planets_layout);
+        l.animate().y(y).setDuration(75).start();
+        y = 250;
     }
+
 
 
     private void animateHeight(View v, int newH) {
