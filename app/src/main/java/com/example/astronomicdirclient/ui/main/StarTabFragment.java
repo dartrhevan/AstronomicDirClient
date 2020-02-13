@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -196,7 +198,7 @@ public class StarTabFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setAnimation(View root) {
-        View l = root.findViewById(R.id.planet_list);
+        View l = root.findViewById(R.id.planets_layout);
         final GestureDetector gdt = new GestureDetector(new GestureListener());
         l.setOnTouchListener((view, event) -> {
             gdt.onTouchEvent(event);
@@ -205,17 +207,31 @@ public class StarTabFragment extends Fragment {
         l.setZ(10f);
     }
 
-    private void openPlanets() {
-        if (shift != 0) return;
-        View l = root.findViewById(R.id.planet_list);
+    private void openPlanets(MotionEvent e) {
+        /**if (shift != 0) return;
+        View l = root.findViewById(R.id.planets_layout);
+
         shift = (int) Math.round((getView().getHeight() - l.getHeight()) * 0.7);
         animateHeight(l, shift);
+         */
+        View l = root.findViewById(R.id.planets_layout);
+        float a = l.getY();
+        l.animate().y(y).setDuration(75).start();
+        y = a;
+
+        Log.println(Log.DEBUG, "", "New height" + this.getView().getHeight() * 0.7);
+        //animateHeight(l, shift);
     }
 
+    private float y = 250;
+
     private void closePlanets() {
-        View l = root.findViewById(R.id.planet_list);
+        /**View l = root.findViewById(R.id.planets_layout);
         animateHeight(l, -shift);
-        shift = 0;
+        shift = 0;*/
+        View l = root.findViewById(R.id.planets_layout);
+        l.animate().y(y).setDuration(75).start();
+        y = 250;
     }
 
 
@@ -233,7 +249,7 @@ public class StarTabFragment extends Fragment {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                openPlanets();
+                openPlanets(e2);
                 return false; // снизу вверх
             } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
                 closePlanets();

@@ -1,21 +1,17 @@
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.astronomicdirclient.ui.main.StarTabFragment"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:background="@drawable/background">
 
-    <TableRow
-        android:layout_weight="9"
-        android:id="@+id/star_form"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
-
         <ScrollView
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:background="@drawable/background"
+            android:id="@+id/star_form"
+            android:layout_height="400dp"
+            android:layout_width="match_parent">
 
             <LinearLayout
                 android:layout_height="match_parent"
@@ -156,17 +152,9 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/planet_list"
-        android:background="@drawable/background"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
 
         <LinearLayout
-            android:layout_weight="1"
+            android:background="@drawable/background"
             android:orientation="vertical"
             android:id="@+id/planets_layout"
             android:layout_width="match_parent"
@@ -200,5 +188,4 @@
 
             </ListView>
         </LinearLayout>
-    </TableRow>
-</TableLayout>
+</LinearLayout>
