@@ -1,7 +1,9 @@
 package com.example.astronomicdirclient;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -106,6 +108,7 @@ public class StarFragment extends Fragment {
             }
         };
 
+        ((Activity)getContext()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         fab.setOnClickListener(ct instanceof StarActivity ? editListener : uploadListener);
         return v;
     }

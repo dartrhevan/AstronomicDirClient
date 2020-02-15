@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,6 +16,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -230,23 +232,47 @@ public class PlanetTabFragment extends Fragment {
         View l = root.findViewById(R.id.moons_list);
         final GestureDetector gdt = new GestureDetector(new GestureListener());
         l.setOnTouchListener((view, event) -> {
-            gdt.onTouchEvent(event);
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                gdt.onTouchEvent(event);
             return true;
         });
         l.setZ(10f);
     }
 
     private void openMoons() {
-        if (shift != 0) return;
+        //if (shift != 0) return;
         View l = root.findViewById(R.id.moons_list);
-        shift = (int) Math.round((getView().getHeight() - l.getHeight()) * 0.7);
-        animateHeight(l, shift);
+        float a = l.getY();
+        l.animate().y(y).setDuration(75).start();
+        y = a;
+        height = l.getHeight();
+        Log.println(Log.DEBUG, "", "height" + l.getLayoutParams().height);
+        l.getLayoutParams().height = root.getHeight() - 250;//setMinimumHeight(500);
+        l.requestLayout();
+
     }
 
     private void closeMoons() {
         View l = root.findViewById(R.id.moons_list);
-        animateHeight(l, -shift);
-        shift = 0;
+        l.animate().y(y).setDuration(75).start();
+        y = 250;
+        l.getLayoutParams().height = height;//setMinimumHeight(5e00);
+        l.requestLayout();
+    }
+
+
+    private float y = 250;
+    private int height;
+/*
+    private void closePlanets() {
+        /**View l = root.findViewById(R.id.planets_layout);
+         animateHeight(l, -shift);
+         shift = 0;*
+        View l = root.findViewById(R.id.planets_layout);
+        l.animate().y(y).setDuration(75).start();
+        y = 250;
+        l.getLayoutParams().height = height;//setMinimumHeight(5e00);
+        l.requestLayout();
     }
 
 
@@ -255,7 +281,7 @@ public class PlanetTabFragment extends Fragment {
         animationY.setDuration(75);
         animationY.start();
     }
-
+*/
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 

@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -25,8 +25,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+
 
 import com.example.astronomicdirclient.Model.Distance;
 import com.example.astronomicdirclient.Model.Planet;
@@ -71,7 +73,6 @@ public class StarTabFragment extends Fragment {
         editeble = args.getBoolean(SectionsPagerAdapter.EDITABLE);
         View root = inflater.inflate(R.layout.fragment_star, container, false);
         this.root = root;
-        Log.println(Log.DEBUG, "", "H: " + root.getHeight());
         if (star != null) initializeView(root);
         return root;
     }
@@ -163,7 +164,7 @@ public class StarTabFragment extends Fragment {
         adapter = new ArrayAdapter<>(activity , android.R.layout.simple_list_item_1, planetList);
         ListView list = root.findViewById(R.id.planets);
         list.setAdapter(adapter);
-        Consumer<Integer> onItemClick = position ->{
+        Consumer<Integer> onItemClick = position -> {
             planetTabFragment.setPlanet(adapter.getItem(position));
             ViewPager viewPager = ((Activity) activity).findViewById(R.id.view_pager);
             viewPager.setCurrentItem(1);
@@ -202,54 +203,52 @@ public class StarTabFragment extends Fragment {
         View l = root.findViewById(R.id.planets_layout);
         final GestureDetector gdt = new GestureDetector(new GestureListener());
         l.setOnTouchListener((view, event) -> {
-            gdt.onTouchEvent(event);
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                gdt.onTouchEvent(event);
             return true;
         });
         l.setZ(10f);
     }
 
-
-    private void openPlanets() {
+    private void openPlanets(MotionEvent e) {
         /**if (shift != 0) return;
-         View l = root.findViewById(R.id.planets_layout);
-
-         shift = (int) Math.round((getView().getHeight() - l.getHeight()) * 0.7);
-         animateHeight(l, shift);
-         */
         View l = root.findViewById(R.id.planets_layout);
 
+        shift = (int) Math.round((getView().getHeight() - l.getHeight()) * 0.7);
+        animateHeight(l, shift);
+         */
+        View l = root.findViewById(R.id.planets_layout);
         float a = l.getY();
         l.animate().y(y).setDuration(75).start();
         y = a;
-        h = l.getHeight();
-        l.getLayoutParams().height = root.getHeight() - 250;
+        height = l.getHeight();
+        Log.println(Log.DEBUG, "", "height" + l.getLayoutParams().height);
+        l.getLayoutParams().height = root.getHeight() - 250;//setMinimumHeight(500);
         l.requestLayout();
-        Log.println(Log.DEBUG, "", "New height" + this.getView().getHeight() * 0.7);
+
         //animateHeight(l, shift);
     }
 
     private float y = 250;
-    private int h;
+    private int height;
 
     private void closePlanets() {
         /**View l = root.findViewById(R.id.planets_layout);
-         animateHeight(l, -shift);
-         shift = 0;*/
+        animateHeight(l, -shift);
+        shift = 0;*/
         View l = root.findViewById(R.id.planets_layout);
         l.animate().y(y).setDuration(75).start();
         y = 250;
-
-        l.getLayoutParams().height = h;
+        l.getLayoutParams().height = height;//setMinimumHeight(5e00);
         l.requestLayout();
     }
 
-
-
+/*
     private void animateHeight(View v, int newH) {
         ObjectAnimator animationY = ObjectAnimator.ofInt(v, "minimumHeight", v.getHeight(), v.getHeight() + newH);
         animationY.setDuration(75);
         animationY.start();
-    }
+    }*/
 
     private static final int SWIPE_MIN_DISTANCE = 120;
     private static final int SWIPE_THRESHOLD_VELOCITY = 200;
@@ -259,7 +258,7 @@ public class StarTabFragment extends Fragment {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-                openPlanets();
+                openPlanets(e2);
                 return false; // снизу вверх
             } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
                 closePlanets();
@@ -267,7 +266,26 @@ public class StarTabFragment extends Fragment {
             }
             return false;
         }
+/*
+        @Override
+        public boolean onScroll(MotionEvent e1 , MotionEvent e2 , float distanceX , float distanceY) {
 
+            View l = root.findViewById(R.id.planets_layout);
+            //if(e2.getAction() == MotionEvent.ACTION_MOVE && Math.abs(e2.getY() - l.getY()) > 200) {
+            //l.animate().y(y).setDuration(75).start();
+            //y = 250;
+            //Log.println(Log.DEBUG, "", "Y: " + e2.getY());
+            ////float y = e2.getRawY();
+            //e2.
+            Log.println(Log.DEBUG, "", "D: " + distanceY);
+            //Log.println(Log.DEBUG, "", "YHS0: " + e2.getHistoricalSize(0));
+            //Log.println(Log.DEBUG, "", "YH0: " + e2.getHistoricalY(0));
+            /**if(y > 250 && y < root.getHeight() - l.getHeight())
+                l.setY(y);*
+            //}
+
+            return super.onScroll(e1 , e2 , distanceX , distanceY);
+        }*/
     }
 
     private void initSpinner(View root) {

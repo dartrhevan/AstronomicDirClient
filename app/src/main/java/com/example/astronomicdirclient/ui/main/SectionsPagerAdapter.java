@@ -46,21 +46,16 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter implements Serial
         starTabFragment = StarTabFragment.makeStarTabFragment(star , editable);
         planetTabFragment = PlanetTabFragment.makePlanetTabFragment((star.getPlanets().size() > 0 ?
                 ( Planet ) star.getPlanets().toArray()[0] : null) , editable);
+
+        starTabFragment.setPlanetTabFragment(planetTabFragment);
+        planetTabFragment.setStarTabFragment(starTabFragment);
     }
 
     @Override
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a StarTabFragment (defined as a static inner class below).
-        Fragment fragment;
-        if (position == 0) {
-            fragment = starTabFragment;
-            starTabFragment.setPlanetTabFragment(planetTabFragment);
-        } else {
-            fragment = planetTabFragment;
-            planetTabFragment.setStarTabFragment(starTabFragment);
-        }
-        return fragment;
+        return position == 0 ? starTabFragment : planetTabFragment;
     }
 
     @Nullable

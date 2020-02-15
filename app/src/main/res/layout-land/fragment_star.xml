@@ -4,14 +4,14 @@
     tools:context="com.example.astronomicdirclient.ui.main.StarTabFragment"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@drawable/background">
 
         <ScrollView
             android:background="@drawable/background"
             android:id="@+id/star_form"
-            android:layout_height="400dp"
-            android:layout_width="match_parent">
+            android:layout_height="match_parent"
+            android:layout_width="400dp">
 
             <LinearLayout
                 android:layout_height="match_parent"

@@ -13,14 +13,14 @@
         xmlns:android="http://schemas.android.com/apk/res/android" />
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background">
 
             <ScrollView
-                android:layout_height="400dp"
-                android:layout_width="match_parent">
+                android:layout_height="match_parent"
+                android:layout_width="400dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -203,7 +203,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </ScrollView>
-
+        
             <LinearLayout
                 android:background="@drawable/background"
                 android:orientation="vertical"
