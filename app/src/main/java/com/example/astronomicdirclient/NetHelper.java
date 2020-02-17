@@ -13,11 +13,11 @@ import java.net.URL;
 
 public final class NetHelper {
 
-    private static String editUrlPath = "http://192.168.0.103:3000/Views/EditStar";
-    private static String deleteUrlPath = "http://192.168.0.103:3000/Home/Delete?id=";
-    private static String listUrlPath = "http://192.168.0.103:3000/Views/StarListXml";
-    private static String starUrlPath = "http://192.168.0.103:3000/Views/StarXml?id=";
-    private static String starUploadUrlPath = "http://192.168.0.103:3000/Views/StarViews";
+    private static String editUrlPath = "https://astronomic-directory.azurewebsites.net/Views/EditStar";
+    private static String deleteUrlPath = "https://astronomic-directory.azurewebsites.net/Home/Delete?id=";
+    private static String listUrlPath = "https://astronomic-directory.azurewebsites.net/Views/StarListXml";
+    private static String starUrlPath = "https://astronomic-directory.azurewebsites.net/Views/StarXml?id=";
+    private static String starUploadUrlPath = "https://astronomic-directory.azurewebsites.net/Views/StarViews";
 
     public static String DownloadStarList() throws IOException {
         return DownloadXML(listUrlPath);

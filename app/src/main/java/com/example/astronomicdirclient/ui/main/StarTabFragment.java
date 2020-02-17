@@ -217,6 +217,8 @@ public class StarTabFragment extends Fragment {
         shift = (int) Math.round((getView().getHeight() - l.getHeight()) * 0.7);
         animateHeight(l, shift);
          */
+
+        if(y != 250) return;
         View l = root.findViewById(R.id.planets_layout);
         float a = l.getY();
         l.animate().y(y).setDuration(75).start();
@@ -236,6 +238,8 @@ public class StarTabFragment extends Fragment {
         /**View l = root.findViewById(R.id.planets_layout);
         animateHeight(l, -shift);
         shift = 0;*/
+
+        if(y == 250) return;
         View l = root.findViewById(R.id.planets_layout);
         l.animate().y(y).setDuration(75).start();
         y = 250;

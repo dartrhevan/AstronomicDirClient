@@ -240,6 +240,7 @@ public class PlanetTabFragment extends Fragment {
     }
 
     private void openMoons() {
+        if(y != 250) return;
         //if (shift != 0) return;
         View l = root.findViewById(R.id.moons_list);
         float a = l.getY();
@@ -253,6 +254,7 @@ public class PlanetTabFragment extends Fragment {
     }
 
     private void closeMoons() {
+        if(y == 250) return;
         View l = root.findViewById(R.id.moons_list);
         l.animate().y(y).setDuration(75).start();
         y = 250;
